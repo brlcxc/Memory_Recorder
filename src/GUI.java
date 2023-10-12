@@ -1,3 +1,8 @@
+import DashBoard.DashBoardPanel;
+import Diary.DiaryPanel;
+import ListToDo.ListToDoPanel;
+import Notes.NotesPanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

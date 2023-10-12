@@ -1,15 +1,17 @@
+package Diary;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class DashBoardPanel extends JPanel {
+public class DiaryPanel extends JPanel {
     JPanel sidePanel;
-    DashBoardPanel(){
-        setBackground(Color.ORANGE);
+    DiaryPanel(){
+        setBackground(Color.PINK);
         setSidePanel();
     }
     private void setSidePanel(){
         sidePanel = new JPanel();
-        sidePanel.setBackground(Color.MAGENTA);
+        sidePanel.setBackground(Color.YELLOW);
     }
     public JPanel getSidePanel(){
         return sidePanel;

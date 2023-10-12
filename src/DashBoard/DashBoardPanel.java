@@ -1,18 +1,19 @@
+package DashBoard;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class NotesPanel extends JPanel {
+public class DashBoardPanel extends JPanel {
     JPanel sidePanel;
-    NotesPanel(){
-        setBackground(Color.RED);
+    DashBoardPanel(){
+        setBackground(Color.ORANGE);
         setSidePanel();
     }
     private void setSidePanel(){
         sidePanel = new JPanel();
-        sidePanel.setBackground(Color.ORANGE);
+        sidePanel.setBackground(Color.MAGENTA);
     }
     public JPanel getSidePanel(){
         return sidePanel;
     }
 }
-//called side panel in here but notes side panel outside
