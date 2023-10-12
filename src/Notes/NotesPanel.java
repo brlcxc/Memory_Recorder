@@ -1,17 +1,20 @@
+package Notes;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class ListToDoPanel extends JPanel {
+public class NotesPanel extends JPanel {
     JPanel sidePanel;
-    ListToDoPanel(){
-        setBackground(Color.YELLOW);
+    public NotesPanel(){
+        setBackground(Color.RED);
         setSidePanel();
     }
     private void setSidePanel(){
         sidePanel = new JPanel();
-        sidePanel.setBackground(Color.GREEN);
+        sidePanel.setBackground(Color.ORANGE);
     }
     public JPanel getSidePanel(){
         return sidePanel;
     }
 }
+//called side panel in here but notes side panel outside
