@@ -10,6 +10,7 @@ public class DashBoardPanel extends JPanel {
     private void setSidePanel(){
         sidePanel = new JPanel();
         sidePanel.setBackground(Color.MAGENTA);
+        sidePanel.add(new JLabel("test"));
     }
     public JPanel getSidePanel(){
         return sidePanel;
