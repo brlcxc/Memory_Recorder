@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class DashBoardPanel extends JPanel {
     JPanel sidePanel;
-    DashBoardPanel(){
+    public DashBoardPanel(){
         setBackground(Color.ORANGE);
         setSidePanel();
     }

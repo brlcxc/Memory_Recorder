@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class ListToDoPanel extends JPanel {
     JPanel sidePanel;
-    ListToDoPanel(){
+    public ListToDoPanel(){
         setBackground(Color.YELLOW);
         setSidePanel();
     }

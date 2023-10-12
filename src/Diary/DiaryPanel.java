@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class DiaryPanel extends JPanel {
     JPanel sidePanel;
-    DiaryPanel(){
+    public DiaryPanel(){
         setBackground(Color.PINK);
         setSidePanel();
     }
