@@ -1,3 +1,8 @@
+import DashBoard.DashBoardPanel;
+import Diary.DiaryPanel;
+import ListToDo.ListToDoPanel;
+import Notes.NotesPanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -140,6 +145,7 @@ public class GUI extends JFrame{
             mainContentLayout.show(mainContentPanel,"list to do");
         }
     }
+    //help
     private class NotesButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             sideContentLayout.show(sideContentPanel,"notes");
