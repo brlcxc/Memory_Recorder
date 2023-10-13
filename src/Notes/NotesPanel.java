@@ -1,9 +1,11 @@
+package Notes;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class NotesPanel extends JPanel {
     JPanel sidePanel;
-    NotesPanel(){
+    public NotesPanel(){
         setBackground(Color.RED);
         setSidePanel();
     }

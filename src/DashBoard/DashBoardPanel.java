@@ -1,15 +1,18 @@
+package DashBoard;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class ListToDoPanel extends JPanel {
+public class DashBoardPanel extends JPanel {
     JPanel sidePanel;
-    ListToDoPanel(){
-        setBackground(Color.YELLOW);
+    public DashBoardPanel(){
+        setBackground(Color.ORANGE);
         setSidePanel();
     }
     private void setSidePanel(){
         sidePanel = new JPanel();
-        sidePanel.setBackground(Color.GREEN);
+        sidePanel.setBackground(Color.MAGENTA);
+        sidePanel.add(new JLabel("test"));
     }
     public JPanel getSidePanel(){
         return sidePanel;
