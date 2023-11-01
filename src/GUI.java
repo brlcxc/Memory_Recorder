@@ -1,8 +1,9 @@
 import DashBoard.DashBoardPanel;
+import Defaults.MenuButton;
+import Defaults.Colors;
 import Diary.DiaryPanel;
 import ListToDo.ListToDoPanel;
 import Notes.NotesPanel;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,10 +19,10 @@ public class GUI extends JFrame{
     private DiaryPanel diaryPanel;
     private ListToDoPanel listToDoPanel;
     private NotesPanel notesPanel;
-    private JButton dashboardButton;
-    private JButton diaryButton;
-    private JButton listToDoButton;
-    private JButton notesButton;
+    private MenuButton dashboardButton;
+    private MenuButton diaryButton;
+    private MenuButton listToDoButton;
+    private MenuButton notesButton;
     private CardLayout mainContentLayout;
     private CardLayout sideContentLayout;
     public GUI() {
@@ -36,6 +37,7 @@ public class GUI extends JFrame{
         setContentPane();
 
         setVisible(true);
+        System.out.println(dashboardButton.getHeight() + " " + dashboardButton.getWidth());
     }
     private void setContentPane(){
         GridBagConstraints gbc = new GridBagConstraints();
@@ -70,10 +72,10 @@ public class GUI extends JFrame{
         GridBagConstraints gbc = new GridBagConstraints();
 
         menuBar = new JMenuBar();
-        dashboardButton = new JButton("Dashboard");
-        diaryButton = new JButton("Diary");
-        listToDoButton = new JButton("List To-Do");
-        notesButton = new JButton("Notes");
+        dashboardButton = new MenuButton("Dashboard");
+        diaryButton = new MenuButton("Diary");
+        listToDoButton = new MenuButton("List To-Do");
+        notesButton = new MenuButton("Notes");
 
         dashboardButton.addActionListener(new DashboardButtonListener());
         diaryButton.addActionListener(new DiaryButtonListener());
@@ -81,7 +83,7 @@ public class GUI extends JFrame{
         notesButton.addActionListener(new NotesButtonListener());
 
         menuBar.setLayout(new GridBagLayout());
-        menuBar.setBackground(Color.BLUE);
+        menuBar.setBackground(Colors.cream);
 
         gbc.gridx = 0;
         gbc.gridy = 0;

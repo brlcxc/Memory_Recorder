@@ -1,5 +1,5 @@
 package Diary;
-
+import Defaults.*;
 import javax.swing.*;
 import java.awt.*;
 
