@@ -1,5 +1,5 @@
 package Notes;
-
+import Defaults.*;
 import javax.swing.*;
 import java.awt.*;
 
