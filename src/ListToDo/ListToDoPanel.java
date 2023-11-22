@@ -1,5 +1,9 @@
 package ListToDo;
 
+import Defaults.Colors;
+import Defaults.ToDoButton;
+import Defaults.ToDoLabel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,21 +12,23 @@ import java.awt.event.ActionListener;
 public class ListToDoPanel extends JPanel {
     JPanel sidePanel;
     private DefaultListModel<String> listModel;
-    private JList<String> list;
+    private DefaultListModel<String> listModel2;
+    private JList<String> list1;
+    private JList<String> list2;
     private JTextField inputField;
     public ListToDoPanel(){
         setBackground(Color.YELLOW);
         setLayout(new BorderLayout());
 
         listModel = new DefaultListModel<>();
-        list = new JList<>(listModel);
-        list.setFixedCellHeight(30);
-        list.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        JScrollPane listScroller = new JScrollPane(list);
+        list1 = new JList<>(listModel);
+        list1.setFixedCellHeight(30);
+        list1.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        JScrollPane listScroller = new JScrollPane(list1);
 
         inputField = new JTextField();
-        JButton addButton = createButton("Add", new Color(50, 150, 50));
-        JButton deleteButton = createButton("Delete", new Color(200, 75, 75));
+        ToDoButton addButton = new ToDoButton("Add", Colors.pastelGreen, Colors.mintGreen);
+        ToDoButton deleteButton = new ToDoButton("Delete", Colors.barbiePink, Colors.lessBarbiePink);
 
         addButton.addActionListener(new AddButtonListener());
         deleteButton.addActionListener(new DeleteButtonListener());
@@ -54,15 +60,28 @@ public class ListToDoPanel extends JPanel {
     }
     private void setSidePanel(){
         sidePanel = new JPanel();
-        sidePanel.setBackground(Color.GREEN);
+        sidePanel.setLayout(new BorderLayout());
+        ToDoButton addButton = new ToDoButton("Create New", Colors.pastelGreen, Colors.mintGreen);
+        ToDoLabel test = new ToDoLabel("Date");
+//        sidePanel.setBackground(Color.GREEN);
         sidePanel.add(new JLabel("help"));
+        listModel2 = new DefaultListModel<>();
+        list2 = new JList<>(listModel);
+        list2.setFixedCellHeight(30);
+        list2.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        JScrollPane listScroller = new JScrollPane(list2);
+        sidePanel.add(test, BorderLayout.NORTH);
+        sidePanel.add(listScroller, BorderLayout.CENTER);
+        sidePanel.add(addButton, BorderLayout.SOUTH);
+
+
     }
     public JPanel getSidePanel(){
         return sidePanel;
     }
     private class DeleteButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            int selectedIndex = list.getSelectedIndex();
+            int selectedIndex = list1.getSelectedIndex();
             if (selectedIndex != -1) {
                 listModel.remove(selectedIndex);
             }
@@ -75,14 +94,5 @@ public class ListToDoPanel extends JPanel {
                 inputField.setText("");
             }
         }
-    }
-    private JButton createButton(String text, Color bgColor) {
-        JButton button = new JButton(text);
-        button.setFont(new Font("SansSerif", Font.BOLD, 16));
-        button.setBackground(bgColor);
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
-        return button;
     }
 }

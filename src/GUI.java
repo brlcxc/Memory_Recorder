@@ -57,13 +57,15 @@ public class GUI extends JFrame{
         add(menuBar, gbc);
 
         gbc.gridy = -1;
-        gbc.weightx = 0.25;
+        gbc.weightx = 0.1;
         gbc.weighty = 0.93;
         gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.VERTICAL;
         add(sideContentPanel, gbc);
 
         gbc.gridx = 1;
         gbc.weightx = 0.75;
+        gbc.fill = GridBagConstraints.BOTH;
         add(mainContentPanel, gbc);
 
     }
