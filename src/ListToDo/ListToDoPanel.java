@@ -1,12 +1,12 @@
 package ListToDo;
-
+import Defaults.*;
 import javax.swing.*;
 import java.awt.*;
 
 public class ListToDoPanel extends JPanel {
     JPanel sidePanel;
     public ListToDoPanel(){
-        setBackground(Color.YELLOW);
+        setBackground(Colors.mintGreen);
         setSidePanel();
     }
     private void setSidePanel(){

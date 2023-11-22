@@ -1,5 +1,5 @@
 package DashBoard;
-
+import Defaults.*;
 import javax.swing.*;
 import java.awt.*;
 
