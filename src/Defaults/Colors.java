@@ -1,3 +1,5 @@
+package Defaults;
+
 import java.awt.*;
 
 //this class is used to set the colors globally for the entire program
@@ -10,4 +12,5 @@ public class Colors {
     public static final Color pastelPurple = new Color(179,199,247);
     public static final Color lessBarbiePink = new Color(248,184,208);
     public static final Color barbiePink = new Color(241,148,184);
+    public static final Color cream = new Color(255, 255, 237);
 }
