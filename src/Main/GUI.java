@@ -94,13 +94,13 @@ public class GUI extends JFrame{
         add(menuBar, gbc);
 
         gbc.gridy = -1;
-        gbc.weightx = 0.25;
+        gbc.weightx = 0.20;
         gbc.weighty = 0.93;
         gbc.gridwidth = 1;
         add(sideContentPanel, gbc);
 
         gbc.gridx = 1;
-        gbc.weightx = 0.75;
+        gbc.weightx = 0.80;
         add(mainContentPanel, gbc);
 
     }
@@ -153,6 +153,8 @@ public class GUI extends JFrame{
         mainContentPanel.add(diaryPanel, "diary");
         mainContentPanel.add(listToDoPanel, "list to do");
         mainContentPanel.add(notesPanel, "notes");
+
+//        mainContentPanel.setMinimumSize(new Dimension(700, 50));
     }
     private void setSideContentPanel(){
         sideContentPanel = new JPanel();
