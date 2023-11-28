@@ -5,64 +5,58 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
 
 public class DiaryPanel extends JPanel {
-    //this needs to default to the most recent entry
-    //maybe delte button in top right
-    //when new entry is created edit feild is automatically set to editable
     private JPanel sidePanel;
-    private DefaultListModel<String> listModel;
-    private JList<String> list;
-    private JTextArea textArea;
-    private JScrollPane textAreaScroll;
-    private JTextField titleField;
+    private final JTextArea textArea;
+    private final JTextField titleField;
     private JTextField searchField;
-
-    private Map<String, String> dict;
+    private final Map<String, String> diaryEntryMap;
+    private DefaultListModel<String> entryListModel;
+    private JList<String> entryList;
     private String currentEntry;
-    //maybe have code to crreat a new entry if one does not exit?
     public DiaryPanel(){
-        dict = new Hashtable<>();
         GridBagConstraints gbc = new GridBagConstraints();
+        diaryEntryMap = new Hashtable<>();
+
         setLayout(new GridBagLayout());
         setBackground(Colors.cream);
         setSidePanel();
-        JButton saveButton = new DiaryButton("Save", Colors.pastelGreen, Colors.mintGreen);
-        JButton deleteButton = new DiaryButton("Delete", Colors.barbiePink, Colors.lessBarbiePink);
-        JPanel buttonPanel = new JPanel();
-        JPanel test2 = new JPanel();
-        buttonPanel.setBackground(Colors.cream);
-        buttonPanel.add(saveButton);
-        buttonPanel.add(Box.createHorizontalStrut(20));
-        buttonPanel.add(deleteButton);
-        textArea = new JTextArea(16, 40);
-        textArea.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        textArea.setLineWrap(true);
-        textArea.setEditable(false);
-//        textArea.addFocusListener(new focusListener2());
-        textAreaScroll = new JScrollPane(textArea);
-        test2.setBackground(Colors.cream);
-        ///title near the top - created and last edited near the bottom
-        JLabel label1 = new DiaryLabel("Created: ", 18);
-        JLabel label2 = new DiaryLabel("Last Edited: ", 18);
+
+        //title field
         titleField = new DiaryTextField("Press \"Create New Entry\" to begin writing");
         titleField.setBorder(null);
         titleField.setBackground(Colors.cream);
         titleField.setHorizontalAlignment(JTextField.CENTER);
-        //maybe I can change background and border if I click some sort of edit button?
-        //also I might want buttons to enlarge font at some point
-        //search bar and dates still seem fun
 
-        deleteButton.addActionListener(new DeleteButtonListener());
+        //diary text area
+        textArea = new JTextArea(16, 40);
+        textArea.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        textArea.setLineWrap(true);
+        textArea.setEditable(false);
+        JScrollPane textAreaScroll = new JScrollPane(textArea);
+
+        //save button
+        JButton saveButton = new DiaryButton("Save", Colors.pastelGreen, Colors.mintGreen);
         saveButton.addActionListener(new SaveButtonListener());
 
+        //delete button
+        JButton deleteButton = new DiaryButton("Delete", Colors.barbiePink, Colors.lessBarbiePink);
+        deleteButton.addActionListener(new DeleteButtonListener());
+
+        //button panel
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(Colors.cream);
+        buttonPanel.add(saveButton);
+        buttonPanel.add(Box.createHorizontalStrut(20));
+        buttonPanel.add(deleteButton);
+
+        gbc.insets = new Insets(8,8,0,8);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
-        gbc.insets = new Insets(8,8,0,8);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add(titleField, gbc);
 
@@ -85,33 +79,36 @@ public class DiaryPanel extends JPanel {
         sidePanel = new JPanel();
         sidePanel.setLayout(new GridBagLayout());
         sidePanel.setBackground(Colors.cream);
-        listModel = new DefaultListModel<>();
+
+        //entries label
+        JLabel entriesLabel = new DiaryLabel("Diary Entries", 18);
+
+        //search field
         searchField = new DiarySearchField();
-        searchField.getDocument().addDocumentListener(new documentListener());
-//        TextPrompt tp3 = new TextPrompt("First Name", tf3, TextPrompt.Show.FOCUS_LOST);
-        searchField.addFocusListener(new focusListener());
-        list = new JList<>(listModel);
-        list.setFixedCellHeight(30);
-        list.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        list.addMouseListener(new mouseListener());
-        JScrollPane listScroller = new JScrollPane(list);
-        JButton createNewButton = new DiaryButton("Create New Entry", Colors.pastelGreen, Colors.mintGreen);
-        JLabel label = new DiaryLabel("Diary Entries", 18);
+        searchField.getDocument().addDocumentListener(new SearchDocumentListener());
+        searchField.addFocusListener(new SearchFocusListener());
+
+        //search field label
         JLabel searchLabel = new JLabel("");
         searchLabel.setForeground(Colors.textColor);
         searchLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
 
-        JPanel test = new JPanel();
-        test.setBackground(Colors.cream);
-/*        test.add(searchLabel);
-        test.add(searchField);*/
+        //list and list scroller
+        entryListModel = new DefaultListModel<>();
+        entryList = new JList<>(entryListModel);
+        entryList.setFixedCellHeight(30);
+        entryList.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        entryList.addMouseListener(new mouseListener());
+        JScrollPane listScroller = new JScrollPane(entryList);
 
+        //create new entry button
+        JButton createNewButton = new DiaryButton("Create New Entry", Colors.pastelGreen, Colors.mintGreen);
         createNewButton.addActionListener(new CreateNewButtonListener());
 
         gbc.insets = new Insets(8,8,0,8);
         gbc.gridx = 0;
         gbc.gridy = 0;
-        sidePanel.add(label, gbc);
+        sidePanel.add(entriesLabel, gbc);
 
         gbc.insets = new Insets(8,8,0,0);
         gbc.weightx = 1;
@@ -119,19 +116,17 @@ public class DiaryPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         sidePanel.add(searchField, gbc);
 
-
         gbc.insets = new Insets(0,8,8,0);
         gbc.gridy = -2;
         gbc.weightx = 1;
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
-
         sidePanel.add(listScroller, gbc);
 
         gbc.insets = new Insets(4,8,8,8);
+        gbc.gridy = -3;
         gbc.weightx = 0;
         gbc.weighty = 0;
-        gbc.gridy = -3;
         gbc.fill = GridBagConstraints.NONE;
         sidePanel.add(createNewButton, gbc);
     }
@@ -141,51 +136,68 @@ public class DiaryPanel extends JPanel {
     private class CreateNewButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String newEntry;
-            if(!listModel.contains("<<New Entry>>")){
+            if(!entryListModel.contains("<<New Entry>>")){
                 newEntry = "<<New Entry>>";
             }
             else{
                 int i = 0;
                 while(true) {
-                    if(!listModel.contains("<<New Entry>> (" + i + ")")) {
+                    if(!entryListModel.contains("<<New Entry>> (" + i + ")")) {
                         newEntry = "<<New Entry>> (" + i + ")";
                         break;
                     }
                     i++;
                 }
             }
-            listModel.addElement(newEntry);
-            dict.put(newEntry, "");
+            //element added to list
+            entryListModel.addElement(newEntry);
+            //element added to map
+            diaryEntryMap.put(newEntry, "");
 
+            //global current entry changed
             currentEntry = newEntry;
+
+            //text field and text area properly updated
             titleField.setText(currentEntry);
-            textArea.setText(dict.get(currentEntry));
+            textArea.setText(diaryEntryMap.get(currentEntry));
+
+            //text area active
             textArea.setEditable(true);
         }
     }
     private class DeleteButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            int selectedIndex = list.getSelectedIndex();
+            int selectedIndex = entryList.getSelectedIndex();
             if (selectedIndex != -1) {
-                dict.remove(list.getModel().getElementAt(selectedIndex));
-                listModel.remove(selectedIndex);
-//                dict.remove(list.getModel().getElementAt(selectedIndex));
-                //not removing properly
+                //The entry is both removed from the map and the list
+                diaryEntryMap.remove(entryList.getModel().getElementAt(selectedIndex));
+                entryListModel.remove(selectedIndex);
             }
+            //statement called if selected index is not the first
             if(selectedIndex > 0) {
+                //the list item one index prior is selected
                 int[] g = {selectedIndex - 1};
-                list.setSelectedIndices(g);
-                currentEntry = list.getModel().getElementAt(selectedIndex - 1);
+                entryList.setSelectedIndices(g);
+                //global entry updated
+                currentEntry = entryList.getModel().getElementAt(selectedIndex - 1);
+                //text field and text area properly updated
                 titleField.setText(currentEntry);
-                textArea.setText(dict.get(currentEntry));
-            } else if (listModel.size() > 0) {
-                int[] g = {0};
-                list.setSelectedIndices(g);
-                currentEntry = list.getModel().getElementAt(0);
-                titleField.setText(currentEntry);
-                textArea.setText(dict.get(currentEntry));
+                textArea.setText(diaryEntryMap.get(currentEntry));
             }
+            //statement called if the index is 0 and there is at least one element left
+            else if (entryListModel.size() > 0) {
+                //first index of list is selected
+                int[] g = {0};
+                entryList.setSelectedIndices(g);
+                //global entry updated
+                currentEntry = entryList.getModel().getElementAt(0);
+                //text field and text area properly updated
+                titleField.setText(currentEntry);
+                textArea.setText(diaryEntryMap.get(currentEntry));
+            }
+            //statement called if there are no elements remaining after deletion
             else{
+                //text set to default state
                 titleField.setText("Press \"Create New Entry\" to begin writing");
                 textArea.setText("");
                 textArea.setEditable(false);
@@ -194,14 +206,21 @@ public class DiaryPanel extends JPanel {
     }
     private class SaveButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            if(listModel.size() > 0) {
+            // size > 0 accounts for clicking on empty list
+            if(entryListModel.size() > 0) {
                 if (!currentEntry.equals(titleField.getText().trim())) {
-                    listModel.addElement(titleField.getText());
-                    dict.remove(currentEntry);
-                    listModel.remove(listModel.indexOf(currentEntry));
+                    //new entry name added to list
+                    entryListModel.addElement(titleField.getText());
+                    //old entry removed from map
+                    diaryEntryMap.remove(currentEntry);
+                    //old entry name removed from list by index
+                    entryListModel.remove(entryListModel.indexOf(currentEntry));
+                    //global current entry changed
                     currentEntry = titleField.getText();
                 }
-                dict.put(currentEntry, textArea.getText());
+                //The entry is updated in the map if it has the same name
+                //The entry is added to the map if it has a new name
+                diaryEntryMap.put(currentEntry, textArea.getText());
             }
         }
     }
@@ -210,14 +229,17 @@ public class DiaryPanel extends JPanel {
             JList theList = (JList) mouseEvent.getSource();
             int index = theList.locationToIndex(mouseEvent.getPoint());
             if (index >= 0) {
+                //global entry is changed to the selected entry
                 currentEntry = theList.getModel().getElementAt(index).toString();
+                //text updated to represent selected entry
                 titleField.setText(currentEntry);
-                textArea.setText(dict.get(currentEntry));
+                textArea.setText(diaryEntryMap.get(currentEntry));
+                //The text area is now active
                 textArea.setEditable(true);
             }
         }
     }
-    private class documentListener implements DocumentListener {
+    private class SearchDocumentListener implements DocumentListener {
         @Override
         public void insertUpdate(DocumentEvent e) {
             filter();
@@ -230,32 +252,41 @@ public class DiaryPanel extends JPanel {
         public void changedUpdate(DocumentEvent e) {
         }
         private void filter() {
+            //text from the search field is used to filter items within the list
             String filter = searchField.getText();
+            //this statement prevents the list from being filtered when focus is lost
             if(!searchField.getText().equals("Search")){
-                filterModel((DefaultListModel<String>) list.getModel(), filter);
+                filterModel((DefaultListModel<String>) entryList.getModel(), filter);
             }
         }
     }
     private void filterModel(DefaultListModel<String> model, String filter) {
-        for (String s : dict.keySet()) {
-            if (!s.startsWith(filter)) {
-                if (model.contains(s)) {
-                    model.removeElement(s);
+        //elements are being removed from or added to the list, but they map keys remains unaffected
+        for (String dictionaryKey : diaryEntryMap.keySet()) {
+            //elements not containing the filter text are removed from the list
+            if (!dictionaryKey.contains(filter)) {
+                if (model.contains(dictionaryKey)) {
+                    model.removeElement(dictionaryKey);
                 }
-            } else {
-                if (!model.contains(s)) {
-                    model.addElement(s);
+            }
+            //elements containing the filter text are added to the list
+            else {
+                if (!model.contains(dictionaryKey)) {
+                    model.addElement(dictionaryKey);
                 }
             }
         }
     }
-    private class focusListener implements FocusListener{
+    private static class SearchFocusListener implements FocusListener{
+        //focus gained refers to when the text area either has text or is selected
         public void focusGained(java.awt.event.FocusEvent focusEvent) {
             JTextField src = (JTextField)focusEvent.getSource();
+            //The "Search" text is removed when the text area is clicked on
             if (src.getText().equals("Search")) {
                 src.setText("");
             }
         }
+        //focus lost refers to when an empty text area is not currently selected
         public void focusLost(java.awt.event.FocusEvent focusEvent) {
             JTextField src = (JTextField)focusEvent.getSource();
             if (src.getText().equals("")){
@@ -263,83 +294,4 @@ public class DiaryPanel extends JPanel {
             }
         }
     }
-    private class focusListener2 implements FocusListener{
-        public void focusGained(java.awt.event.FocusEvent focusEvent) {
-            JTextArea src = (JTextArea)focusEvent.getSource();
-            if (src.getText().equals("Search")) {
-                src.setText("");
-            }
-        }
-        public void focusLost(java.awt.event.FocusEvent focusEvent) {
-            JTextArea src = (JTextArea)focusEvent.getSource();
-            if (src.getText().equals("")){
-                src.setText("Search");
-            }
-        }
-    }
-    // Instantiate a FocusListener ONCE
-/*    java.awt.event.FocusListener myFocusListener = new java.awt.event.FocusListener() {
-        public void focusGained(java.awt.event.FocusEvent focusEvent) {
-            try {
-                JTextField src = (JTextField)focusEvent.getSource();
-                if (src.getText().equals("Text here!") {
-                    src.setText("");
-                }
-            } catch (ClassCastException ignored) {
-                *//* I only listen to JTextFields *//*
-            }
-        }
-
-        public void focusLost(java.awt.event.FocusEvent focusEvent) {
-            try {
-                JTextField src = (JTextField)focusEvent.getSource();
-                if (src.getText().equals("") {
-                    src.setText("Text here!");
-                }
-            } catch (ClassCastException ignored) {
-                *//* I only listen to JTextFields *//*
-            }
-        }
-    };*/
-  /*  private JTextField createTextField() {
-        final JTextField field = new JTextField(15);
-        field.getDocument().addDocumentListener(new DocumentListener(){
-            @Override public void insertUpdate(DocumentEvent e) { filter(); }
-            @Override public void removeUpdate(DocumentEvent e) { filter(); }
-            @Override public void changedUpdate(DocumentEvent e) {}
-            private void filter() {
-                String filter = field.getText();
-                filterModel((DefaultListModel<String>)jList.getModel(), filter);
-            }
-        });
-        return field;
-    }
-
-    private JList createJList() {
-        JList list = new JList(createDefaultListModel());
-        list.setVisibleRowCount(6);
-        return list;
-    }
-
-    private ListModel<String> createDefaultListModel() {
-        DefaultListModel<String> model = new DefaultListModel<>();
-        for (String s : defaultValues) {
-            model.addElement(s);
-        }
-        return model;
-    }
-
-    public void filterModel(DefaultListModel<String> model, String filter) {
-        for (String s : defaultValues) {
-            if (!s.startsWith(filter)) {
-                if (model.contains(s)) {
-                    model.removeElement(s);
-                }
-            } else {
-                if (!model.contains(s)) {
-                    model.addElement(s);
-                }
-            }
-        }
-    }*/
 }
