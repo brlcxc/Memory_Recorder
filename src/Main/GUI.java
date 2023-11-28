@@ -1,3 +1,5 @@
+package Main;
+
 import DashBoard.DashBoardPanel;
 import Defaults.MenuButton;
 import Defaults.Colors;
@@ -8,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
 
 public class GUI extends JFrame{
     final int WINDOW_WIDTH = 750;
@@ -25,6 +29,9 @@ public class GUI extends JFrame{
     private MenuButton notesButton;
     private CardLayout mainContentLayout;
     private CardLayout sideContentLayout;
+    private Connection connection;
+    private ResultSet resultset;
+
     public GUI() {
         //sets default width and height
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -38,7 +45,37 @@ public class GUI extends JFrame{
 
         setVisible(true);
         System.out.println(dashboardButton.getHeight() + " " + dashboardButton.getWidth());
+
     }
+
+    public GUI(Connection con, ResultSet result) {
+        connection = con;
+        resultset = result;
+        //sets default width and height
+        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        //sets title
+        setTitle("Test");
+        //sets close operation
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //centers panel in window
+        setLocationRelativeTo(null);
+        setContentPane();
+        setVisible(true);
+    }
+    public GUI( ResultSet result) {
+        resultset = result;
+        //sets default width and height
+        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        //sets title
+        setTitle("Test");
+        //sets close operation
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //centers panel in window
+        setLocationRelativeTo(null);
+        setContentPane();
+        setVisible(true);
+    }
+
     private void setContentPane(){
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -104,7 +141,7 @@ public class GUI extends JFrame{
     private void setMainContentPanel(){
         mainContentPanel = new JPanel();
 
-        dashBoardPanel = new DashBoardPanel();
+        dashBoardPanel = new DashBoardPanel(connection, resultset, this);
         diaryPanel = new DiaryPanel();
         listToDoPanel = new ListToDoPanel();
         notesPanel = new NotesPanel();
@@ -112,7 +149,7 @@ public class GUI extends JFrame{
         mainContentLayout = new CardLayout();
         mainContentPanel.setLayout(mainContentLayout);
 
-        mainContentPanel.add(dashBoardPanel, "dashboard");
+        mainContentPanel.add(dashBoardPanel.getDashBoardPanel(), "dashboard");
         mainContentPanel.add(diaryPanel, "diary");
         mainContentPanel.add(listToDoPanel, "list to do");
         mainContentPanel.add(notesPanel, "notes");
@@ -137,7 +174,7 @@ public class GUI extends JFrame{
     }
     private class DiaryButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            sideContentLayout.show(sideContentPanel,"diary");
+                sideContentLayout.show(sideContentPanel,"diary");
             mainContentLayout.show(mainContentPanel,"diary");
         }
     }
@@ -147,16 +184,15 @@ public class GUI extends JFrame{
             mainContentLayout.show(mainContentPanel,"list to do");
         }
     }
-    //help
     private class NotesButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             sideContentLayout.show(sideContentPanel,"notes");
             mainContentLayout.show(mainContentPanel,"notes");
         }
     }
-    public static void main(String[] args) {
-        new GUI();
-    }
+//    public static void main(String[] args) {
+//        new Main.GUI();
+//    }
 }
 
 //use underline and color shift
