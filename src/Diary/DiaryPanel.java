@@ -1,5 +1,6 @@
 package Diary;
 import Defaults.*;
+import Main.*;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
