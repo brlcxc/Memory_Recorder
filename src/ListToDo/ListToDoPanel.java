@@ -2,6 +2,7 @@ package ListToDo;
 
 
 import Defaults.*;
+import Diary.DiaryPanel;
 
 
 import javax.swing.*;
@@ -24,6 +25,8 @@ public class ListToDoPanel extends JPanel {
     private JTextField searchField;
     private JTextField titleField;
     private final Map<String, String> toDoMap;
+//    private final Map<String, JList> toDoMap;
+
     private ToDoButton addButton;
     private JButton saveIconButton;
     private JButton editIconButton;
@@ -49,6 +52,8 @@ public class ListToDoPanel extends JPanel {
 
 
         inputField = new JTextField();
+        inputField.addFocusListener(new ItemFocusListener());
+
         addButton = new ToDoButton("Add", Colors.pastelGreen, Colors.mintGreen);
         ToDoButton completeButton = new ToDoButton("Complete Item", Colors.pastelGreen, Colors.mintGreen);
         completeButton.addActionListener(new CompleteItemButtonListener());
@@ -63,7 +68,10 @@ public class ListToDoPanel extends JPanel {
                 BorderFactory.createLineBorder(Color.GRAY, 2),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         inputField.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        inputField.setText("Add new list item");
+//        inputField.docl
+        inputField.setText("Add New List Item");
+//        inputField.setText("");
+//        inputField.setFocusable(false);
 
 
         // Top panel with input field and add button
@@ -98,6 +106,8 @@ public class ListToDoPanel extends JPanel {
         titleField.setHorizontalAlignment(JTextField.CENTER);
         titleField.setPreferredSize(new Dimension(358, 30));
 
+//        inputField.requestFocusInWindow();
+//        titleField.requestFocusInWindow();
 
         saveIconButton = iconButton("save.png",13,13);
         saveIconButton.addActionListener(new SaveTitleButtonListener());
@@ -153,6 +163,7 @@ public class ListToDoPanel extends JPanel {
         gbc.gridy = -3;
         gbc.fill = GridBagConstraints.NONE;
         add(bottomPanel, gbc);
+        HideButtons();
     }
     private void setSidePanel(){
         GridBagConstraints gbc = new GridBagConstraints();
@@ -247,9 +258,9 @@ public class ListToDoPanel extends JPanel {
     }
     private class AddItemButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            if (!inputField.getText().trim().isEmpty()) {
+            if (!inputField.getText().trim().isEmpty() && !inputField.getText().trim().equals("Add New List Item")) {
                 itemListModel.addElement("○ " + inputField.getText().trim());
-                inputField.setText("");
+                inputField.setText("Add New List Item");
             }
         }
     }
@@ -413,19 +424,36 @@ public class ListToDoPanel extends JPanel {
             }
         }
     }
+    private static class ItemFocusListener implements FocusListener {
+        //focus gained refers to when the text area either has text or is selected
+        public void focusGained(java.awt.event.FocusEvent focusEvent) {
+            JTextField src = (JTextField)focusEvent.getSource();
+            //The "Search" text is removed when the text area is clicked on
+            if (src.getText().equals("Add New List Item")) {
+                src.setText("");
+            }
+        }
+        //focus lost refers to when an empty text area is not currently selected
+        public void focusLost(java.awt.event.FocusEvent focusEvent) {
+            JTextField src = (JTextField)focusEvent.getSource();
+            if (src.getText().equals("")){
+                src.setText("Add New List Item");
+            }
+        }
+    }
     private class CreateNewButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             System.out.println(titleField.getWidth());
             System.out.println(titleField.getHeight());
             String newEntry;
-            if(!toDoListModel.contains("<<New List>>")){
-                newEntry = "<<New List>>";
+            if(!toDoListModel.contains("New List")){
+                newEntry = "New List";
             }
             else{
                 int i = 0;
                 while(true) {
-                    if(!toDoListModel.contains("<<New List>> (" + i + ")")) {
-                        newEntry = "<<New List>> (" + i + ")";
+                    if(!toDoListModel.contains("New List (" + i + ")")) {
+                        newEntry = "New List (" + i + ")";
                         break;
                     }
                     i++;

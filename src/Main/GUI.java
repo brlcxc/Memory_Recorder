@@ -143,7 +143,7 @@ public class GUI extends JFrame{
 
         dashBoardPanel = new DashBoardPanel(connection, resultset, this);
         diaryPanel = new DiaryPanel();
-        //listToDoPanel = new ListToDoPanel();
+        listToDoPanel = new ListToDoPanel();
         notesPanel = new NotesPanel();
 
         mainContentLayout = new CardLayout();
@@ -151,7 +151,7 @@ public class GUI extends JFrame{
 
         mainContentPanel.add(dashBoardPanel.getDashBoardPanel(), "dashboard");
         mainContentPanel.add(diaryPanel, "diary");
-       // mainContentPanel.add(listToDoPanel, "list to do");
+        mainContentPanel.add(listToDoPanel, "list to do");
         mainContentPanel.add(notesPanel, "notes");
 
 //        mainContentPanel.setMinimumSize(new Dimension(700, 50));
@@ -164,7 +164,7 @@ public class GUI extends JFrame{
 
         sideContentPanel.add(dashBoardPanel.getSidePanel(), "dashboard");
         sideContentPanel.add(diaryPanel.getSidePanel(), "diary");
-        //sideContentPanel.add(listToDoPanel.getSidePanel(), "list to do");
+        sideContentPanel.add(listToDoPanel.getSidePanel(), "list to do");
         sideContentPanel.add(notesPanel.getSidePanel(), "notes");
     }
 

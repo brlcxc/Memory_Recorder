@@ -182,14 +182,14 @@ public class DiaryPanel extends JPanel {
             System.out.println(titleField.getWidth());
             System.out.println(titleField.getHeight());
             String newEntry;
-            if(!entryListModel.contains("<<New Entry>>")){
-                newEntry = "<<New Entry>>";
+            if(!entryListModel.contains("New Entry")){
+                newEntry = "New Entry";
             }
             else{
                 int i = 0;
                 while(true) {
-                    if(!entryListModel.contains("<<New Entry>> (" + i + ")")) {
-                        newEntry = "<<New Entry>> (" + i + ")";
+                    if(!entryListModel.contains("New Entry (" + i + ")")) {
+                        newEntry = "New Entry (" + i + ")";
                         break;
                     }
                     i++;
