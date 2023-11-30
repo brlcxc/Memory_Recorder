@@ -21,8 +21,8 @@ import java.util.Objects;
 public class InformationPanel extends JPanel {
     private final Connection connection;
     private  ResultSet resultSet;
-    private JFrame mainFrame;
-    private JPanel informationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private final JFrame mainFrame;
+    private final JPanel informationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     public InformationPanel(Connection con, ResultSet result, JFrame frame) {
         connection = con;
         resultSet = result;

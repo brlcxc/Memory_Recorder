@@ -82,7 +82,7 @@ public class EmergencyContact extends JPanel {
         return emergencyContactPanel;
     }
 
-    public class addNewContactListener implements ActionListener {
+    public static class addNewContactListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             new AddEmergencyContact(connection, resultSet);
         }
