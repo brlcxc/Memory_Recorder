@@ -99,7 +99,7 @@ public class DiaryPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add(titlePanel, gbc);
 
-        gbc.insets = new Insets(8,8,8,8);
+        gbc.insets = new Insets(0,8,8,8);
         gbc.gridy = -1;
         gbc.weightx = 1;
         gbc.weighty = 1;

@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Hashtable;
+import java.util.Objects;
 
 public class ListToDoPanel extends JPanel {
     JPanel sidePanel;
@@ -32,6 +33,7 @@ public class ListToDoPanel extends JPanel {
 
         inputField = new JTextField();
         ToDoButton addButton = new ToDoButton("Add", Colors.pastelGreen, Colors.mintGreen);
+        ToDoButton completeButton = new ToDoButton("Complete Item", Colors.pastelGreen, Colors.mintGreen);
         ToDoButton deleteButton = new ToDoButton("Remove Item", Colors.barbiePink, Colors.lessBarbiePink);
 
         addButton.addActionListener(new AddButtonListener());
@@ -47,16 +49,43 @@ public class ListToDoPanel extends JPanel {
         JPanel inputPanel = new JPanel();
         inputPanel.setBackground(Colors.cream);
         inputPanel.setLayout(new BorderLayout());
-        inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+        inputPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         inputPanel.add(inputField, BorderLayout.CENTER);
         inputPanel.add(addButton, BorderLayout.EAST);
 
         // Bottom panel with delete button
         JPanel bottomPanel = new JPanel();
         bottomPanel.setBackground(Colors.cream);
-        bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        bottomPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        bottomPanel.add(completeButton);
         bottomPanel.add(deleteButton);
+
+
+        //title panel
+        JPanel titlePanel = new JPanel();
+        titlePanel.setBackground(Colors.cream);
+
+        //title field
+        JTextField titleField = new DiaryTextField("test title");
+        titleField.setBorder(null);
+        titleField.setBackground(Colors.cream);
+        titleField.setHorizontalAlignment(JTextField.CENTER);
+        titleField.setPreferredSize(new Dimension(358, 24));
+
+        JButton saveIconButton = iconButton("save.png",13,13);
+//        saveIconButton.addActionListener(new DiaryPanel.SaveTitleButtonListener());
+
+        JButton editIconButton = iconButton("editing.png",15,15);
+//        editIconButton.addActionListener(new DiaryPanel.EditTitleButtonListener());
+
+        JButton cancelIconButton = iconButton("cancel.png",15,15);
+//        cancelIconButton.addActionListener(new DiaryPanel.CancelTitleButtonListener());
+
+        titlePanel.add(titleField);
+        titlePanel.add(saveIconButton);
+        titlePanel.add(editIconButton);
+        titlePanel.add(cancelIconButton);
 
 /*        add(inputPanel, BorderLayout.NORTH);
         add(listScroller, BorderLayout.CENTER);
@@ -100,16 +129,20 @@ public class ListToDoPanel extends JPanel {
         buttonPanel.add(Box.createHorizontalStrut(20));
         buttonPanel.add(deleteButton);
 */
-
-        gbc.insets = new Insets(8,8,0,8);
+        gbc.insets = new Insets(0,8,0,8);
         gbc.gridx = 0;
         gbc.gridy = 0;
+        add(titlePanel, gbc);
+
+        gbc.insets = new Insets(0,8,0,8);
+        gbc.gridx = 0;
+        gbc.gridy = -1;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add(inputPanel, gbc);
 
         gbc.insets = new Insets(8,8,8,8);
-        gbc.gridy = -1;
+        gbc.gridy = -2;
         gbc.weightx = 1;
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
@@ -118,7 +151,7 @@ public class ListToDoPanel extends JPanel {
         gbc.insets = new Insets(0,8,2,8);
         gbc.weightx = 0;
         gbc.weighty = 0;
-        gbc.gridy = -1;
+        gbc.gridy = -3;
         gbc.fill = GridBagConstraints.NONE;
         add(bottomPanel, gbc);
     }
@@ -165,7 +198,17 @@ public class ListToDoPanel extends JPanel {
         JScrollPane listScroller = new JScrollPane(entryList);
 
         //create new entry button
-        JButton createNewButton = new DiaryButton("Create New List", Colors.pastelGreen, Colors.mintGreen);
+//        JPanel test = new JPanel();
+        JPanel test = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+
+        test.setBackground(Colors.cream);
+
+        JButton createNewButton = new DiaryButton("New", Colors.pastelGreen, Colors.mintGreen);
+        ToDoButton deleteButton = new ToDoButton("Remove", Colors.barbiePink, Colors.lessBarbiePink);
+        test.add(createNewButton);
+        test.add(Box.createHorizontalStrut(5));
+        test.add(deleteButton);
+
 //        createNewButton.addActionListener(new DiaryPanel.CreateNewButtonListener());
 
         gbc.insets = new Insets(8,8,0,8);
@@ -191,7 +234,7 @@ public class ListToDoPanel extends JPanel {
         gbc.weightx = 0;
         gbc.weighty = 0;
         gbc.fill = GridBagConstraints.NONE;
-        sidePanel.add(createNewButton, gbc);
+        sidePanel.add(test, gbc);
     }
     public JPanel getSidePanel(){
         return sidePanel;
@@ -212,4 +255,18 @@ public class ListToDoPanel extends JPanel {
             }
         }
     }
+    private JButton iconButton(String icon, int width, int height){
+        ImageIcon image = new ImageIcon(Objects.requireNonNull(getClass().getResource(icon)));
+        Image img = image.getImage();
+        Image newImg = img.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        JButton iconButton = new JButton(new ImageIcon(newImg));
+        iconButton.setPreferredSize(new Dimension(30, 30));
+        iconButton.setBorder(BorderFactory.createEmptyBorder());
+        iconButton.setBackground(Colors.cream);
+        iconButton.setFocusable(false);
+        return iconButton;
+    }
 }
+
+//complete item
+//delete list
