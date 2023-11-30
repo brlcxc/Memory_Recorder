@@ -39,7 +39,6 @@ public class DashBoardPanel extends JPanel {
     private void setDashBoardPanel(){
         dashBoardPanel.setPreferredSize(new Dimension(400, 200));
         dashBoardPanel.setBackground(Colors.cream);
-        //dashBoardPanel.setVisible(true);
     }
     public JPanel getDashBoardPanel(){
         return dashBoardPanel;

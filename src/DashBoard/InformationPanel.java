@@ -143,7 +143,7 @@ public class InformationPanel extends JPanel {
         subRowPanel.add(cancelButton(textFieldName, colName));
         return subRowPanel;
     }
-    private JPanel leftRowPanel (String labelName, JTextField textFieldName){
+    static JPanel leftRowPanel(String labelName, JTextField textFieldName){
         JPanel subRowPanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         subRowPanel1.setBackground(Colors.cream);
         JLabel label = new JLabel(labelName);
@@ -235,70 +235,16 @@ public class InformationPanel extends JPanel {
         });
         return cancelButton;
     }
-    private JButton iconButton(String icon, int width, int height){
-        ImageIcon image = new ImageIcon(Objects.requireNonNull(getClass().getResource(icon)));
+    static JButton iconButton(String icon, int width, int height){
+        ImageIcon image = new ImageIcon(Objects.requireNonNull(InformationPanel.class.getResource(icon)));
         Image img = image.getImage();
-        Image newImg = img.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+        Image newImg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         JButton iconButton = new JButton(new ImageIcon(newImg));
         iconButton.setPreferredSize(new Dimension(30, 30));
         iconButton.setBorder(BorderFactory.createEmptyBorder());
         iconButton.setBackground(Colors.cream);
         iconButton.setFocusable(false);
         return iconButton;
-    }
-
-    private JPanel passwordPanel (String labelName, JTextField textFieldName){
-        JPanel passwordPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        passwordPanel.setLayout(new BorderLayout());
-        passwordPanel.setBackground(Colors.cream);
-        passwordPanel.setPreferredSize(new Dimension(500, 30));
-
-        JButton changePasswordButton = new JButton("Change password");
-        changePasswordButton.setBackground(Colors.cream);
-        changePasswordButton.setBorder(BorderFactory.createEmptyBorder());
-        changePasswordButton.setPreferredSize(new Dimension(120,30));
-        changePasswordButton.setFocusable(false);
-        changePasswordButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    new ChangePassword(resultSet, connection, textFieldName);
-                    String username = resultSet.getString("username");
-                    String sql = "SELECT * FROM customer WHERE username = '" + username + "'";
-                    Statement stmt = connection.createStatement();
-                    resultSet = stmt.executeQuery(sql);
-                    resultSet.next();
-                    textFieldName.setText(resultSet.getString("password"));
-                }catch(SQLException e1){
-                    JOptionPane.showMessageDialog(null, e1.getMessage());
-                }
-            }
-        });
-        changePasswordButton.addMouseListener(new MouseAdapter() {
-            Font original = null;
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                original = e.getComponent().getFont();
-                Map attributes = original. getAttributes();
-                attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-                e.getComponent().setFont(original.deriveFont(attributes));
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                Map attributes = original. getAttributes();
-                attributes.put(TextAttribute.UNDERLINE, null);
-                e.getComponent().setFont(original.deriveFont(attributes));
-            }
-        });
-
-        JPanel subRowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        subRowPanel.setBackground(Colors.cream);
-        subRowPanel.add(changePasswordButton);
-
-        passwordPanel.add(leftRowPanel(labelName,textFieldName), BorderLayout.WEST);
-        passwordPanel.add(subRowPanel, BorderLayout.EAST);
-
-        return passwordPanel;
     }
 
     private JPanel passwordPanel2 (JTextField textFieldName){
@@ -372,33 +318,7 @@ public class InformationPanel extends JPanel {
         JPanel subRowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         subRowPanel.setBackground(Colors.cream);
         subRowPanel.add(editDobButton);
-
-//        rowPanel.add(leftRowPanel(labelName, textFieldName), BorderLayout.WEST);
-        rowPanel.add(subRowPanel, BorderLayout.EAST);
-        return rowPanel;
-    }
-    private JPanel dobRowPanel(String labelName, JTextField textFieldName) {
-        JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        rowPanel.setLayout(new BorderLayout());
-        rowPanel.setBackground(Colors.cream);
-        rowPanel.setPreferredSize(new Dimension(500, 35));
-
-        JButton editDobButton = iconButton("editing.png",15,15);
-        editDobButton.setToolTipText("Edit information");
-        editDobButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new ChangeDob( resultSet,connection, textFieldName);
-            }
-        });
-
-        JPanel subRowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        subRowPanel.setBackground(Colors.cream);
-        subRowPanel.add(editDobButton);
-
-        rowPanel.add(leftRowPanel(labelName, textFieldName), BorderLayout.WEST);
         rowPanel.add(subRowPanel, BorderLayout.EAST);
         return rowPanel;
     }
 }
-
