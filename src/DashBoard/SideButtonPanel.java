@@ -52,11 +52,12 @@ public class SideButtonPanel extends JPanel {
     }
     private JPanel subPanel(){
         JPanel subPanel = new JPanel();
-        subPanel.setPreferredSize(new Dimension(150,100));
-        subPanel.setLayout(new GridLayout(4,1));
+        subPanel.setBackground(Colors.pastelPurple);
+        subPanel.setPreferredSize(new Dimension(150,130));
+        subPanel.setLayout(new GridLayout(3,1));
         subPanel.add(accountButton());
         subPanel.add(emergencyButton());
-        subPanel.add(helpButton());
+      //  subPanel.add(helpButton());
         subPanel.add(logoutButton());
         subPanel.setBorder(BorderFactory.createEmptyBorder());
         return subPanel;

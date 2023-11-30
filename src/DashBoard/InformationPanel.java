@@ -35,7 +35,8 @@ public class InformationPanel extends JPanel {
     private void setInformationPanel() {
         informationPanel.setBackground(Colors.cream);
         informationPanel.setLayout(new GridLayout(10, 1));
-        informationPanel.setPreferredSize(new Dimension(500, 450));
+        informationPanel.setPreferredSize(new Dimension(470, 450));
+        informationPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JLabel titleLabel = new JLabel("My Information:");
         titleLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
@@ -56,10 +57,10 @@ public class InformationPanel extends JPanel {
             informationPanel.add(rowPanel("First name:         ", firstNameField, "first_name"));
             informationPanel.add(rowPanel("Middle Name:    ", middleNameField, "middle_name"));
             informationPanel.add(rowPanel("Last Name:         ", lastNameField, "last_name"));
-            informationPanel.add(dobRowPanel("Date of birth:     ", dobField));
             informationPanel.add(rowPanel("Email:                  ", emailField, "email"));
             informationPanel.add(rowPanel("Address:             ", addressField,"address"));
-            informationPanel.add(rowPanel("Phone number: ", phoneNumberField,"phone_number"));
+            informationPanel.add(rowPanel("Phone number:  ", phoneNumberField,"phone_number"));
+            informationPanel.add(dobRowPanel("Date of birth:     ", dobField));
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -99,7 +100,7 @@ public class InformationPanel extends JPanel {
         rowPanel.add(subRowPanel, BorderLayout.EAST);
         return rowPanel;
     }
-    private JPanel leftRowPanel (String labelName, JTextField textFieldName){
+    public static JPanel leftRowPanel(String labelName, JTextField textFieldName){
         JPanel subRowPanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         subRowPanel1.setBackground(Colors.cream);
         JLabel label = new JLabel(labelName);
@@ -191,8 +192,8 @@ public class InformationPanel extends JPanel {
         });
         return cancelButton;
     }
-    private JButton iconButton(String icon, int width, int height){
-        ImageIcon image = new ImageIcon(Objects.requireNonNull(getClass().getResource(icon)));
+    public static JButton iconButton(String icon, int width, int height){
+        ImageIcon image = new ImageIcon(Objects.requireNonNull(InformationPanel.class.getResource(icon)));
         Image img = image.getImage();
         Image newImg = img.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
         JButton iconButton = new JButton(new ImageIcon(newImg));
