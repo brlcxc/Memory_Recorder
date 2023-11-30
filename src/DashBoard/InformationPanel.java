@@ -21,8 +21,8 @@ import java.util.Objects;
 public class InformationPanel extends JPanel {
     private final Connection connection;
     private  ResultSet resultSet;
-    private final JFrame mainFrame;
-    private final JPanel informationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JFrame mainFrame;
+    private JPanel informationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     public InformationPanel(Connection con, ResultSet result, JFrame frame) {
         connection = con;
         resultSet = result;
@@ -33,74 +33,117 @@ public class InformationPanel extends JPanel {
         return informationPanel;
     }
     private void setInformationPanel() {
+        GridBagConstraints gbc = new GridBagConstraints();
         informationPanel.setBackground(Colors.cream);
-        informationPanel.setLayout(new GridLayout(10, 1));
-        informationPanel.setPreferredSize(new Dimension(470, 450));
-        informationPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        informationPanel.setLayout(new GridBagLayout());
+        informationPanel.setPreferredSize(new Dimension(500, 450));
 
         JLabel titleLabel = new JLabel("My Information:");
         titleLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
 
-        informationPanel.add(titleLabel);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridwidth = 3;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.anchor = GridBagConstraints.PAGE_START;
+
+        informationPanel.add(titleLabel, gbc);
         try {
-            String username =resultSet.getString("username");
-            JPasswordField passwordField = new JPasswordField(resultSet.getString("password"));
-            JTextField firstNameField = new JTextField(resultSet.getString("first_name"));
-            JTextField middleNameField = new JTextField(resultSet.getString("middle_name"));
-            JTextField lastNameField = new JTextField(resultSet.getString("last_name"));
-            JTextField dobField = new JTextField(resultSet.getString("date_of_birth"));
-            JTextField emailField = new JTextField(resultSet.getString("email"));
-            JTextField addressField = new JTextField(resultSet.getString("address"));
-            JTextField phoneNumberField = new JTextField(resultSet.getString("phone_number"));
-            informationPanel.add(accountPanel(username));
-            informationPanel.add(passwordPanel("Password:          ", passwordField));
-            informationPanel.add(rowPanel("First name:         ", firstNameField, "first_name"));
-            informationPanel.add(rowPanel("Middle Name:    ", middleNameField, "middle_name"));
-            informationPanel.add(rowPanel("Last Name:         ", lastNameField, "last_name"));
-            informationPanel.add(rowPanel("Email:                  ", emailField, "email"));
-            informationPanel.add(rowPanel("Address:             ", addressField,"address"));
-            informationPanel.add(rowPanel("Phone number:  ", phoneNumberField,"phone_number"));
-            informationPanel.add(dobRowPanel("Date of birth:     ", dobField));
+            String username = resultSet.getString("username");
+            JTextField passwordField = new DashBoardPassword(resultSet.getString("password"));
+            JTextField firstNameField = new DashTextField(resultSet.getString("first_name"));
+            JTextField middleNameField = new DashTextField(resultSet.getString("middle_name"));
+            JTextField lastNameField = new DashTextField(resultSet.getString("last_name"));
+            JTextField dobField = new DashTextField(resultSet.getString("date_of_birth"));
+            JTextField emailField = new DashTextField(resultSet.getString("email"));
+            JTextField addressField = new DashTextField(resultSet.getString("address"));
+            JTextField phoneNumberField = new DashTextField(resultSet.getString("phone_number"));
+            gbc.gridy = -1;
+            gbc.gridwidth = 1;
+            gbc.weightx = 0.25;
+            gbc.fill = GridBagConstraints.BOTH;
+            gbc.anchor = GridBagConstraints.PAGE_START;
+            informationPanel.add(new JLabel("Account:"), gbc);
+            gbc.gridy = -2;
+            informationPanel.add(new JLabel("Password:"), gbc);
+            gbc.gridy = -3;
+            informationPanel.add(new JLabel("First Name:"), gbc);
+            gbc.gridy = -4;
+            informationPanel.add(new JLabel("Middle Name:"), gbc);
+            gbc.gridy = -5;
+            informationPanel.add(new JLabel("Last Name:"), gbc);
+            gbc.gridy = -6;
+            informationPanel.add(new JLabel("Date of Birth:"), gbc);
+            gbc.gridy = -7;
+            informationPanel.add(new JLabel("Email:"), gbc);
+            gbc.gridy = -8;
+            informationPanel.add(new JLabel("Address:"), gbc);
+            gbc.gridy = -9;
+            informationPanel.add(new JLabel("Phone Number:"), gbc);
+
+            gbc.gridx = 1;
+            gbc.gridy = -1;
+            gbc.weightx = 0.5;
+            informationPanel.add(new JLabel(username), gbc);
+            gbc.gridy = -2;
+            informationPanel.add(passwordField, gbc);
+            gbc.gridy = -3;
+            informationPanel.add(firstNameField, gbc);
+            gbc.gridy = -4;
+            informationPanel.add(middleNameField, gbc);
+            gbc.gridy = -5;
+            informationPanel.add(lastNameField, gbc);
+            gbc.gridy = -6;
+            informationPanel.add(dobField, gbc);
+            gbc.gridy = -7;
+            informationPanel.add(emailField, gbc);
+            gbc.gridy = -8;
+            informationPanel.add(addressField, gbc);
+            gbc.gridy = -9;
+            informationPanel.add(phoneNumberField, gbc);
+
+            gbc.anchor = GridBagConstraints.PAGE_END;
+            gbc.gridx = 2;
+            gbc.gridy = -1;
+            gbc.weightx = 0.25;
+            informationPanel.add(AccountPanel(username), gbc);
+            gbc.gridy = -2;
+            informationPanel.add(passwordPanel2(passwordField), gbc);
+            gbc.gridy = -3;
+            informationPanel.add(TextModifyPanel(firstNameField, "first_name"), gbc);
+            gbc.gridy = -4;
+            informationPanel.add(TextModifyPanel(middleNameField, "middle_name"), gbc);
+            gbc.gridy = -5;
+            informationPanel.add(TextModifyPanel(lastNameField, "last_name"), gbc);
+            gbc.gridy = -6;
+            informationPanel.add(dobRowPanel2(dobField), gbc);
+            gbc.gridy = -7;
+            informationPanel.add(TextModifyPanel(emailField, "email"), gbc);
+            gbc.gridy = -8;
+            informationPanel.add(TextModifyPanel(addressField, "address"), gbc);
+            gbc.gridy = -9;
+            informationPanel.add(TextModifyPanel(phoneNumberField, "phone_number"), gbc);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-    private JPanel accountPanel (String username){
-        JPanel accountPanel =new JPanel(new FlowLayout(FlowLayout.LEFT));
-        accountPanel.setLayout(new BorderLayout());
-        accountPanel.setBackground(Colors.cream);
-        accountPanel.setPreferredSize(new Dimension(500, 30));
-
-        JPanel subRowPanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        subRowPanel1.setBackground(Colors.cream);
-        JLabel label = new JLabel("Account:              "+username);
-        subRowPanel1.add(label);
-
-        JPanel subRowPanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel AccountPanel(String username){
+        JPanel subRowPanel2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         subRowPanel2.setBackground(Colors.cream);
         subRowPanel2.add(deleteAccountButton(username));
-
-        accountPanel.add(subRowPanel1,BorderLayout.WEST);
-        accountPanel.add(subRowPanel2,BorderLayout.EAST);
-        return accountPanel;
+        return subRowPanel2;
     }
-    private JPanel rowPanel(String labelName, JTextField textFieldName, String colName) {
-        JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        rowPanel.setLayout(new BorderLayout());
-        rowPanel.setBackground(Colors.cream);
-        rowPanel.setPreferredSize(new Dimension(500, 30));
-
-        JPanel subRowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private JPanel TextModifyPanel(JTextField textFieldName, String colName){
+        JPanel subRowPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         subRowPanel.setBackground(Colors.cream);
         subRowPanel.add(editButton(textFieldName));
         subRowPanel.add(saveButton(textFieldName, colName));
         subRowPanel.add(cancelButton(textFieldName, colName));
-
-        rowPanel.add(leftRowPanel(labelName, textFieldName), BorderLayout.WEST);
-        rowPanel.add(subRowPanel, BorderLayout.EAST);
-        return rowPanel;
+        return subRowPanel;
     }
-    public static JPanel leftRowPanel(String labelName, JTextField textFieldName){
+    private JPanel leftRowPanel (String labelName, JTextField textFieldName){
         JPanel subRowPanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         subRowPanel1.setBackground(Colors.cream);
         JLabel label = new JLabel(labelName);
@@ -192,8 +235,8 @@ public class InformationPanel extends JPanel {
         });
         return cancelButton;
     }
-    public static JButton iconButton(String icon, int width, int height){
-        ImageIcon image = new ImageIcon(Objects.requireNonNull(InformationPanel.class.getResource(icon)));
+    private JButton iconButton(String icon, int width, int height){
+        ImageIcon image = new ImageIcon(Objects.requireNonNull(getClass().getResource(icon)));
         Image img = image.getImage();
         Image newImg = img.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
         JButton iconButton = new JButton(new ImageIcon(newImg));
@@ -256,6 +299,83 @@ public class InformationPanel extends JPanel {
         passwordPanel.add(subRowPanel, BorderLayout.EAST);
 
         return passwordPanel;
+    }
+
+    private JPanel passwordPanel2 (JTextField textFieldName){
+        JPanel passwordPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        passwordPanel.setLayout(new BorderLayout());
+        passwordPanel.setBackground(Colors.cream);
+        passwordPanel.setPreferredSize(new Dimension(500, 30));
+
+        JButton changePasswordButton = new JButton("Change password");
+        changePasswordButton.setBackground(Colors.cream);
+        changePasswordButton.setBorder(BorderFactory.createEmptyBorder());
+        changePasswordButton.setPreferredSize(new Dimension(120,30));
+        changePasswordButton.setFocusable(false);
+        changePasswordButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    new ChangePassword(resultSet, connection, textFieldName);
+                    String username = resultSet.getString("username");
+                    String sql = "SELECT * FROM customer WHERE username = '" + username + "'";
+                    Statement stmt = connection.createStatement();
+                    resultSet = stmt.executeQuery(sql);
+                    resultSet.next();
+                    textFieldName.setText(resultSet.getString("password"));
+                }catch(SQLException e1){
+                    JOptionPane.showMessageDialog(null, e1.getMessage());
+                }
+            }
+        });
+        changePasswordButton.addMouseListener(new MouseAdapter() {
+            Font original = null;
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                original = e.getComponent().getFont();
+                Map attributes = original. getAttributes();
+                attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+                e.getComponent().setFont(original.deriveFont(attributes));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                Map attributes = original. getAttributes();
+                attributes.put(TextAttribute.UNDERLINE, null);
+                e.getComponent().setFont(original.deriveFont(attributes));
+            }
+        });
+
+        JPanel subRowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        subRowPanel.setBackground(Colors.cream);
+        subRowPanel.add(changePasswordButton);
+
+//        passwordPanel.add(leftRowPanel(labelName,textFieldName), BorderLayout.WEST);
+        passwordPanel.add(subRowPanel, BorderLayout.EAST);
+
+        return passwordPanel;
+    }
+    private JPanel dobRowPanel2(JTextField textFieldName) {
+        JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        rowPanel.setLayout(new BorderLayout());
+        rowPanel.setBackground(Colors.cream);
+        rowPanel.setPreferredSize(new Dimension(500, 35));
+
+        JButton editDobButton = iconButton("editing.png",15,15);
+        editDobButton.setToolTipText("Edit information");
+        editDobButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ChangeDob( resultSet,connection, textFieldName);
+            }
+        });
+
+        JPanel subRowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        subRowPanel.setBackground(Colors.cream);
+        subRowPanel.add(editDobButton);
+
+//        rowPanel.add(leftRowPanel(labelName, textFieldName), BorderLayout.WEST);
+        rowPanel.add(subRowPanel, BorderLayout.EAST);
+        return rowPanel;
     }
     private JPanel dobRowPanel(String labelName, JTextField textFieldName) {
         JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
