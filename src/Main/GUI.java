@@ -14,7 +14,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 public class GUI extends JFrame{
-    final int WINDOW_WIDTH = 750;
+    final int WINDOW_WIDTH = 800;
     final int WINDOW_HEIGHT = 600;
     private JMenuBar menuBar;
     private JPanel mainContentPanel;
@@ -111,7 +111,7 @@ public class GUI extends JFrame{
         menuBar = new JMenuBar();
         dashboardButton = new MenuButton("Dashboard");
         diaryButton = new MenuButton("Diary");
-        listToDoButton = new MenuButton("List To-Do");
+        listToDoButton = new MenuButton("To-Do List");
         notesButton = new MenuButton("Notes");
 
         dashboardButton.addActionListener(new DashboardButtonListener());

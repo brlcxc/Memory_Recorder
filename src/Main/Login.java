@@ -1,6 +1,7 @@
 package Main;
 
 import Defaults.Colors;
+import Logic.DatabaseConnection;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +12,7 @@ import java.sql.*;
 public class Login extends JFrame {
     private static final int FRAME_WIDTH = 280;
     private static final int FRAME_HEIGHT = 280;
+    private DatabaseConnection connection2;
 
     private final String URL ="jdbc:postgresql://memorydatabase.ct5cqswjns9i.us-east-1.rds.amazonaws.com:5432/memoryRecorder";
     private Connection connection;
@@ -39,6 +41,7 @@ public class Login extends JFrame {
         }
     }
     private JPanel loginPanel() {
+//        connection2.connectDatabase();
         connectDatabase();
 
         JPanel loginPanel = new JPanel();
@@ -119,8 +122,14 @@ public class Login extends JFrame {
 
     public class loginListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            String username =userName.getText();
+            String username = userName.getText();
             String password = new String(passWord.getPassword());
+//            Boolean connectionEstablish = connection2.login(username, password);
+
+//            if(connectionEstablish){
+//                hideFrame();
+//                new GUI(connection, result);
+//            }
             try {
                 Statement stm = connection.createStatement (ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 String sql = "Select * From customer Where username = '" + username + "' and password = '" + password + "'";
