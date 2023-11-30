@@ -1,7 +1,6 @@
 package Main;
 
 import Defaults.Colors;
-import Logic.DatabaseConnection;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +11,6 @@ import java.sql.*;
 public class Login extends JFrame {
     private static final int FRAME_WIDTH = 280;
     private static final int FRAME_HEIGHT = 280;
-    private DatabaseConnection connection2;
 
     private final String URL ="jdbc:postgresql://memorydatabase.ct5cqswjns9i.us-east-1.rds.amazonaws.com:5432/memoryRecorder";
     private Connection connection;

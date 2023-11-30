@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 public class MenuButton extends JButton {
     public MenuButton(String buttonText){
         setBackground(Colors.pastelPurple);
-        setForeground(Colors.cream);
+        setForeground(Colors.textColor);
         setFont((new Font("SansSerif",Font.BOLD, 18)));
         setText(buttonText);
         setPreferredSize(new Dimension(128,50));

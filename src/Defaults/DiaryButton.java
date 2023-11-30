@@ -14,7 +14,7 @@ public class DiaryButton extends JButton {
         setFont(new Font("SansSerif", Font.BOLD, 16));
         setText(buttonText);
         setBackground(DefaultColor);
-        setForeground(Colors.cream);
+        setForeground(Colors.textColor);
         setFocusPainted(false);
         setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
         addMouseListener(new MouseListener());

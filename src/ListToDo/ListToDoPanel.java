@@ -1,49 +1,70 @@
 package ListToDo;
 
+
 import Defaults.*;
-import Diary.DiaryPanel;
+
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Objects;
+
 
 public class ListToDoPanel extends JPanel {
     JPanel sidePanel;
-    private DefaultListModel<String> listModel;
-    private DefaultListModel<String> listModel2;
-    private JList<String> list1;
-    private JList<String> list2;
+    private DefaultListModel<String> itemListModel;
+    private JList<String> itemList;
+    private DefaultListModel<String> toDoListModel;
+    private JList<String> toDoList;
     private JTextField inputField;
     private JTextField searchField;
-    private DefaultListModel<String> entryListModel;
-    private JList<String> entryList;
+    private JTextField titleField;
+    private final Map<String, String> toDoMap;
+    private ToDoButton addButton;
+    private JButton saveIconButton;
+    private JButton editIconButton;
+    private JButton cancelIconButton;
+    private String currentEntry;
+    private int currentIndex;
+
+
+
+
     public ListToDoPanel(){
 /*
-        setLayout(new BorderLayout());
-        setBackground(Colors.cream);*/
+       setLayout(new BorderLayout());
+       setBackground(Colors.cream);*/
+        toDoMap = new Hashtable<>();
 
-        listModel = new DefaultListModel<>();
-        list1 = new JList<>(listModel);
-        list1.setFixedCellHeight(30);
-        list1.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        JScrollPane listScroller = new JScrollPane(list1);
+
+        itemListModel = new DefaultListModel<>();
+        itemList = new JList<>(itemListModel);
+        itemList.setFixedCellHeight(30);
+        itemList.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        JScrollPane listScroller = new JScrollPane(itemList);
+
 
         inputField = new JTextField();
-        ToDoButton addButton = new ToDoButton("Add", Colors.pastelGreen, Colors.mintGreen);
+        addButton = new ToDoButton("Add", Colors.pastelGreen, Colors.mintGreen);
         ToDoButton completeButton = new ToDoButton("Complete Item", Colors.pastelGreen, Colors.mintGreen);
+        completeButton.addActionListener(new CompleteItemButtonListener());
         ToDoButton deleteButton = new ToDoButton("Remove Item", Colors.barbiePink, Colors.lessBarbiePink);
 
-        addButton.addActionListener(new AddButtonListener());
-        deleteButton.addActionListener(new DeleteButtonListener());
+
+        addButton.addActionListener(new AddItemButtonListener());
+        deleteButton.addActionListener(new DeleteItemButtonListener());
+
 
         inputField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.GRAY, 2),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         inputField.setFont(new Font("SansSerif", Font.PLAIN, 18));
         inputField.setText("Add new list item");
+
 
         // Top panel with input field and add button
         JPanel inputPanel = new JPanel();
@@ -52,6 +73,7 @@ public class ListToDoPanel extends JPanel {
         inputPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
         inputPanel.add(inputField, BorderLayout.CENTER);
         inputPanel.add(addButton, BorderLayout.EAST);
+
 
         // Bottom panel with delete button
         JPanel bottomPanel = new JPanel();
@@ -62,77 +84,52 @@ public class ListToDoPanel extends JPanel {
         bottomPanel.add(deleteButton);
 
 
+
+
         //title panel
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(Colors.cream);
 
+
         //title field
-        JTextField titleField = new DiaryTextField("test title");
+        titleField = new DiaryTextField("Press \"New\" to create new list");
         titleField.setBorder(null);
         titleField.setBackground(Colors.cream);
         titleField.setHorizontalAlignment(JTextField.CENTER);
-        titleField.setPreferredSize(new Dimension(358, 24));
+        titleField.setPreferredSize(new Dimension(358, 30));
 
-        JButton saveIconButton = iconButton("save.png",13,13);
-//        saveIconButton.addActionListener(new DiaryPanel.SaveTitleButtonListener());
 
-        JButton editIconButton = iconButton("editing.png",15,15);
-//        editIconButton.addActionListener(new DiaryPanel.EditTitleButtonListener());
+        saveIconButton = iconButton("save.png",13,13);
+        saveIconButton.addActionListener(new SaveTitleButtonListener());
 
-        JButton cancelIconButton = iconButton("cancel.png",15,15);
-//        cancelIconButton.addActionListener(new DiaryPanel.CancelTitleButtonListener());
+
+        editIconButton = iconButton("editing.png",15,15);
+        editIconButton.addActionListener(new EditTitleButtonListener());
+
+
+        cancelIconButton = iconButton("cancel.png",15,15);
+        cancelIconButton.addActionListener(new CancelTitleButtonListener());
+
 
         titlePanel.add(titleField);
         titlePanel.add(saveIconButton);
         titlePanel.add(editIconButton);
         titlePanel.add(cancelIconButton);
 
-/*        add(inputPanel, BorderLayout.NORTH);
-        add(listScroller, BorderLayout.CENTER);
-        add(bottomPanel, BorderLayout.SOUTH);
 
-
-        setSidePanel();*/
         GridBagConstraints gbc = new GridBagConstraints();
-//        diaryEntryMap = new Hashtable<>();
+
 
         setLayout(new GridBagLayout());
         setBackground(Colors.cream);
         setSidePanel();
 
-/*
-        //title field
-        titleField = new DiaryTextField("Press \"Create New Entry\" to begin writing");
-        titleField.setBorder(null);
-        titleField.setBackground(Colors.cream);
-        titleField.setHorizontalAlignment(JTextField.CENTER);
 
-        //diary text area
-        textArea = new JTextArea(16, 40);
-        textArea.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        textArea.setLineWrap(true);
-        textArea.setEditable(false);
-        JScrollPane textAreaScroll = new JScrollPane(textArea);
-
-        //save button
-        JButton saveButton = new DiaryButton("Save", Colors.pastelGreen, Colors.mintGreen);
-        saveButton.addActionListener(new DiaryPanel.SaveButtonListener());
-
-        //delete button
-        JButton deleteButton = new DiaryButton("Delete", Colors.barbiePink, Colors.lessBarbiePink);
-        deleteButton.addActionListener(new DiaryPanel.DeleteButtonListener());
-
-        //button panel
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(Colors.cream);
-        buttonPanel.add(saveButton);
-        buttonPanel.add(Box.createHorizontalStrut(20));
-        buttonPanel.add(deleteButton);
-*/
         gbc.insets = new Insets(0,8,0,8);
         gbc.gridx = 0;
         gbc.gridy = 0;
         add(titlePanel, gbc);
+
 
         gbc.insets = new Insets(0,8,0,8);
         gbc.gridx = 0;
@@ -141,12 +138,14 @@ public class ListToDoPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add(inputPanel, gbc);
 
+
         gbc.insets = new Insets(8,8,8,8);
         gbc.gridy = -2;
         gbc.weightx = 1;
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
         add(listScroller, gbc);
+
 
         gbc.insets = new Insets(0,8,2,8);
         gbc.weightx = 0;
@@ -156,65 +155,62 @@ public class ListToDoPanel extends JPanel {
         add(bottomPanel, gbc);
     }
     private void setSidePanel(){
-/*        sidePanel = new JPanel();
-        sidePanel.setLayout(new BorderLayout());
-        ToDoButton addButton = new ToDoButton("Create New", Colors.pastelGreen, Colors.mintGreen);
-        ToDoLabel test = new ToDoLabel("Date");
-        sidePanel.setBackground(Colors.cream);
-        sidePanel.add(new JLabel("help"));
-        listModel2 = new DefaultListModel<>();
-        list2 = new JList<>(listModel);
-        list2.setFixedCellHeight(30);
-        list2.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        JScrollPane listScroller = new JScrollPane(list2);
-        sidePanel.add(test, BorderLayout.NORTH);
-        sidePanel.add(listScroller, BorderLayout.CENTER);
-        sidePanel.add(addButton, BorderLayout.SOUTH);*/
-
         GridBagConstraints gbc = new GridBagConstraints();
         sidePanel = new JPanel();
         sidePanel.setLayout(new GridBagLayout());
         sidePanel.setBackground(Colors.cream);
 
+
         //entries label
         JLabel entriesLabel = new DiaryLabel("Available Lists", 18);
 
+
         //search field
         searchField = new DiarySearchField();
-/*        searchField.getDocument().addDocumentListener(new DiaryPanel.SearchDocumentListener());
-        searchField.addFocusListener(new DiaryPanel.SearchFocusListener());*/
+        searchField.getDocument().addDocumentListener(new SearchDocumentListener());
+        searchField.addFocusListener(new SearchFocusListener());
+
 
         //search field label
         JLabel searchLabel = new JLabel("");
         searchLabel.setForeground(Colors.textColor);
         searchLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
 
+
         //list and list scroller
-        entryListModel = new DefaultListModel<>();
-        entryList = new JList<>(entryListModel);
-        entryList.setFixedCellHeight(30);
-        entryList.setFont(new Font("SansSerif", Font.PLAIN, 18));
-//        entryList.addMouseListener(new DiaryPanel.mouseListener());
-        JScrollPane listScroller = new JScrollPane(entryList);
+        toDoListModel = new DefaultListModel<>();
+        toDoList = new JList<>(toDoListModel);
+        toDoList.setFixedCellHeight(30);
+        toDoList.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        toDoList.addMouseListener(new toDoMouseListener());
+        JScrollPane listScroller = new JScrollPane(toDoList);
+
 
         //create new entry button
 //        JPanel test = new JPanel();
         JPanel test = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
 
+
         test.setBackground(Colors.cream);
 
+
         JButton createNewButton = new DiaryButton("New", Colors.pastelGreen, Colors.mintGreen);
+        createNewButton.addActionListener(new CreateNewButtonListener());
         ToDoButton deleteButton = new ToDoButton("Remove", Colors.barbiePink, Colors.lessBarbiePink);
+        deleteButton.addActionListener(new DeleteButtonListener());
         test.add(createNewButton);
         test.add(Box.createHorizontalStrut(5));
         test.add(deleteButton);
 
+
 //        createNewButton.addActionListener(new DiaryPanel.CreateNewButtonListener());
+
 
         gbc.insets = new Insets(8,8,0,8);
         gbc.gridx = 0;
         gbc.gridy = 0;
         sidePanel.add(entriesLabel, gbc);
+
 
         gbc.insets = new Insets(8,8,0,0);
         gbc.weightx = 1;
@@ -222,12 +218,14 @@ public class ListToDoPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         sidePanel.add(searchField, gbc);
 
+
         gbc.insets = new Insets(0,8,8,0);
         gbc.gridy = -2;
         gbc.weightx = 1;
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
         sidePanel.add(listScroller, gbc);
+
 
         gbc.insets = new Insets(4,8,8,8);
         gbc.gridy = -3;
@@ -239,19 +237,33 @@ public class ListToDoPanel extends JPanel {
     public JPanel getSidePanel(){
         return sidePanel;
     }
-    private class DeleteButtonListener implements ActionListener {
+    private class DeleteItemButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            int selectedIndex = list1.getSelectedIndex();
+            int selectedIndex = itemList.getSelectedIndex();
             if (selectedIndex != -1) {
-                listModel.remove(selectedIndex);
+                itemListModel.remove(selectedIndex);
             }
         }
     }
-    private class AddButtonListener implements ActionListener {
+    private class AddItemButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             if (!inputField.getText().trim().isEmpty()) {
-                listModel.addElement("• " + inputField.getText().trim());
+                itemListModel.addElement("○ " + inputField.getText().trim());
                 inputField.setText("");
+            }
+        }
+    }
+    private class CompleteItemButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            int selectedIndex = itemList.getSelectedIndex();
+            if (selectedIndex != -1) {
+                String itemText = itemListModel.getElementAt(selectedIndex);
+                if(!itemText.contains("✅")) {
+                    itemListModel.setElementAt(itemText + " ✅", selectedIndex);
+                }
+                else{
+                    itemListModel.setElementAt(itemText.substring(0, itemText.length() - 2), selectedIndex);
+                }
             }
         }
     }
@@ -266,7 +278,250 @@ public class ListToDoPanel extends JPanel {
         iconButton.setFocusable(false);
         return iconButton;
     }
-}
+    private class EditTitleButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            titleField.setEditable(true);
+            titleField.setBorder(BorderFactory.createLineBorder(Colors.pastelPurple, 1));
+        }
+    }
+    private class CancelTitleButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            titleField.setEditable(false);
+            titleField.setBorder(null);
+            titleField.setText(currentEntry);
+        }
+    }
+    private class SaveTitleButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            titleField.setEditable(false);
+            titleField.setBorder(null);
 
-//complete item
-//delete list
+
+            if (!currentEntry.equals(titleField.getText().trim())) {
+                //modified entry name changed at index
+//                entryListModel.setElementAt(titleField.getText() + " (2/24/23)", currentIndex);
+                toDoListModel.setElementAt(titleField.getText(), currentIndex);
+                //text extracted from old entry
+                String entryText = toDoMap.get(currentEntry);
+                //old entry removed from map
+                toDoMap.remove(currentEntry);
+                //global current entry changed
+                currentEntry = titleField.getText();
+                //New entry name added to map
+                toDoMap.put(currentEntry, entryText);
+            }
+        }
+    }
+    private class toDoMouseListener extends MouseAdapter {
+        public void mouseClicked(MouseEvent mouseEvent) {
+            JList theList = (JList) mouseEvent.getSource();
+            int index = theList.locationToIndex(mouseEvent.getPoint());
+            if (index >= 0) {
+                //global entry is changed to the selected entry
+                currentEntry = theList.getModel().getElementAt(index).toString();
+                currentIndex = index;
+                //text updated to represent selected entry
+                titleField.setText(currentEntry);
+//                textArea.setText(toDoMap.get(currentEntry));
+
+
+                //title editing disabled
+                titleField.setEditable(false);
+                titleField.setBorder(null);
+                titleField.setPreferredSize(new Dimension(358, 30));
+
+
+                //The text area is now active
+//                textArea.setEditable(true);
+            }
+        }
+    }
+    private class entryMouseListener extends MouseAdapter {
+        public void mouseClicked(MouseEvent mouseEvent) {
+//            JList theList = (JList) mouseEvent.getSource();
+//            int index = theList.locationToIndex(mouseEvent.getPoint());
+//            if (index >= 0) {
+//                //global entry is changed to the selected entry
+//                currentEntry = theList.getModel().getElementAt(index).toString();
+//                currentIndex = index;
+//                //text updated to represent selected entry
+//                titleField.setText(currentEntry);
+//                textArea.setText(diaryEntryMap.get(currentEntry));
+//
+//                //title editing disabled
+//                titleField.setEditable(false);
+//                titleField.setBorder(null);
+//                titleField.setPreferredSize(new Dimension(340, 24));
+//
+//                //The text area is now active
+//                textArea.setEditable(true);
+        }
+    }
+    private class SearchDocumentListener implements DocumentListener {
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            filter();
+        }
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            filter();
+        }
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+        }
+        private void filter() {
+            //text from the search field is used to filter items within the list
+            String filter = searchField.getText();
+            //this statement prevents the list from being filtered when focus is lost
+            if(!searchField.getText().equals("Search")){
+                filterModel((DefaultListModel<String>) toDoList.getModel(), filter);
+            }
+        }
+    }
+    private void filterModel(DefaultListModel<String> model, String filter) {
+        //elements are being removed from or added to the list, but they map keys remains unaffected
+        for (String dictionaryKey : toDoMap.keySet()) {
+            //elements not containing the filter text are removed from the list
+            if (!dictionaryKey.contains(filter)) {
+                if (model.contains(dictionaryKey)) {
+                    model.removeElement(dictionaryKey);
+                }
+            }
+            //elements containing the filter text are added to the list
+            else {
+                if (!model.contains(dictionaryKey)) {
+//                    model.addElement(dictionaryKey + " (2/24/23)");
+                    model.addElement(dictionaryKey);
+                }
+            }
+        }
+    }
+    private static class SearchFocusListener implements FocusListener {
+        //focus gained refers to when the text area either has text or is selected
+        public void focusGained(java.awt.event.FocusEvent focusEvent) {
+            JTextField src = (JTextField)focusEvent.getSource();
+            //The "Search" text is removed when the text area is clicked on
+            if (src.getText().equals("Search")) {
+                src.setText("");
+            }
+        }
+        //focus lost refers to when an empty text area is not currently selected
+        public void focusLost(java.awt.event.FocusEvent focusEvent) {
+            JTextField src = (JTextField)focusEvent.getSource();
+            if (src.getText().equals("")){
+                src.setText("Search");
+            }
+        }
+    }
+    private class CreateNewButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            System.out.println(titleField.getWidth());
+            System.out.println(titleField.getHeight());
+            String newEntry;
+            if(!toDoListModel.contains("<<New List>>")){
+                newEntry = "<<New List>>";
+            }
+            else{
+                int i = 0;
+                while(true) {
+                    if(!toDoListModel.contains("<<New List>> (" + i + ")")) {
+                        newEntry = "<<New List>> (" + i + ")";
+                        break;
+                    }
+                    i++;
+                }
+            }
+            //element added to list
+//            entryListModel.addElement(newEntry + " (2/24/23)");
+            toDoListModel.addElement(newEntry);
+            //element added to map
+            toDoMap.put(newEntry, "");
+            //global current entry changed
+            currentEntry = newEntry;
+            currentIndex = toDoListModel.size() - 1;
+
+
+            //text field and text area properly updated
+            titleField.setText(currentEntry);
+//            textArea.setText(diaryEntryMap.get(currentEntry));
+            titleField.setPreferredSize(new Dimension(358, 30));
+
+
+
+
+            //modification buttons visible
+            ShowButtons();
+
+
+//            dateTextArea.setVisible(true);
+//            dateTextArea.setText("Last Edit: 2/24/23  11:32");
+
+
+            int[] g = {currentIndex};
+            toDoList.setSelectedIndices(g);
+
+
+            //text area active
+            addButton.setEnabled(true);
+            titleField.setEditable(false);
+            titleField.setBorder(null);
+        }
+    }
+    public void ShowButtons(){
+        saveIconButton.setVisible(true);
+        editIconButton.setVisible(true);
+        cancelIconButton.setVisible(true);
+    }
+    private class DeleteButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            int selectedIndex = toDoList.getSelectedIndex();
+            if (selectedIndex != -1) {
+                //The entry is both removed from the map and the list
+                toDoMap.remove(toDoList.getModel().getElementAt(selectedIndex));
+                toDoListModel.remove(selectedIndex);
+            }
+            //statement called if selected index is not the first
+            if(selectedIndex > 0) {
+                //the list item one index prior is selected
+                currentIndex = selectedIndex - 1;
+                int[] g = {currentIndex};
+                toDoList.setSelectedIndices(g);
+                //global entry updated
+                currentEntry = toDoList.getModel().getElementAt(selectedIndex - 1);
+                //text field and text area properly updated
+                titleField.setText(currentEntry);
+//                textArea.setText(diaryEntryMap.get(currentEntry));
+            }
+            //statement called if the index is 0 and there is at least one element left
+            else if (toDoListModel.size() > 0) {
+                //first index of list is selected
+                currentIndex = 0;
+                int[] g = {currentIndex};
+                toDoList.setSelectedIndices(g);
+                //global entry updated
+                currentEntry = toDoList.getModel().getElementAt(0);
+                //text field and text area properly updated
+                titleField.setText(currentEntry);
+//                textArea.setText(diaryEntryMap.get(currentEntry));
+            }
+            //statement called if there are no elements remaining after deletion
+            else{
+                //text set to default state
+                currentIndex = -1;
+                titleField.setText("Press \"New\" to create new list");
+                titleField.setPreferredSize(new Dimension(358, 30));
+//                textArea.setText("");
+//                textArea.setEditable(false);
+//                dateTextArea.setVisible(false);
+                HideButtons();
+            }
+            titleField.setEditable(false);
+            titleField.setBorder(null);
+        }
+    }
+    public void HideButtons(){
+        saveIconButton.setVisible(false);
+        editIconButton.setVisible(false);
+        cancelIconButton.setVisible(false);
+    }
+}
