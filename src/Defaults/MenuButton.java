@@ -11,7 +11,7 @@ public class MenuButton extends JButton {
         setForeground(Colors.textColor);
         setFont((new Font("SansSerif",Font.BOLD, 18)));
         setText(buttonText);
-        setPreferredSize(new Dimension(128,50));
+        setPreferredSize(new Dimension(140,50));
         addMouseListener(new MouseListener());
     }
 
