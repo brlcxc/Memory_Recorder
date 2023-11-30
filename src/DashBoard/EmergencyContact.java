@@ -61,6 +61,10 @@ public class EmergencyContact extends JPanel {
         }
     }
     public JButton addContactButton(){
+
+        allContactPanel.setBackground(Colors.cream);
+        allContactPanel.setLayout(new GridLayout(0,1,0,5));
+        allContactPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         JButton addContact = new JButton("Add a new emergency contact");
         addContact.addActionListener(new addNewContactListener());
         addContact.setPreferredSize(new Dimension(100,30));
@@ -69,10 +73,10 @@ public class EmergencyContact extends JPanel {
         addContact.setFocusable(false);
         addContact.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
-                setBackground(Colors.mintGreen);
+                addContact.setBackground(Colors.mintGreen);
             }
             public void mouseExited(MouseEvent e) {
-                setBackground(Colors.pastelPurple);
+                addContact.setBackground(Colors.pastelPurple);
             }
         });
         return  addContact;

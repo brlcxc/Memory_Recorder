@@ -143,7 +143,7 @@ public class InformationPanel extends JPanel {
         subRowPanel.add(cancelButton(textFieldName, colName));
         return subRowPanel;
     }
-    private JPanel leftRowPanel (String labelName, JTextField textFieldName){
+    static JPanel leftRowPanel(String labelName, JTextField textFieldName){
         JPanel subRowPanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         subRowPanel1.setBackground(Colors.cream);
         JLabel label = new JLabel(labelName);
@@ -235,8 +235,8 @@ public class InformationPanel extends JPanel {
         });
         return cancelButton;
     }
-    private JButton iconButton(String icon, int width, int height){
-        ImageIcon image = new ImageIcon(Objects.requireNonNull(getClass().getResource(icon)));
+    static JButton iconButton(String icon, int width, int height){
+        ImageIcon image = new ImageIcon(Objects.requireNonNull(InformationPanel.class.getResource(icon)));
         Image img = image.getImage();
         Image newImg = img.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
         JButton iconButton = new JButton(new ImageIcon(newImg));
