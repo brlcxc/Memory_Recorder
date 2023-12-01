@@ -7,9 +7,8 @@ import javax.swing.event.DocumentListener;
 import javax.swing.plaf.metal.MetalBorders;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Objects;
+import java.text.DateFormat;
+import java.util.*;
 
 public class DiaryPanel extends JPanel {
     private JPanel sidePanel;
@@ -213,8 +212,17 @@ public class DiaryPanel extends JPanel {
             //modification buttons visible
             ShowButtons();
 
+            String pattern = "MM/dd/yyyy";
+            Locale loc = new Locale("en", "US");
+            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, loc);
+            String date = dateFormat.format(new Date());
+//            System.out.print(date);
+            DateFormat timeFormat = DateFormat.getTimeInstance(DateFormat.DEFAULT, loc);
+            String time = timeFormat.format(new Date());
+//            System.out.println(time);
             dateTextArea.setVisible(true);
-            dateTextArea.setText("Last Edit: 2/24/23  11:32");
+//            dateTextArea.setText("Last Edit: 2/24/23  11:32");
+            dateTextArea.setText("Last Edit: " + date + " " + time);
 
             int[] g = {currentIndex};
             entryList.setSelectedIndices(g);

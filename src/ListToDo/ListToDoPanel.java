@@ -24,8 +24,9 @@ public class ListToDoPanel extends JPanel {
     private JTextField inputField;
     private JTextField searchField;
     private JTextField titleField;
-    private final Map<String, String> toDoMap;
-//    private final Map<String, JList> toDoMap;
+    private JScrollPane listScroller1;
+//    private final Map<String, String> toDoMap;
+    private final Map<String, JList> toDoMap;
 
     private ToDoButton addButton;
     private JButton saveIconButton;
@@ -48,7 +49,7 @@ public class ListToDoPanel extends JPanel {
         itemList = new JList<>(itemListModel);
         itemList.setFixedCellHeight(30);
         itemList.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        JScrollPane listScroller = new JScrollPane(itemList);
+        listScroller1 = new JScrollPane(itemList);
 
 
         inputField = new JTextField();
@@ -154,7 +155,7 @@ public class ListToDoPanel extends JPanel {
         gbc.weightx = 1;
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
-        add(listScroller, gbc);
+        add(listScroller1, gbc);
 
 
         gbc.insets = new Insets(0,8,2,8);
@@ -258,9 +259,11 @@ public class ListToDoPanel extends JPanel {
     }
     private class AddItemButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            if (!inputField.getText().trim().isEmpty() && !inputField.getText().trim().equals("Add New List Item")) {
-                itemListModel.addElement("○ " + inputField.getText().trim());
-                inputField.setText("Add New List Item");
+            if(toDoMap.size() > 0) {
+                if (!inputField.getText().trim().isEmpty() && !inputField.getText().trim().equals("Add New List Item")) {
+                    itemListModel.addElement("○ " + inputField.getText().trim());
+                    inputField.setText("Add New List Item");
+                }
             }
         }
     }
@@ -313,13 +316,13 @@ public class ListToDoPanel extends JPanel {
 //                entryListModel.setElementAt(titleField.getText() + " (2/24/23)", currentIndex);
                 toDoListModel.setElementAt(titleField.getText(), currentIndex);
                 //text extracted from old entry
-                String entryText = toDoMap.get(currentEntry);
+                JList entryList = toDoMap.get(currentEntry);
                 //old entry removed from map
                 toDoMap.remove(currentEntry);
                 //global current entry changed
                 currentEntry = titleField.getText();
                 //New entry name added to map
-                toDoMap.put(currentEntry, entryText);
+                toDoMap.put(currentEntry, entryList);
             }
         }
     }
@@ -333,6 +336,11 @@ public class ListToDoPanel extends JPanel {
                 currentIndex = index;
                 //text updated to represent selected entry
                 titleField.setText(currentEntry);
+                //i need lsit model too
+                itemList = toDoMap.get(currentEntry);
+                itemListModel = (DefaultListModel<String>) itemList.getModel();
+                listScroller1.getViewport().setView(itemList);
+
 //                textArea.setText(toDoMap.get(currentEntry));
 
 
@@ -462,16 +470,31 @@ public class ListToDoPanel extends JPanel {
             //element added to list
 //            entryListModel.addElement(newEntry + " (2/24/23)");
             toDoListModel.addElement(newEntry);
+
+            itemListModel = new DefaultListModel<>();
             //element added to map
-            toDoMap.put(newEntry, "");
+//            JList test = itemList();
+            itemList = new JList<>(itemListModel);
+            itemList.setFixedCellHeight(30);
+            itemList.setFont(new Font("SansSerif", Font.PLAIN, 18));
+
+            toDoMap.put(newEntry, itemList);
             //global current entry changed
             currentEntry = newEntry;
             currentIndex = toDoListModel.size() - 1;
 
+//            itemListModel.
+//either replace the model from the scroll pane or wipe the model and add the contents to the new thing
 
             //text field and text area properly updated
             titleField.setText(currentEntry);
-//            textArea.setText(diaryEntryMap.get(currentEntry));
+            //remove scroll pane element and then add a new one?
+//            listScroller1.removeAll();
+//            listScroller1.setViewportView(test);
+//            itemListModel.removeAllElements();
+            listScroller1.getViewport().setView(itemList);
+//            repaint();
+//            listScroller1 = new JScrollPane(test);
             titleField.setPreferredSize(new Dimension(358, 30));
 
 
@@ -538,6 +561,7 @@ public class ListToDoPanel extends JPanel {
                 currentIndex = -1;
                 titleField.setText("Press \"New\" to create new list");
                 titleField.setPreferredSize(new Dimension(358, 30));
+                itemListModel.removeAllElements();
 //                textArea.setText("");
 //                textArea.setEditable(false);
 //                dateTextArea.setVisible(false);
@@ -551,5 +575,11 @@ public class ListToDoPanel extends JPanel {
         saveIconButton.setVisible(false);
         editIconButton.setVisible(false);
         cancelIconButton.setVisible(false);
+    }
+    public JList itemList(){
+        JList list = new JList<>(itemListModel);
+        list.setFixedCellHeight(30);
+        list.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        return list;
     }
 }
