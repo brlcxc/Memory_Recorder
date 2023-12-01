@@ -148,7 +148,7 @@ public class DiaryPanel extends JPanel {
         JButton createNewButton = new DiaryButton("Create New Entry", Colors.pastelGreen, Colors.mintGreen);
         createNewButton.addActionListener(new CreateNewButtonListener());
 
-        gbc.insets = new Insets(8,8,0,8);
+        gbc.insets = new Insets(10,8,0,8);
         gbc.gridx = 0;
         gbc.gridy = 0;
         sidePanel.add(entriesLabel, gbc);

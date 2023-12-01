@@ -218,7 +218,7 @@ public class ListToDoPanel extends JPanel {
 //        createNewButton.addActionListener(new DiaryPanel.CreateNewButtonListener());
 
 
-        gbc.insets = new Insets(8,8,0,8);
+        gbc.insets = new Insets(10,8,0,8);
         gbc.gridx = 0;
         gbc.gridy = 0;
         sidePanel.add(entriesLabel, gbc);

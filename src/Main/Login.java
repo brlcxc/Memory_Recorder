@@ -22,11 +22,14 @@ public class Login extends JFrame {
 
     public Login(){
 
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         this.setTitle("Login");
         this.setBackground(Colors.textColor);
         this.add(loginPanel());
+        ImageIcon img = new ImageIcon("src/icon.png");
+        this.setIconImage(img.getImage());
         this.setVisible(true);
         this.setLocationRelativeTo(null);
     }

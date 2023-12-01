@@ -36,7 +36,7 @@ public class GUI extends JFrame{
         //sets default width and height
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         //sets title
-        setTitle("Test");
+        setTitle("Memory Recorder");
         //sets close operation
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //centers panel in window
@@ -54,18 +54,23 @@ public class GUI extends JFrame{
         //sets default width and height
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         //sets title
-        setTitle("Test");
+        setTitle("Memory Recorder");
         //sets close operation
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //centers panel in window
         setLocationRelativeTo(null);
         setContentPane();
+        ImageIcon img = new ImageIcon("src/icon.png");
+        this.setIconImage(img.getImage());
         setVisible(true);
     }
     public GUI( ResultSet result) {
         resultset = result;
         //sets default width and height
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+
+
         //sets title
         setTitle("Test");
         //sets close operation
