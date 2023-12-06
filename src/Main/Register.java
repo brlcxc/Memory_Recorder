@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class Register extends JFrame {
-    private static final int FRAME_WIDTH = 450;
+    private static final int FRAME_WIDTH = 480;
     private static final int FRAME_HEIGHT = 500;
     private Connection connection;
 
@@ -43,20 +43,19 @@ public class Register extends JFrame {
         registerPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 10));
 
         JLabel titleLabel = new JLabel("Your Information:");
-        titleLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
+        titleLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 25));
 
         registerPanel.add(titleLabel);
-        registerPanel.add(addSubPanel("Username:              ",userName));
-        registerPanel.add(addSubPanel("Password:               ",passWord));
-        registerPanel.add(addSubPanel("First Name:             ",firstName));
-        registerPanel.add(addSubPanel("Middle Name:         ",middleName));
-        registerPanel.add(addSubPanel("Last Name:             ",lastName));
-        registerPanel.add(datePanel("Date of birth:          "));
-        registerPanel.add(addSubPanel("Email address:       ",email));
-        registerPanel.add(addSubPanel("Address:                 ",address));
-        registerPanel.add(addSubPanel("Phone Number:     ",phoneNumber));
+        registerPanel.add(addSubPanel("Username:         ",userName));
+        registerPanel.add(addSubPanel("Password:         ",passWord));
+        registerPanel.add(addSubPanel("First Name:        ",firstName));
+        registerPanel.add(addSubPanel("Middle Name:     ",middleName));
+        registerPanel.add(addSubPanel("Last Name:         ",lastName));
+        registerPanel.add(datePanel("Date of birth:      "));
+        registerPanel.add(addSubPanel("Email address:    ",email));
+        registerPanel.add(addSubPanel("Address:             ",address));
+        registerPanel.add(addSubPanel("Phone Number:   ",phoneNumber));
         registerPanel.add(submitPanel());
-
 
         return registerPanel;
     }
@@ -66,7 +65,9 @@ public class Register extends JFrame {
         subPanel.setBackground(Colors.mintGreen);
         subPanel.setAlignmentX(0);
         JLabel label = new JLabel(labelName);
-        textFieldName.setPreferredSize(new Dimension(200,30));
+        label.setFont(new Font("SansSerif", Font.BOLD, 16));
+        textFieldName.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        textFieldName.setPreferredSize(new Dimension(260,30));
         subPanel.add(label);
         subPanel.add(textFieldName);
         return subPanel;
@@ -77,7 +78,7 @@ public class Register extends JFrame {
         subPanel.setBackground(Colors.mintGreen);
         subPanel.setAlignmentX(0);
         JLabel label = new JLabel(labelName);
-        
+        label.setFont(new Font("SansSerif", Font.BOLD, 16));
         JLabel monthLabel = new JLabel("Month");
         String[] monthList = {"","Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
         monthBox = new JComboBox(monthList);
@@ -114,6 +115,9 @@ public class Register extends JFrame {
 
         JButton submit = new JButton("Submit");
         JButton cancel = new JButton("Cancel");
+
+        submit.setFont(new Font("SansSerif", Font.BOLD, 16));
+        cancel.setFont(new Font("SansSerif", Font.BOLD, 16));
 
         submit.setBackground(Colors.textColor);
         cancel .setBackground(Colors.textColor);

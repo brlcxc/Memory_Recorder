@@ -9,16 +9,16 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class Login extends JFrame {
-    private static final int FRAME_WIDTH = 280;
+    private static final int FRAME_WIDTH = 300;
     private static final int FRAME_HEIGHT = 280;
 
     private final String URL ="jdbc:postgresql://memorydatabase.ct5cqswjns9i.us-east-1.rds.amazonaws.com:5432/memoryRecorder";
     private Connection connection;
-    private JButton login = new JButton("Login");
-    private JButton register = new JButton ("Register");
-    private JButton forgetPassword = new  JButton ("Forget password?");
-    private JTextField userName = new JTextField();
-    private JPasswordField passWord = new JPasswordField();
+    private final JButton login = new JButton("Login");
+    private final JButton register = new JButton ("Register");
+    private final JButton forgetPassword = new  JButton ("Forget password?");
+    private final JTextField userName = new JTextField();
+    private final JPasswordField passWord = new JPasswordField();
 
     public Login(){
 
@@ -39,7 +39,6 @@ public class Login extends JFrame {
         }
     }
     private JPanel loginPanel() {
-//        connection2.connectDatabase();
         connectDatabase();
 
         JPanel loginPanel = new JPanel();
@@ -60,15 +59,22 @@ public class Login extends JFrame {
 
         JLabel title = new JLabel ("MEMORY RECORDER");
         title.setPreferredSize(new Dimension(200, 30));
+        title.setFont(new Font("SansSerif", Font.BOLD, 16));
         title.setHorizontalAlignment(JLabel.CENTER);
         title.setBackground(Colors.textColor);
         title.setForeground(Colors.pastelGreen);
 
-        JLabel name = new JLabel ("user name: ");
+        JLabel name = new JLabel ("username:  ");
         JLabel pass = new JLabel ("password:  ");
 
         name.setForeground(Colors.pastelGreen);
         pass.setForeground(Colors.pastelGreen);
+
+        name.setFont(new Font("SansSerif", Font.BOLD, 16));
+        pass.setFont(new Font("SansSerif", Font.BOLD, 16));
+        login.setFont(new Font("SansSerif", Font.BOLD, 16));
+        register.setFont(new Font("SansSerif", Font.BOLD, 14));
+        forgetPassword.setFont(new Font("SansSerif", Font.BOLD, 14));
 
         userName.setPreferredSize(new Dimension (150,30));
         passWord.setPreferredSize(new Dimension (150,30));
@@ -122,12 +128,7 @@ public class Login extends JFrame {
         public void actionPerformed(ActionEvent e) {
             String username = userName.getText();
             String password = new String(passWord.getPassword());
-//            Boolean connectionEstablish = connection2.login(username, password);
 
-//            if(connectionEstablish){
-//                hideFrame();
-//                new GUI(connection, result);
-//            }
             try {
                 Statement stm = connection.createStatement (ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 String sql = "Select * From customer Where username = '" + username + "' and password = '" + password + "'";
@@ -150,7 +151,7 @@ public class Login extends JFrame {
             new Register(connection);
         }
     }
-    public class forgetPasswordListener implements ActionListener{
+    public static class forgetPasswordListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
 
         }
