@@ -57,7 +57,6 @@ public class SideButtonPanel extends JPanel {
         subPanel.setLayout(new GridLayout(3,1));
         subPanel.add(accountButton());
         subPanel.add(emergencyButton());
-      //  subPanel.add(helpButton());
         subPanel.add(logoutButton());
         subPanel.setBorder(BorderFactory.createEmptyBorder());
         return subPanel;
@@ -65,6 +64,7 @@ public class SideButtonPanel extends JPanel {
 
     private JButton accountButton(){
         JButton accountButton = new JButton("Account");
+        accountButton.setFont(new Font("SansSerif", Font.BOLD, 16));
         accountButton.setBackground(Colors.pastelPurple);
         accountButton.setForeground(Color.BLACK);
         accountButton.setBorder(BorderFactory.createEmptyBorder());
@@ -83,27 +83,9 @@ public class SideButtonPanel extends JPanel {
         });
         return accountButton;
     }
-    private JButton helpButton (){
-        JButton helpButton = new JButton("Help");
-        helpButton.setBackground(Colors.pastelPurple);
-        helpButton.setForeground(Color.BLACK);
-        helpButton.setBorder(BorderFactory.createEmptyBorder());
-        helpButton.setPreferredSize(new Dimension(40,30));
-        helpButton.setFocusable(false);
-        mouseListener(helpButton);
-        helpButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dashBoardPanel.setVisible(false);
-                dashBoardPanel.removeAll();
-                dashBoardPanel.add(helpPanel());
-                dashBoardPanel.setVisible(true);
-            }
-        });
-        return helpButton;
-    }
     private JButton emergencyButton(){
         JButton emergencyContactButton = new JButton("Emergency Contact");
+        emergencyContactButton.setFont(new Font("SansSerif", Font.BOLD, 16));
         emergencyContactButton .setBackground(Colors.pastelPurple);
         emergencyContactButton .setForeground(Color.BLACK);
         emergencyContactButton .setBorder(BorderFactory.createEmptyBorder());
@@ -124,6 +106,7 @@ public class SideButtonPanel extends JPanel {
     }
     private JButton logoutButton (){
         JButton logoutButton = new JButton("Logout");
+        logoutButton.setFont(new Font("SansSerif", Font.BOLD, 16));
         logoutButton.setBackground(Colors.pastelPurple);
         logoutButton.setForeground(Color.BLACK);
         logoutButton.setBorder(BorderFactory.createEmptyBorder());
@@ -160,10 +143,5 @@ public class SideButtonPanel extends JPanel {
                 e.getComponent().setFont(original.deriveFont(attributes));
             }
         });
-    }
-    private JPanel helpPanel (){
-        JPanel helpPanel = new JPanel();
-        JLabel title = new JLabel();
-        return helpPanel;
     }
 }

@@ -1,9 +1,6 @@
 package DashBoard;
 
 import Defaults.Colors;
-import Main.Login;
-import Main.Register;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -57,6 +54,7 @@ public class AddEmergencyContact extends JFrame {
         infoPanel.setBackground(Colors.mintGreen);
         infoPanel.setAlignmentX(0);
         JLabel label = new JLabel(labelName);
+        label.setFont(new Font("SansSerif", Font.BOLD, 14));
         textFieldName.setPreferredSize(new Dimension(200,30));
         infoPanel.add(label);
         infoPanel.add(textFieldName);

@@ -25,14 +25,13 @@ public class EmergencyContact extends JPanel {
         setEmergencyContact();
     }
     public void setEmergencyContact(){
-
         emergencyContactPanel.setBackground(Colors.cream);
         emergencyContactPanel.setLayout(new BorderLayout());
         emergencyContactPanel.setPreferredSize(new Dimension(470, 450));
-        emergencyContactPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+        emergencyContactPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 
         JLabel titleLabel = new JLabel("Emergency Contact:");
-        titleLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
+        titleLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 25));
         emergencyContactPanel.add(titleLabel, BorderLayout.NORTH);
         allContactPanel.removeAll();
         allContactPanel();
@@ -51,9 +50,12 @@ public class EmergencyContact extends JPanel {
             ResultSet result = stmt.executeQuery(sql);
             while (result.next()) {
                 JTextField nameTextField = new JTextField(result.getString("name"));
+                nameTextField.setFont(new Font("SansSerif", Font.PLAIN, 14));
                 JTextField emailTextField = new JTextField(result.getString("email"));
+                emailTextField.setFont(new Font("SansSerif", Font.PLAIN, 14));
                 String relationship= result.getString("relationship");
                 JTextField phoneNumberTextField = new JTextField(result.getString("phone_number"));
+                phoneNumberTextField.setFont(new Font("SansSerif", Font.PLAIN, 14));
                 allContactPanel.add(displayContactPanel(relationship, nameTextField, emailTextField, phoneNumberTextField));
             }
         }catch(SQLException e1) {
@@ -66,6 +68,7 @@ public class EmergencyContact extends JPanel {
         allContactPanel.setLayout(new GridLayout(0,1,0,5));
         allContactPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         JButton addContact = new JButton("Add a new emergency contact");
+        addContact.setFont(new Font("SansSerif", Font.BOLD, 14));
         addContact.addActionListener(new addNewContactListener());
         addContact.setPreferredSize(new Dimension(100,30));
         addContact.setBackground(Colors.pastelPurple);
@@ -107,25 +110,22 @@ public class EmergencyContact extends JPanel {
         buttonPanel.setBackground(Colors.cream);
         JButton deleteButton = InformationPanel.iconButton("delete.png",15,15);
         deleteButton.setToolTipText("delete this relationship");
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int option = JOptionPane.showConfirmDialog(null,"Are you sure you want delete this contact?", "Delete?",JOptionPane.YES_NO_OPTION);
-                if (option == JOptionPane.YES_OPTION){
-                    try {
-                        String username =resultSet.getString("username");
-                        String email = emailField.getText();
-                        Statement stmt = connection.createStatement();
-                        String sql = "DELETE FROM emergency_contact WHERE username = '"+username+"' and email ='"+email+"'";
-                        stmt.executeUpdate(sql);
-                        JOptionPane.showMessageDialog(null, "The contact is deleted");
-                        allContactPanel.setVisible(false);
-                        allContactPanel.removeAll();
-                        allContactPanel();
-                        allContactPanel.setVisible(true);
-                    } catch (SQLException ex) {
-                        throw new RuntimeException(ex);
-                    }
+        deleteButton.addActionListener(e -> {
+            int option = JOptionPane.showConfirmDialog(null,"Are you sure you want delete this contact?", "Delete?",JOptionPane.YES_NO_OPTION);
+            if (option == JOptionPane.YES_OPTION){
+                try {
+                    String username =resultSet.getString("username");
+                    String email = emailField.getText();
+                    Statement stmt = connection.createStatement();
+                    String sql = "DELETE FROM emergency_contact WHERE username = '"+username+"' and email ='"+email+"'";
+                    stmt.executeUpdate(sql);
+                    JOptionPane.showMessageDialog(null, "The contact is deleted");
+                    allContactPanel.setVisible(false);
+                    allContactPanel.removeAll();
+                    allContactPanel();
+                    allContactPanel.setVisible(true);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         });
