@@ -21,8 +21,8 @@ import java.util.Objects;
 public class InformationPanel extends JPanel {
     private final Connection connection;
     private  ResultSet resultSet;
-    private JFrame mainFrame;
-    private JPanel informationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    private final JFrame mainFrame;
+    private final JPanel informationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     public InformationPanel(Connection con, ResultSet result, JFrame frame) {
         connection = con;
         resultSet = result;
@@ -39,7 +39,7 @@ public class InformationPanel extends JPanel {
         informationPanel.setPreferredSize(new Dimension(500, 450));
 
         JLabel titleLabel = new JLabel("My Information:");
-        titleLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
+        titleLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 25));
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -65,28 +65,72 @@ public class InformationPanel extends JPanel {
             gbc.weightx = 0.25;
             gbc.fill = GridBagConstraints.BOTH;
             gbc.anchor = GridBagConstraints.PAGE_START;
-            informationPanel.add(new JLabel("Account:"), gbc);
+<<<<<<<<< Temporary merge branch 1
+            informationPanel.add(new DashBoardLabel("Account:"), gbc);
             gbc.gridy = -2;
-            informationPanel.add(new JLabel("Password:"), gbc);
+            informationPanel.add(new DashBoardLabel("Password:"), gbc);
             gbc.gridy = -3;
-            informationPanel.add(new JLabel("First Name:"), gbc);
+            informationPanel.add(new DashBoardLabel("First Name:"), gbc);
             gbc.gridy = -4;
-            informationPanel.add(new JLabel("Middle Name:"), gbc);
+            informationPanel.add(new DashBoardLabel("Middle Name:"), gbc);
             gbc.gridy = -5;
-            informationPanel.add(new JLabel("Last Name:"), gbc);
+            informationPanel.add(new DashBoardLabel("Last Name:"), gbc);
             gbc.gridy = -6;
-            informationPanel.add(new JLabel("Date of Birth:"), gbc);
+            informationPanel.add(new DashBoardLabel("Date of Birth:"), gbc);
             gbc.gridy = -7;
-            informationPanel.add(new JLabel("Email:"), gbc);
+            informationPanel.add(new DashBoardLabel("Email:"), gbc);
             gbc.gridy = -8;
-            informationPanel.add(new JLabel("Address:"), gbc);
+            informationPanel.add(new DashBoardLabel("Address:"), gbc);
             gbc.gridy = -9;
-            informationPanel.add(new JLabel("Phone Number:"), gbc);
+            informationPanel.add(new DashBoardLabel("Phone Number:"), gbc);
+=========
+            JLabel accountLabel = new JLabel("Account:");
+            accountLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+            informationPanel.add(accountLabel, gbc);
+            gbc.gridy = -2;
+            JLabel passwordLabel = new JLabel("Password:");
+            passwordLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+            informationPanel.add(passwordLabel, gbc);
+            gbc.gridy = -3;
+            JLabel firstNameLabel = new JLabel("First Name:");
+            firstNameLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+            informationPanel.add(firstNameLabel, gbc);
+            gbc.gridy = -4;
+            JLabel middleNameLabel = new JLabel("Middle Name:");
+            middleNameLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+            informationPanel.add(middleNameLabel, gbc);
+            gbc.gridy = -5;
+            JLabel lastNameLabel = new JLabel("Last Name:");
+            lastNameLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+            informationPanel.add(lastNameLabel, gbc);
+            gbc.gridy = -6;
+            JLabel dobLabel = new JLabel("Date of Birth:");
+            dobLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+            informationPanel.add(dobLabel, gbc);
+            gbc.gridy = -7;
+            JLabel emailLabel = new JLabel("Email:");
+            emailLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+            informationPanel.add(emailLabel, gbc);
+            gbc.gridy = -8;
+            JLabel addressLabel = new JLabel("Address:");
+            addressLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+            informationPanel.add(addressLabel, gbc);
+            gbc.gridy = -9;
+            JLabel phoneNumberLabel = new JLabel("Phone Number:");
+            phoneNumberLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+            informationPanel.add(phoneNumberLabel, gbc);
+>>>>>>>>> Temporary merge branch 2
 
             gbc.gridx = 1;
             gbc.gridy = -1;
             gbc.weightx = 0.5;
-            informationPanel.add(new JLabel(username), gbc);
+<<<<<<<<< Temporary merge branch 1
+            informationPanel.add(new DashBoardLabel(username), gbc);
+=========
+            JLabel usernameLabel = new JLabel(username);
+            usernameLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 14));
+            informationPanel.add(usernameLabel, gbc);
+>>>>>>>>> Temporary merge branch 2
             gbc.gridy = -2;
             informationPanel.add(passwordField, gbc);
             gbc.gridy = -3;
@@ -147,7 +191,8 @@ public class InformationPanel extends JPanel {
         JPanel subRowPanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         subRowPanel1.setBackground(Colors.cream);
         JLabel label = new JLabel(labelName);
-        textFieldName.setPreferredSize(new Dimension(200, 30));
+        label.setFont(new Font("SansSerif", Font.BOLD, 14));
+        textFieldName.setPreferredSize(new Dimension(280, 30));
         textFieldName.setBackground(Colors.cream);
         textFieldName.setBorder(BorderFactory.createEmptyBorder());
         textFieldName.setEditable(false);
@@ -254,6 +299,7 @@ public class InformationPanel extends JPanel {
         passwordPanel.setPreferredSize(new Dimension(500, 30));
 
         JButton changePasswordButton = new JButton("Change password");
+        changePasswordButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
         changePasswordButton.setBackground(Colors.cream);
         changePasswordButton.setBorder(BorderFactory.createEmptyBorder());
         changePasswordButton.setPreferredSize(new Dimension(120,30));
@@ -295,7 +341,6 @@ public class InformationPanel extends JPanel {
         subRowPanel.setBackground(Colors.cream);
         subRowPanel.add(changePasswordButton);
 
-//        passwordPanel.add(leftRowPanel(labelName,textFieldName), BorderLayout.WEST);
         passwordPanel.add(subRowPanel, BorderLayout.EAST);
 
         return passwordPanel;
