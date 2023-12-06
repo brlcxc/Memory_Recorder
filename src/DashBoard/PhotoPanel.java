@@ -53,11 +53,10 @@ public class PhotoPanel extends JPanel {
         uploadButton.setPreferredSize(new Dimension(100,25));
         uploadButton.setBackground(Colors.pastelPurple);
         uploadButton.setForeground(Color.BLACK);
-        //uploadButton.setFont(new Font("Dialog", Font.PLAIN, 14));
+        uploadButton.setFont(new Font("Dialog", Font.PLAIN, 14));
         uploadButton.setBorder(BorderFactory.createEmptyBorder());
         uploadButton.setFocusable(false);
         uploadButton.setText("Upload picture");
-       // uploadButton.setVerticalTextPosition(JButton.CENTER);
         mouseListener(uploadButton);
         uploadButton.addActionListener(new AbstractAction() {
             @Override
@@ -88,8 +87,7 @@ public class PhotoPanel extends JPanel {
         deleteButton.setBorder(BorderFactory.createEmptyBorder());
         deleteButton.setFocusable(false);
         deleteButton.setText("Delete picture");
-        //deleteButton.setVerticalTextPosition(JButton.CENTER);
-       // deleteButton.setFont(new Font("Dialog", Font.PLAIN, 14));
+        deleteButton.setFont(new Font("Dialog", Font.PLAIN, 14));
         mouseListener(deleteButton);
         deleteButton.addActionListener(e -> {
             int result = JOptionPane.showConfirmDialog(null,"Are you sure you want to delete your profile picture","Sure?",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);

@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ChangePassword extends JFrame {
-    private static final int FRAME_WIDTH = 300;
+    private static final int FRAME_WIDTH = 380;
     private static final int FRAME_HEIGHT = 250;
     private final JPasswordField currentPasswordField = new JPasswordField();
     private final JPasswordField newPasswordField = new JPasswordField();
@@ -49,6 +49,7 @@ public class ChangePassword extends JFrame {
         buttonPanel.setBackground(Colors.textColor);
 
         JLabel title = new JLabel ("Change Password");
+        title.setFont(new Font("SansSerif", Font.BOLD, 14));
         title.setPreferredSize(new Dimension(200, 30));
         title.setHorizontalAlignment(JLabel.CENTER);
         title.setBackground(Colors.textColor);
@@ -56,6 +57,9 @@ public class ChangePassword extends JFrame {
 
         JLabel currentPassword = new JLabel ("Current Password: ");
         JLabel newPassword = new JLabel ("New Password:      ");
+
+        currentPassword.setFont(new Font("SansSerif", Font.BOLD, 14));
+        newPassword.setFont(new Font("SansSerif", Font.BOLD, 14));
 
         currentPassword.setForeground(Colors.pastelGreen);
         newPassword.setForeground(Colors.pastelGreen);
@@ -68,6 +72,9 @@ public class ChangePassword extends JFrame {
 
         JButton cancelButton = new JButton("Cancel");
         JButton changeButton = new JButton("Change");
+
+        cancelButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        changeButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
 
         cancelButton.setBackground(Colors.pastelGreen);
         changeButton.setBackground(Colors.pastelGreen);

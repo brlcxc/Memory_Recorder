@@ -46,6 +46,7 @@ public class ChangeDob extends JFrame {
         buttonPanel.setBackground(Colors.textColor);
 
         JLabel title = new JLabel ("Your date of birth: ");
+        title.setFont(new Font(Font.DIALOG, Font.BOLD, 14));
         title.setPreferredSize(new Dimension(200, 30));
         title.setHorizontalAlignment(JLabel.CENTER);
         title.setBackground(Colors.textColor);
@@ -53,6 +54,9 @@ public class ChangeDob extends JFrame {
 
         JButton cancelButton = new JButton("Cancel");
         JButton changeButton = new JButton("Change");
+
+        cancelButton.setFont(new Font(Font.DIALOG, Font.BOLD, 14));
+        changeButton.setFont(new Font(Font.DIALOG, Font.BOLD, 14));
 
         cancelButton.setBackground(Colors.pastelGreen);
         changeButton.setBackground(Colors.pastelGreen);
@@ -111,23 +115,24 @@ public class ChangeDob extends JFrame {
     }
     private JPanel getDobPanel(){
         JPanel dobPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        //dobPanel.setLayout(new BorderLayout());
         dobPanel.setBackground(Colors.textColor);
-        //dobPanel.setPreferredSize(new Dimension(500, 30));
 
         dobPanel.setAlignmentX(0);
 
         JLabel monthLabel = new JLabel("Month");
+        monthLabel.setFont(new Font(Font.DIALOG, Font.PLAIN, 14));
         monthLabel.setForeground(Colors.pastelGreen);
         String[] monthList = {"","Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
         monthBox = new JComboBox(monthList);
 
         JLabel dateLabel = new JLabel("Date");
+        dateLabel.setFont(new Font(Font.DIALOG, Font.PLAIN, 14));
         dateLabel.setForeground(Colors.pastelGreen);
         Integer[] dateList = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
         dateBox = new JComboBox(dateList);
 
         JLabel yearLabel = new JLabel("Year");
+        yearLabel.setFont(new Font(Font.DIALOG, Font.PLAIN, 14));
         yearLabel.setForeground(Colors.pastelGreen);
         Integer[] yearList = new Integer[94];
         yearList[0]=1900;
