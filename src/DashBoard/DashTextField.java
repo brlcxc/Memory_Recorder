@@ -8,6 +8,7 @@ import java.awt.*;
 public class DashTextField extends JTextField {
     public DashTextField(String text){
         setText(text);
+        setFont(new Font("SansSerif", Font.PLAIN, 20));
         setPreferredSize(new Dimension(200, 30));
         setBackground(Colors.cream);
         setBorder(BorderFactory.createEmptyBorder());
