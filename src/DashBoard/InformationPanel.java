@@ -62,7 +62,7 @@ public class InformationPanel extends JPanel {
             JTextField phoneNumberField = new DashTextField(resultSet.getString("phone_number"));
             gbc.gridy = -1;
             gbc.gridwidth = 1;
-            gbc.weightx = 0.15;
+            gbc.weightx = 0.05;
             gbc.fill = GridBagConstraints.BOTH;
             gbc.anchor = GridBagConstraints.PAGE_START;
             informationPanel.add(new DashBoardLabel("Account:"), gbc);
@@ -85,7 +85,7 @@ public class InformationPanel extends JPanel {
 
             gbc.gridx = 1;
             gbc.gridy = -1;
-            gbc.weightx = 0.7;
+            gbc.weightx = 0.9;
             informationPanel.add(new DashBoardLabel(username), gbc);
             gbc.gridy = -2;
             informationPanel.add(passwordField, gbc);
@@ -107,7 +107,7 @@ public class InformationPanel extends JPanel {
             gbc.anchor = GridBagConstraints.PAGE_END;
             gbc.gridx = 2;
             gbc.gridy = -1;
-            gbc.weightx = 0.15;
+            gbc.weightx = 0.05;
             informationPanel.add(AccountPanel(username), gbc);
             gbc.gridy = -2;
             informationPanel.add(passwordPanel2(passwordField), gbc);
