@@ -5,15 +5,15 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class DiaryButton extends JButton {
-    Color bgColor;
-    Color bgColor2;
-    public DiaryButton(String buttonText, Color DefaultColor, Color HoverColor){
-        this.bgColor = DefaultColor;
-        this.bgColor2 = HoverColor;
+public class StandardButton extends JButton {
+    Color defaultColor;
+    Color hoverColor;
+    public StandardButton(String buttonText, Color defaultColor, Color hoverColor){
+        this.defaultColor = defaultColor;
+        this.hoverColor = hoverColor;
         setFont(new Font("SansSerif", Font.BOLD, 16));
         setText(buttonText);
-        setBackground(DefaultColor);
+        setBackground(defaultColor);
         setForeground(Colors.textColor);
         setFocusPainted(false);
         setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
@@ -22,10 +22,10 @@ public class DiaryButton extends JButton {
 
     private class MouseListener extends MouseAdapter {
         public void mouseEntered(MouseEvent e) {
-            setBackground(bgColor2);
+            setBackground(hoverColor);
         }
         public void mouseExited(MouseEvent e) {
-            setBackground(bgColor);
+            setBackground(defaultColor);
         }
     }
 }

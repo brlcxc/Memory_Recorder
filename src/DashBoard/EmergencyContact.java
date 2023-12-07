@@ -108,7 +108,7 @@ public class EmergencyContact extends JPanel {
     private static JPanel buttonPanel(JTextField emailField){
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Colors.cream);
-        JButton deleteButton = InformationPanel.iconButton("delete.png",15,15);
+        JButton deleteButton = InformationPanel.iconButton("src/Defaults/IconImages/delete.png",15,15);
         deleteButton.setToolTipText("delete this relationship");
         deleteButton.addActionListener(e -> {
             int option = JOptionPane.showConfirmDialog(null,"Are you sure you want delete this contact?", "Delete?",JOptionPane.YES_NO_OPTION);

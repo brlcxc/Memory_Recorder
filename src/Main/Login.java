@@ -28,7 +28,7 @@ public class Login extends JFrame {
         this.setTitle("Login");
         this.setBackground(Colors.textColor);
         this.add(loginPanel());
-        ImageIcon img = new ImageIcon("src/icon.png");
+        ImageIcon img = new ImageIcon("src/Defaults/IconImages/icon.png");
         this.setIconImage(img.getImage());
         this.setVisible(true);
         this.setLocationRelativeTo(null);

@@ -2,7 +2,6 @@ package ListToDo;
 
 
 import Defaults.*;
-import Diary.DiaryPanel;
 
 
 import javax.swing.*;
@@ -12,7 +11,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Objects;
 
 
 public class ListToDoPanel extends JPanel {
@@ -28,7 +26,7 @@ public class ListToDoPanel extends JPanel {
 //    private final Map<String, String> toDoMap;
     private final Map<String, JList> toDoMap;
 
-    private ToDoButton addButton;
+    private StandardButton addButton;
     private JButton saveIconButton;
     private JButton editIconButton;
     private JButton cancelIconButton;
@@ -55,10 +53,10 @@ public class ListToDoPanel extends JPanel {
         inputField = new JTextField();
         inputField.addFocusListener(new ItemFocusListener());
 
-        addButton = new ToDoButton("Add", Colors.pastelGreen, Colors.mintGreen);
-        ToDoButton completeButton = new ToDoButton("Complete Item", Colors.pastelGreen, Colors.mintGreen);
+        addButton = new StandardButton("Add", Colors.pastelGreen, Colors.mintGreen);
+        JButton completeButton = new StandardButton("Complete Item", Colors.pastelGreen, Colors.mintGreen);
         completeButton.addActionListener(new CompleteItemButtonListener());
-        ToDoButton deleteButton = new ToDoButton("Remove Item", Colors.barbiePink, Colors.lessBarbiePink);
+        JButton deleteButton = new StandardButton("Remove Item", Colors.barbiePink, Colors.lessBarbiePink);
 
 
         addButton.addActionListener(new AddItemButtonListener());
@@ -101,7 +99,7 @@ public class ListToDoPanel extends JPanel {
 
 
         //title field
-        titleField = new DiaryTextField("Press \"New\" to create new list");
+        titleField = new TitleTextField("Press \"New\" to create new list");
         titleField.setBorder(null);
         titleField.setBackground(Colors.cream);
         titleField.setHorizontalAlignment(JTextField.CENTER);
@@ -110,15 +108,15 @@ public class ListToDoPanel extends JPanel {
 //        inputField.requestFocusInWindow();
 //        titleField.requestFocusInWindow();
 
-        saveIconButton = iconButton("save.png",13,13);
+        saveIconButton = iconButton("src/Defaults/IconImages/save.png",13,13);
         saveIconButton.addActionListener(new SaveTitleButtonListener());
 
 
-        editIconButton = iconButton("editing.png",15,15);
+        editIconButton = iconButton("src/Defaults/IconImages/editing.png",15,15);
         editIconButton.addActionListener(new EditTitleButtonListener());
 
 
-        cancelIconButton = iconButton("cancel.png",15,15);
+        cancelIconButton = iconButton("src/Defaults/IconImages/cancel.png",15,15);
         cancelIconButton.addActionListener(new CancelTitleButtonListener());
 
 
@@ -174,11 +172,11 @@ public class ListToDoPanel extends JPanel {
 
 
         //entries label
-        JLabel entriesLabel = new DiaryLabel("Available Lists", 18);
+        JLabel entriesLabel = new SidePanelTitleLabel("Available Lists", 18);
 
 
         //search field
-        searchField = new DiarySearchField();
+        searchField = new SearchTextField();
         searchField.getDocument().addDocumentListener(new SearchDocumentListener());
         searchField.addFocusListener(new SearchFocusListener());
 
@@ -206,9 +204,9 @@ public class ListToDoPanel extends JPanel {
         test.setBackground(Colors.cream);
 
 
-        JButton createNewButton = new DiaryButton("New", Colors.pastelGreen, Colors.mintGreen);
+        JButton createNewButton = new StandardButton("New", Colors.pastelGreen, Colors.mintGreen);
         createNewButton.addActionListener(new CreateNewButtonListener());
-        ToDoButton deleteButton = new ToDoButton("Remove", Colors.barbiePink, Colors.lessBarbiePink);
+        JButton deleteButton = new StandardButton("Remove", Colors.barbiePink, Colors.lessBarbiePink);
         deleteButton.addActionListener(new DeleteButtonListener());
         test.add(createNewButton);
         test.add(Box.createHorizontalStrut(5));
@@ -282,7 +280,7 @@ public class ListToDoPanel extends JPanel {
         }
     }
     private JButton iconButton(String icon, int width, int height){
-        ImageIcon image = new ImageIcon(Objects.requireNonNull(getClass().getResource(icon)));
+        ImageIcon image = new ImageIcon(icon);
         Image img = image.getImage();
         Image newImg = img.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
         JButton iconButton = new JButton(new ImageIcon(newImg));

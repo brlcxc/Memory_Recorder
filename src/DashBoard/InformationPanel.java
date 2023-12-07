@@ -156,7 +156,7 @@ public class InformationPanel extends JPanel {
         return subRowPanel1;
     }
     private JButton deleteAccountButton (String username){
-        JButton deleteAccountButton = iconButton("delete.png",15,15);
+        JButton deleteAccountButton = iconButton("src/Defaults/IconImages/delete.png",15,15);
         deleteAccountButton.setToolTipText("Delete this account");
         deleteAccountButton.addActionListener(new ActionListener() {
             @Override
@@ -179,7 +179,7 @@ public class InformationPanel extends JPanel {
         return deleteAccountButton;
     }
     private JButton editButton(JTextField textFieldName) {
-        JButton editButton = iconButton("editing.png",15,15);
+        JButton editButton = iconButton("src/Defaults/IconImages/editing.png",15,15);
         editButton.setToolTipText("Edit information");
         editButton.addActionListener(new ActionListener() {
             @Override
@@ -191,7 +191,7 @@ public class InformationPanel extends JPanel {
         return editButton;
     }
     private JButton saveButton(JTextField textFieldName, String colName) {
-        JButton saveButton = iconButton("save.png",13,13);
+        JButton saveButton = iconButton("src/Defaults/IconImages/save.png",13,13);
         saveButton.setToolTipText("Save and update new change");
         saveButton.addActionListener(new ActionListener() {
             @Override
@@ -219,7 +219,7 @@ public class InformationPanel extends JPanel {
         return saveButton;
     }
     private JButton cancelButton (JTextField textFieldName, String colName){
-        JButton cancelButton = iconButton("cancel.png",15,15);
+        JButton cancelButton = iconButton("src/Defaults/IconImages/cancel.png",15,15);
         cancelButton.setToolTipText("Cancel");
         cancelButton.addActionListener(new ActionListener() {
             @Override
@@ -236,7 +236,8 @@ public class InformationPanel extends JPanel {
         return cancelButton;
     }
     static JButton iconButton(String icon, int width, int height){
-        ImageIcon image = new ImageIcon(Objects.requireNonNull(InformationPanel.class.getResource(icon)));
+//        ImageIcon image = new ImageIcon(Objects.requireNonNull(InformationPanel.class.getResource(icon)));
+        ImageIcon image = new ImageIcon(icon);
         Image img = image.getImage();
         Image newImg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         JButton iconButton = new JButton(new ImageIcon(newImg));
@@ -306,7 +307,7 @@ public class InformationPanel extends JPanel {
         rowPanel.setBackground(Colors.cream);
         rowPanel.setPreferredSize(new Dimension(500, 35));
 
-        JButton editDobButton = iconButton("editing.png",15,15);
+        JButton editDobButton = iconButton("src/Defaults/IconImages/editing.png",15,15);
         editDobButton.setToolTipText("Edit information");
         editDobButton.addActionListener(new ActionListener() {
             @Override
