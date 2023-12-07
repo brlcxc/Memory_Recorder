@@ -60,7 +60,7 @@ public class GUI extends JFrame{
         //centers panel in window
         setLocationRelativeTo(null);
         setContentPane();
-        ImageIcon img = new ImageIcon("src/icon.png");
+        ImageIcon img = new ImageIcon("src/Defaults/IconImages/icon.png");
         this.setIconImage(img.getImage());
         setVisible(true);
     }

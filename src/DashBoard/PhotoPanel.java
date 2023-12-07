@@ -48,7 +48,9 @@ public class PhotoPanel extends JPanel {
     }
 
     private JButton uploadButton (){
-        ImageIcon image = new ImageIcon(Objects.requireNonNull(getClass().getResource("upload-picture.png")));
+//        ImageIcon image = new ImageIcon(Objects.requireNonNull(getClass().getResource("upload-picture.png")));
+        ImageIcon image = new ImageIcon("src/Defaults/IconImages/upload-picture.png");
+
         JButton uploadButton = new JButton (image(image,15,15));
         uploadButton.setPreferredSize(new Dimension(100,25));
         uploadButton.setBackground(Colors.pastelPurple);
@@ -79,7 +81,9 @@ public class PhotoPanel extends JPanel {
     }
 
     private JButton deleteButton(){
-        ImageIcon image = new ImageIcon(Objects.requireNonNull(getClass().getResource("delete.png")));
+//        ImageIcon image = new ImageIcon(Objects.requireNonNull(getClass().getResource("delete.png")));
+        ImageIcon image = new ImageIcon("src/Defaults/IconImages/delete.png");
+
         JButton deleteButton = new JButton (image(image,15,15));
         deleteButton.setPreferredSize(new Dimension(100,25));
         deleteButton.setBackground(Colors.pastelPurple);
@@ -124,7 +128,8 @@ public class PhotoPanel extends JPanel {
 
 
     private JLabel picture (){
-        ImageIcon image = new ImageIcon(Objects.requireNonNull(getClass().getResource("profile.png")));
+        ImageIcon image = new ImageIcon("src/Defaults/IconImages/profile.png");
+
         picture.setHorizontalAlignment(SwingConstants.CENTER);
         picture.setIcon(image (image, 150,150));
         picture.setPreferredSize( new Dimension(150, 150));

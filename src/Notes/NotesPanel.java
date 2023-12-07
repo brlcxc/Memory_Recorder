@@ -1,7 +1,6 @@
 package Notes;
 
 import Defaults.*;
-import Diary.DiaryPanel;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -41,19 +40,19 @@ public class NotesPanel extends JPanel {
         titlePanel.setBackground(Colors.cream);
 
         //title field
-        titleField = new DiaryTextField("Press \"New Notebook\" to begin writing");
+        titleField = new TitleTextField("Press \"New Notebook\" to begin writing");
         titleField.setBorder(null);
         titleField.setBackground(Colors.cream);
         titleField.setHorizontalAlignment(JTextField.CENTER);
         titleField.setPreferredSize(new Dimension(358, 24));
 
-        saveIconButton = iconButton("save.png",13,13);
+        saveIconButton = iconButton("src/Defaults/IconImages/save.png",13,13);
         saveIconButton.addActionListener(new SaveTitleButtonListener());
 
-        editIconButton = iconButton("editing.png",15,15);
+        editIconButton = iconButton("src/Defaults/IconImages/editing.png",15,15);
         editIconButton.addActionListener(new EditTitleButtonListener());
 
-        cancelIconButton = iconButton("cancel.png",15,15);
+        cancelIconButton = iconButton("src/Defaults/IconImages/cancel.png",15,15);
         cancelIconButton.addActionListener(new CancelTitleButtonListener());
 
         titlePanel.add(titleField);
@@ -79,11 +78,11 @@ public class NotesPanel extends JPanel {
         dateTextArea.setBorder(MetalBorders.getTextFieldBorder());
 
         //save button
-        JButton saveButton = new DiaryButton("Save Entry", Colors.pastelGreen, Colors.mintGreen);
+        JButton saveButton = new StandardButton("Save Entry", Colors.pastelGreen, Colors.mintGreen);
         saveButton.addActionListener(new SaveButtonListener());
 
         //delete button
-        JButton deleteButton = new DiaryButton("Delete Entry", Colors.barbiePink, Colors.lessBarbiePink);
+        JButton deleteButton = new StandardButton("Delete Entry", Colors.barbiePink, Colors.lessBarbiePink);
         deleteButton.addActionListener(new DeleteButtonListener());
 
         //button panel
@@ -127,10 +126,10 @@ public class NotesPanel extends JPanel {
         sidePanel.setBackground(Colors.cream);
 
         //entries label
-        JLabel entriesLabel = new DiaryLabel("Notebooks", 18);
+        JLabel entriesLabel = new SidePanelTitleLabel("Notebooks", 18);
 
         //search field
-        searchField = new DiarySearchField();
+        searchField = new SearchTextField();
         searchField.getDocument().addDocumentListener(new SearchDocumentListener());
         searchField.addFocusListener(new SearchFocusListener());
 
@@ -148,7 +147,7 @@ public class NotesPanel extends JPanel {
         JScrollPane listScroller = new JScrollPane(entryList);
 
         //create new entry button
-        JButton createNewButton = new DiaryButton("Create Notebook", Colors.pastelGreen, Colors.mintGreen);
+        JButton createNewButton = new StandardButton("Create Notebook", Colors.pastelGreen, Colors.mintGreen);
         createNewButton.addActionListener(new CreateNewButtonListener());
 
         gbc.insets = new Insets(10,8,0,8);
@@ -375,7 +374,7 @@ public class NotesPanel extends JPanel {
         }
     }
     private JButton iconButton(String icon, int width, int height){
-        ImageIcon image = new ImageIcon(Objects.requireNonNull(getClass().getResource(icon)));
+        ImageIcon image = new ImageIcon(icon);
         Image img = image.getImage();
         Image newImg = img.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
         JButton iconButton = new JButton(new ImageIcon(newImg));
