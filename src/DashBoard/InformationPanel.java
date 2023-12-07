@@ -65,25 +65,6 @@ public class InformationPanel extends JPanel {
             gbc.weightx = 0.25;
             gbc.fill = GridBagConstraints.BOTH;
             gbc.anchor = GridBagConstraints.PAGE_START;
-<<<<<<<<< Temporary merge branch 1
-            informationPanel.add(new DashBoardLabel("Account:"), gbc);
-            gbc.gridy = -2;
-            informationPanel.add(new DashBoardLabel("Password:"), gbc);
-            gbc.gridy = -3;
-            informationPanel.add(new DashBoardLabel("First Name:"), gbc);
-            gbc.gridy = -4;
-            informationPanel.add(new DashBoardLabel("Middle Name:"), gbc);
-            gbc.gridy = -5;
-            informationPanel.add(new DashBoardLabel("Last Name:"), gbc);
-            gbc.gridy = -6;
-            informationPanel.add(new DashBoardLabel("Date of Birth:"), gbc);
-            gbc.gridy = -7;
-            informationPanel.add(new DashBoardLabel("Email:"), gbc);
-            gbc.gridy = -8;
-            informationPanel.add(new DashBoardLabel("Address:"), gbc);
-            gbc.gridy = -9;
-            informationPanel.add(new DashBoardLabel("Phone Number:"), gbc);
-=========
             JLabel accountLabel = new JLabel("Account:");
             accountLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
             informationPanel.add(accountLabel, gbc);
@@ -119,18 +100,13 @@ public class InformationPanel extends JPanel {
             JLabel phoneNumberLabel = new JLabel("Phone Number:");
             phoneNumberLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
             informationPanel.add(phoneNumberLabel, gbc);
->>>>>>>>> Temporary merge branch 2
 
             gbc.gridx = 1;
             gbc.gridy = -1;
             gbc.weightx = 0.5;
-<<<<<<<<< Temporary merge branch 1
-            informationPanel.add(new DashBoardLabel(username), gbc);
-=========
             JLabel usernameLabel = new JLabel(username);
             usernameLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 14));
             informationPanel.add(usernameLabel, gbc);
->>>>>>>>> Temporary merge branch 2
             gbc.gridy = -2;
             informationPanel.add(passwordField, gbc);
             gbc.gridy = -3;
