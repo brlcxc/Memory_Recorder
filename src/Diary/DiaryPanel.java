@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -24,9 +25,16 @@ public class DiaryPanel extends JPanel {
 
     private final JTextField titleField;
     private JTextField searchField;
-    private final Map<String, String> diaryEntryMap;
+    //private final Map<String, String> diaryEntryMap;
+    private final Map<Timestamp, DiaryObject> dataMap;
     private DefaultListModel<String> entryListModel;
-    private JList<String> entryList;
+    private DefaultListModel<DiaryObject> entryListModel2;
+
+    private DefaultListModel<Integer> test3;
+
+//    private JList<String> entryList2;
+    private JList<DiaryObject> entryList2;
+
     private String currentEntry;
     private JPanel titlePanel;
     private JButton saveIconButton;
@@ -37,7 +45,8 @@ public class DiaryPanel extends JPanel {
     public DiaryPanel(Connection con){
         this.connection = con;
         GridBagConstraints gbc = new GridBagConstraints();
-        diaryEntryMap = new Hashtable<>();
+        //diaryEntryMap = new Hashtable<>();
+        dataMap = new Hashtable<>();
 
         setLayout(new GridBagLayout());
         setBackground(Colors.cream);
@@ -145,12 +154,18 @@ public class DiaryPanel extends JPanel {
         searchLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
 
         //list and list scroller
-        entryListModel = new DefaultListModel<>();
-        entryList = new JList<>(entryListModel);
-        entryList.setFixedCellHeight(30);
-        entryList.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        entryList.addMouseListener(new mouseListener());;
-        JScrollPane listScroller = new JScrollPane(entryList);
+//        entryListModel = new DefaultListModel<>();
+//        entryList = new JList<>(entryListModel);
+        entryListModel2 = new DefaultListModel<>();
+//        entryList = new JList<>(entryListModel2);
+//        entryList.setFixedCellHeight(30);
+//        entryList.setFont(new Font("SansSerif", Font.PLAIN, 18));
+//        entryList.addMouseListener(new mouseListener());;
+        entryList2 = new JList<>(entryListModel2);
+        entryList2.setFixedCellHeight(30);
+        entryList2.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        entryList2.addMouseListener(new mouseListener());;
+        JScrollPane listScroller = new JScrollPane(entryList2);
 
         //create new entry button
         JButton createNewButton = new StandardButton("Create New Entry", Colors.pastelGreen, Colors.mintGreen);
@@ -189,8 +204,39 @@ public class DiaryPanel extends JPanel {
             System.out.println(titleField.getWidth());
             System.out.println(titleField.getHeight());
             String newEntry;
+            long now = System.currentTimeMillis();
+            Timestamp sqlTimestamp = new Timestamp(now);
 //            if(!entryListModel.contains("New Entry")){
-            if(!diaryEntryMap.containsKey("New Entry")){
+/*            if(!diaryEntryMap.containsKey("New Entry")){
+                newEntry = "New Entry";
+            }*/
+//            Boolean flag1 = true;
+            ArrayList<String> list = new ArrayList<String>();
+            for (DiaryObject v : dataMap.values()){
+//                if(v.titleName.equals("New Entry")){
+//                    flag1 = false;
+//                }
+                list.add(v.titleName);
+            }
+
+            if(!list.contains("New Entry")){
+                newEntry = "New Entry";
+            }
+            else{
+                int i = 0;
+                while(true) {
+                    if(!list.contains("New Entry (" + i + ")")) {
+                        newEntry = "New Entry (" + i + ")";
+                        break;
+                    }
+                    if(!list.contains("New Entry (" + i + ")")) {
+                        newEntry = "New Entry (" + i + ")";
+                        break;
+                    }
+                    i++;
+            }
+            }
+            /*if(!dataMap.containsValue("New Entry")){
                 newEntry = "New Entry";
             }
             else{
@@ -201,21 +247,32 @@ public class DiaryPanel extends JPanel {
                         newEntry = "New Entry (" + i + ")";
                         break;
                     }
+                    if(!dataMap.containsValue("New Entry (" + i + ")")) {
+                        newEntry = "New Entry (" + i + ")";
+                        break;
+                    }
                     i++;
                 }
-            }
+            }*/
+            DiaryObject test = new DiaryObject(sqlTimestamp, sqlTimestamp, newEntry, "");
             //element added to list
-            entryListModel.addElement(newEntry + " (2/24/23)");
+//            entryListModel.addElement(newEntry + " (2/24/23)");
+            entryListModel2.addElement(test);
+
 //            entryListModel.addElement(newEntry);
             //element added to map
-            diaryEntryMap.put(newEntry, "");
+//            diaryEntryMap.put(newEntry, "");
+            dataMap.put(sqlTimestamp, test);
             //global current entry changed
             currentEntry = newEntry;
-            currentIndex = entryListModel.size() - 1;
+//            currentIndex = entryListModel.size() - 1;
+            currentIndex = entryListModel2.size() - 1;
 
             //text field and text area properly updated
             titleField.setText(currentEntry);
-            textArea.setText(diaryEntryMap.get(currentEntry));
+//            textArea.setText(diaryEntryMap.get(currentEntry));
+            textArea.setText(GetText(sqlTimestamp));
+
             titleField.setPreferredSize(new Dimension(340, 24));
 
 
@@ -232,10 +289,12 @@ public class DiaryPanel extends JPanel {
 //            System.out.println(time);
             dateTextArea.setVisible(true);
 //            dateTextArea.setText("Last Edit: 2/24/23  11:32");
-            dateTextArea.setText("Last Edit: " + date + " " + time);
+//            dateTextArea.setText("Last Edit: " + date + " " + time);
+            dateTextArea.setText("Last Edit: " + entryListModel2.getElementAt(currentIndex).GetFormattedLastEdit());
+
 
             int[] g = {currentIndex};
-            entryList.setSelectedIndices(g);
+            entryList2.setSelectedIndices(g);
 
             //text area active
             textArea.setEditable(true);
@@ -245,39 +304,48 @@ public class DiaryPanel extends JPanel {
     }
     private class DeleteButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            int selectedIndex = entryList.getSelectedIndex();
+            int selectedIndex = entryList2.getSelectedIndex();
             if (selectedIndex != -1) {
                 //The entry is both removed from the map and the list
-                diaryEntryMap.remove(entryList.getModel().getElementAt(selectedIndex));
-                entryListModel.remove(selectedIndex);
+//                diaryEntryMap.remove(entryList2.getModel().getElementAt(selectedIndex));
+                dataMap.remove(entryList2.getModel().getElementAt(selectedIndex).dateCreated);
+                entryListModel2.remove(selectedIndex);
             }
             //statement called if selected index is not the first
             if(selectedIndex > 0) {
                 //the list item one index prior is selected
                 currentIndex = selectedIndex - 1;
                 int[] g = {currentIndex};
-                entryList.setSelectedIndices(g);
+                entryList2.setSelectedIndices(g);
                 //global entry updated
-                String textInput = entryList.getModel().getElementAt(selectedIndex - 1);
-                int dateCutOff = textInput.lastIndexOf("(") - 1;
-                currentEntry = textInput.substring(0, dateCutOff);
+//                String textInput = entryList2.getModel().getElementAt(selectedIndex - 1);
+//                String textInput = entryList2.getModel().getElementAt(currentIndex).titleName;
+//                System.out.println(textInput);
+//                int dateCutOff = textInput.lastIndexOf("(") - 1;
+                currentEntry = entryList2.getModel().getElementAt(currentIndex).titleName;
                 //text field and text area properly updated
                 titleField.setText(currentEntry);
-                textArea.setText(diaryEntryMap.get(currentEntry));
+//                textArea.setText(diaryEntryMap.get(currentEntry));
+                textArea.setText(entryList2.getModel().getElementAt(currentIndex).textContent);
+                dateTextArea.setText("Last Edit: " + entryListModel2.getElementAt(currentIndex).GetFormattedLastEdit());
+
             }
             //statement called if the index is 0 and there is at least one element left
-            else if (entryListModel.size() > 0) {
+            else if (entryListModel2.size() > 0) {
                 //first index of list is selected
                 currentIndex = 0;
                 int[] g = {currentIndex};
-                entryList.setSelectedIndices(g);
+                entryList2.setSelectedIndices(g);
                 //global entry updated
-                String textInput = entryList.getModel().getElementAt(0);
+                String textInput = entryList2.getModel().getElementAt(0).textContent;
                 int dateCutOff = textInput.lastIndexOf("(") - 1;
                 currentEntry = textInput.substring(0, dateCutOff);
                 //text field and text area properly updated
                 titleField.setText(currentEntry);
-                textArea.setText(diaryEntryMap.get(currentEntry));
+//                textArea.setText(diaryEntryMap.get(currentEntry));
+                textArea.setText(entryList2.getModel().getElementAt(currentIndex).textContent);
+                dateTextArea.setText("Last Edit: " + entryListModel2.getElementAt(currentIndex).GetFormattedLastEdit());
+
             }
             //statement called if there are no elements remaining after deletion
             else{
@@ -297,19 +365,28 @@ public class DiaryPanel extends JPanel {
     private class SaveButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             // size > 0 accounts for clicking on empty list
-            if(entryListModel.size() > 0) {
-                if (!currentEntry.equals(titleField.getText().trim())) {
-                    //modified entry name changed at index
-                    entryListModel.setElementAt(titleField.getText() + " (2/24/23)", currentIndex);
-//                    entryListModel.setElementAt(titleField.getText(), currentIndex);
-                    //old entry removed from map
-                    diaryEntryMap.remove(currentEntry);
-                    //global current entry changed
-                    currentEntry = titleField.getText();
-                }
+            if(entryListModel2.size() > 0) {
+//                String newTitle = titleField.getText().trim();
+                long now = System.currentTimeMillis();
+                Timestamp sqlTimestamp = new Timestamp(now);
+                currentEntry = titleField.getText().trim();
+                entryListModel2.getElementAt(currentIndex).UpdateObject(sqlTimestamp, currentEntry, textArea.getText());
+                dateTextArea.setText("Last Edit: " + entryListModel2.getElementAt(currentIndex).GetFormattedLastEdit());
+                int[] g = {currentIndex};
+                entryList2.setSelectedIndices(g);
+//                if (!currentEntry.equals(newTitle)) {
+//                    //modified entry name changed at index
+////                    String new
+////                    entryListModel2.setElementAt(titleField.getText() + " (2/24/23)", currentIndex);
+////                    entryListModel.setElementAt(titleField.getText(), currentIndex);
+//                    //old entry removed from map
+//                    //diaryEntryMap.remove(currentEntry);
+//                    //global current entry changed
+//                    currentEntry = newTitle;
+//                }
                 //The entry is updated in the map if it has the same name
                 //The entry is added to the map if it has a new name
-                diaryEntryMap.put(currentEntry, textArea.getText());
+//                diaryEntryMap.put(currentEntry, textArea.getText());
             }
         }
     }
@@ -333,16 +410,19 @@ public class DiaryPanel extends JPanel {
 
             if (!currentEntry.equals(titleField.getText().trim())) {
                 //modified entry name changed at index
-                entryListModel.setElementAt(titleField.getText() + " (2/24/23)", currentIndex);
+//                entryListModel.setElementAt(titleField.getText() + " (2/24/23)", currentIndex);
 //                entryListModel.setElementAt(titleField.getText(), currentIndex);
                 //text extracted from old entry
-                String entryText = diaryEntryMap.get(currentEntry);
+//                String entryText = entryListModel2.getElementAt(currentIndex).textContent;
                 //old entry removed from map
-                diaryEntryMap.remove(currentEntry);
-                //global current entry changed
+                DiaryObject test = entryListModel2.getElementAt(currentIndex);
+                currentEntry = titleField.getText().trim();
+                test.UpdateObject(test.lastEdit, currentEntry, test.textContent);
+                int[] g = {currentIndex};
+                entryList2.setSelectedIndices(g);                //global current entry changed
                 currentEntry = titleField.getText();
                 //New entry name added to map
-                diaryEntryMap.put(currentEntry, entryText);
+//                diaryEntryMap.put(currentEntry, entryText);
             }
         }
     }
@@ -362,7 +442,10 @@ public class DiaryPanel extends JPanel {
 System.out.println(currentEntry + "B");
                 //text updated to represent selected entry
                 titleField.setText(currentEntry);
-                textArea.setText(diaryEntryMap.get(currentEntry));
+
+                textArea.setText(entryListModel2.getElementAt(currentIndex).textContent);
+                dateTextArea.setText("Last Edit: " + entryListModel2.getElementAt(currentIndex).GetFormattedLastEdit());
+
 
                 //title editing disabled
                 titleField.setEditable(false);
@@ -391,25 +474,27 @@ System.out.println(currentEntry + "B");
             String filter = searchField.getText();
             //this statement prevents the list from being filtered when focus is lost
             if(!searchField.getText().equals("Search")){
-                filterModel((DefaultListModel<String>) entryList.getModel(), filter);
+//                filterModel((DefaultListModel<String>) entryList2.getModel(), filter);
+                filterModel((DefaultListModel<DiaryObject>) entryList2.getModel(), filter);
+
             }
         }
     }
-    private void filterModel(DefaultListModel<String> model, String filter) {
+    private void filterModel(DefaultListModel<DiaryObject> model, String filter) {
         //elements are being removed from or added to the list, but they map keys remains unaffected
-        for (String dictionaryKey : diaryEntryMap.keySet()) {
-            String text = dictionaryKey + " (2/24/23)";
+        for (Timestamp dictionaryKey : dataMap.keySet()) {
+            String text = dataMap.get(dictionaryKey).toString();
             //elements not containing the filter text are removed from the list
             if (!text.contains(filter)) {
-                if (model.contains(text)) {
-                    model.removeElement(text);
+                if (model.contains(dataMap.get(dictionaryKey))) {
+                    model.removeElement(dataMap.get(dictionaryKey));
                 }
             }
             //elements containing the filter text are added to the list
             else {
-                if (!model.contains(text)) {
+                if (!model.contains(dataMap.get(dictionaryKey))) {
 //                    model.addElement(dictionaryKey + " (2/24/23)");
-                    model.addElement(text);
+                    model.addElement(dataMap.get(dictionaryKey));
                 }
             }
         }
@@ -465,7 +550,7 @@ System.out.println(currentEntry + "B");
         System.out.println(e1.getMessage());
     }
     }
-    private void NewEntry(String dateCreated, String lastEdit, String titleName, String textContent){
+    private void NewEntry(Timestamp dateCreated, Timestamp lastEdit, String titleName, String textContent){
         String query = "INSERT INTO diary " +
                 "(dateCreated, lastEdit, titleName, textContent) "
                 + "VALUES ('" + dateCreated
@@ -474,15 +559,59 @@ System.out.println(currentEntry + "B");
                 + "', '" + textContent
                 + "')";
     }
-    private void DeleteEntry(String dateCreated){
+    private void DeleteEntry(Timestamp dateCreated){
         String sql = "DELETE FROM diary WHERE dateCreated = '"+dateCreated+"'";
     }
-    private void UpdateEntry(String dateCreated, String lastEdit, String titleName, String textContent){
+    private String GetText(Timestamp dateCreated){
+        String sql = "SELECT textContent FROM diary WHERE = '"+dateCreated+"'";
+
+        return "";
+    }
+    private String GetLastEdit(Timestamp dateCreated){
+        String sql = "SELECT lastEdit FROM diary WHERE = '"+dateCreated+"'";
+
+        return "";
+    }
+    private void UpdateEntry(Timestamp dateCreated, Timestamp lastEdit, String titleName, String textContent){
         String sql = "UPDATE diary SET " +
                 "lastEdit = '" + lastEdit + "', " +
                 "titleName = '" + titleName + "', " +
                 "textContent = '" + textContent + "' " +
                 "WHERE dateCreated = '" + dateCreated + "'";
+    }
+    public class DiaryObject{
+        Timestamp dateCreated;
+        Timestamp lastEdit;
+        String titleName;
+        String textContent;
+        public DiaryObject(Timestamp dateCreated, Timestamp lastEdit, String titleName, String textContent){
+            this.dateCreated = dateCreated;
+            this.lastEdit = lastEdit;
+            this.titleName = titleName;
+            this.textContent = textContent;
+        }
+        public void UpdateObject(Timestamp lastEdit, String titleName, String textContent){
+            this.lastEdit = lastEdit;
+            this.titleName = titleName;
+            this.textContent = textContent;
+        }
+        public String GetFormattedLastEdit(){
+            Date input = new Date(lastEdit.getTime());
+            Locale loc = new Locale("en", "US");
+            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, loc);
+            String date = dateFormat.format(input);
+//            System.out.print(date);
+            DateFormat timeFormat = DateFormat.getTimeInstance(DateFormat.DEFAULT, loc);
+            String time = timeFormat.format(input);
+            String output = date + " " + time;
+            return output;
+        }
+        public String toString(){
+            DateFormat f1 = new SimpleDateFormat("MM/dd/yy");
+            Date date = new Date(dateCreated.getTime());
+            String output = f1.format(date);
+            return titleName + " (" + output +")";
+        }
     }
 }
 
