@@ -1,5 +1,7 @@
 package Diary;
 import Defaults.*;
+import java.sql.Timestamp;
+
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -7,8 +9,13 @@ import javax.swing.event.DocumentListener;
 import javax.swing.plaf.metal.MetalBorders;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.util.*;
+
 
 public class DiaryPanel extends JPanel {
     private JPanel sidePanel;
@@ -26,7 +33,9 @@ public class DiaryPanel extends JPanel {
     private JButton editIconButton;
     private JButton cancelIconButton;
     private int currentIndex;
-    public DiaryPanel(){
+    private Connection connection;
+    public DiaryPanel(Connection con){
+        this.connection = con;
         GridBagConstraints gbc = new GridBagConstraints();
         diaryEntryMap = new Hashtable<>();
 
@@ -59,7 +68,6 @@ public class DiaryPanel extends JPanel {
         titlePanel.add(editIconButton);
         titlePanel.add(cancelIconButton);
         HideButtons();
-
 
         //diary text area
         textArea = new JTextArea(16, 40);
@@ -181,13 +189,15 @@ public class DiaryPanel extends JPanel {
             System.out.println(titleField.getWidth());
             System.out.println(titleField.getHeight());
             String newEntry;
-            if(!entryListModel.contains("New Entry")){
+//            if(!entryListModel.contains("New Entry")){
+            if(!diaryEntryMap.containsKey("New Entry")){
                 newEntry = "New Entry";
             }
             else{
                 int i = 0;
                 while(true) {
-                    if(!entryListModel.contains("New Entry (" + i + ")")) {
+//                    if(!entryListModel.contains("New Entry (" + i + ")")) {
+                    if(!diaryEntryMap.containsKey("New Entry (" + i + ")")) {
                         newEntry = "New Entry (" + i + ")";
                         break;
                     }
@@ -195,8 +205,8 @@ public class DiaryPanel extends JPanel {
                 }
             }
             //element added to list
-//            entryListModel.addElement(newEntry + " (2/24/23)");
-            entryListModel.addElement(newEntry);
+            entryListModel.addElement(newEntry + " (2/24/23)");
+//            entryListModel.addElement(newEntry);
             //element added to map
             diaryEntryMap.put(newEntry, "");
             //global current entry changed
@@ -248,7 +258,9 @@ public class DiaryPanel extends JPanel {
                 int[] g = {currentIndex};
                 entryList.setSelectedIndices(g);
                 //global entry updated
-                currentEntry = entryList.getModel().getElementAt(selectedIndex - 1);
+                String textInput = entryList.getModel().getElementAt(selectedIndex - 1);
+                int dateCutOff = textInput.lastIndexOf("(") - 1;
+                currentEntry = textInput.substring(0, dateCutOff);
                 //text field and text area properly updated
                 titleField.setText(currentEntry);
                 textArea.setText(diaryEntryMap.get(currentEntry));
@@ -260,7 +272,9 @@ public class DiaryPanel extends JPanel {
                 int[] g = {currentIndex};
                 entryList.setSelectedIndices(g);
                 //global entry updated
-                currentEntry = entryList.getModel().getElementAt(0);
+                String textInput = entryList.getModel().getElementAt(0);
+                int dateCutOff = textInput.lastIndexOf("(") - 1;
+                currentEntry = textInput.substring(0, dateCutOff);
                 //text field and text area properly updated
                 titleField.setText(currentEntry);
                 textArea.setText(diaryEntryMap.get(currentEntry));
@@ -286,8 +300,8 @@ public class DiaryPanel extends JPanel {
             if(entryListModel.size() > 0) {
                 if (!currentEntry.equals(titleField.getText().trim())) {
                     //modified entry name changed at index
-//                    entryListModel.setElementAt(titleField.getText() + " (2/24/23)", currentIndex);
-                    entryListModel.setElementAt(titleField.getText(), currentIndex);
+                    entryListModel.setElementAt(titleField.getText() + " (2/24/23)", currentIndex);
+//                    entryListModel.setElementAt(titleField.getText(), currentIndex);
                     //old entry removed from map
                     diaryEntryMap.remove(currentEntry);
                     //global current entry changed
@@ -319,8 +333,8 @@ public class DiaryPanel extends JPanel {
 
             if (!currentEntry.equals(titleField.getText().trim())) {
                 //modified entry name changed at index
-//                entryListModel.setElementAt(titleField.getText() + " (2/24/23)", currentIndex);
-                entryListModel.setElementAt(titleField.getText(), currentIndex);
+                entryListModel.setElementAt(titleField.getText() + " (2/24/23)", currentIndex);
+//                entryListModel.setElementAt(titleField.getText(), currentIndex);
                 //text extracted from old entry
                 String entryText = diaryEntryMap.get(currentEntry);
                 //old entry removed from map
@@ -336,10 +350,16 @@ public class DiaryPanel extends JPanel {
         public void mouseClicked(MouseEvent mouseEvent) {
             JList theList = (JList) mouseEvent.getSource();
             int index = theList.locationToIndex(mouseEvent.getPoint());
+
             if (index >= 0) {
                 //global entry is changed to the selected entry
-                currentEntry = theList.getModel().getElementAt(index).toString();
+
+                String textInput = theList.getModel().getElementAt(index).toString();
                 currentIndex = index;
+
+                int dateCutOff = textInput.lastIndexOf("(") - 1;
+                currentEntry = textInput.substring(0, dateCutOff);
+System.out.println(currentEntry + "B");
                 //text updated to represent selected entry
                 titleField.setText(currentEntry);
                 textArea.setText(diaryEntryMap.get(currentEntry));
@@ -378,17 +398,18 @@ public class DiaryPanel extends JPanel {
     private void filterModel(DefaultListModel<String> model, String filter) {
         //elements are being removed from or added to the list, but they map keys remains unaffected
         for (String dictionaryKey : diaryEntryMap.keySet()) {
+            String text = dictionaryKey + " (2/24/23)";
             //elements not containing the filter text are removed from the list
-            if (!dictionaryKey.contains(filter)) {
-                if (model.contains(dictionaryKey)) {
-                    model.removeElement(dictionaryKey);
+            if (!text.contains(filter)) {
+                if (model.contains(text)) {
+                    model.removeElement(text);
                 }
             }
             //elements containing the filter text are added to the list
             else {
-                if (!model.contains(dictionaryKey)) {
+                if (!model.contains(text)) {
 //                    model.addElement(dictionaryKey + " (2/24/23)");
-                    model.addElement(dictionaryKey);
+                    model.addElement(text);
                 }
             }
         }
@@ -431,7 +452,40 @@ public class DiaryPanel extends JPanel {
         iconButton.setFocusable(false);
         return iconButton;
     }
+    private void LoadContent(){
+        try{
+        Statement stmt = connection.createStatement();
+        String sql = "SELECT * FROM diary";
+        ResultSet resultSet = stmt.executeQuery(sql);
+        while (resultSet.next()) {
+            resultSet.getString("titleName");
+            entryListModel.addElement("");
+        }
+    }catch(SQLException e1) {
+        System.out.println(e1.getMessage());
+    }
+    }
+    private void NewEntry(String dateCreated, String lastEdit, String titleName, String textContent){
+        String query = "INSERT INTO diary " +
+                "(dateCreated, lastEdit, titleName, textContent) "
+                + "VALUES ('" + dateCreated
+                + "', '" + lastEdit
+                + "', '" + titleName
+                + "', '" + textContent
+                + "')";
+    }
+    private void DeleteEntry(String dateCreated){
+        String sql = "DELETE FROM diary WHERE dateCreated = '"+dateCreated+"'";
+    }
+    private void UpdateEntry(String dateCreated, String lastEdit, String titleName, String textContent){
+        String sql = "UPDATE diary SET " +
+                "lastEdit = '" + lastEdit + "', " +
+                "titleName = '" + titleName + "', " +
+                "textContent = '" + textContent + "' " +
+                "WHERE dateCreated = '" + dateCreated + "'";
+    }
 }
+
 //maybe split up the panel further
 //have a check box showing completing?
 //maybe have a last edit in bottom right corner that appears as part of box but isn't

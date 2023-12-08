@@ -1,9 +1,11 @@
 package DashBoard;
 
 import Defaults.Colors;
+import Defaults.InputTextArea;
 import Main.Login;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +18,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
-import java.util.Objects;
+
+import static javax.swing.BorderFactory.createEmptyBorder;
 
 public class InformationPanel extends JPanel {
     private final Connection connection;
@@ -58,13 +61,19 @@ public class InformationPanel extends JPanel {
             JTextField lastNameField = new DashTextField(resultSet.getString("last_name"));
             JTextField dobField = new DashTextField(resultSet.getString("date_of_birth"));
             JTextField emailField = new DashTextField(resultSet.getString("email"));
-            JTextField addressField = new DashTextField(resultSet.getString("address"));
+//            JTextField addressField = new DashTextField(resultSet.getString("address"));
+            JTextArea addressField = new InputTextArea(resultSet.getString("address"));
             JTextField phoneNumberField = new DashTextField(resultSet.getString("phone_number"));
+
+            JScrollPane textAreaScroll = new JScrollPane(addressField);
+            textAreaScroll.setBorder(createEmptyBorder());
+//            addressField.setCaretPosition(0);
+
             gbc.gridy = -1;
             gbc.gridwidth = 1;
-            gbc.weightx = 0.05;
+            gbc.weightx = 0.2;
             gbc.fill = GridBagConstraints.BOTH;
-            gbc.anchor = GridBagConstraints.PAGE_START;
+            gbc.anchor = GridBagConstraints.LINE_START;
             informationPanel.add(new DashBoardLabel("Account:"), gbc);
             gbc.gridy = -2;
             informationPanel.add(new DashBoardLabel("Password:"), gbc);
@@ -85,7 +94,11 @@ public class InformationPanel extends JPanel {
 
             gbc.gridx = 1;
             gbc.gridy = -1;
-            gbc.weightx = 0.9;
+            gbc.weightx = 1;
+//            gbc.fill = GridBagConstraints.HORIZONTAL;
+//            gbc.anchor = GridBagConstraints.PAGE_END;
+
+//            gbc.weighty = 0.5;
             informationPanel.add(new DashBoardLabel(username), gbc);
             gbc.gridy = -2;
             informationPanel.add(passwordField, gbc);
@@ -100,17 +113,17 @@ public class InformationPanel extends JPanel {
             gbc.gridy = -7;
             informationPanel.add(emailField, gbc);
             gbc.gridy = -8;
-            informationPanel.add(addressField, gbc);
+            informationPanel.add(textAreaScroll, gbc);
             gbc.gridy = -9;
             informationPanel.add(phoneNumberField, gbc);
+            gbc.weighty = 1;
 
-            gbc.anchor = GridBagConstraints.PAGE_END;
             gbc.gridx = 2;
             gbc.gridy = -1;
-            gbc.weightx = 0.05;
+            gbc.weightx = 0.3;
             informationPanel.add(AccountPanel(username), gbc);
             gbc.gridy = -2;
-            informationPanel.add(passwordPanel2(passwordField), gbc);
+            informationPanel.add(passwordPanel(passwordField), gbc);
             gbc.gridy = -3;
             informationPanel.add(TextModifyPanel(firstNameField, "first_name"), gbc);
             gbc.gridy = -4;
@@ -118,11 +131,11 @@ public class InformationPanel extends JPanel {
             gbc.gridy = -5;
             informationPanel.add(TextModifyPanel(lastNameField, "last_name"), gbc);
             gbc.gridy = -6;
-            informationPanel.add(dobRowPanel2(dobField), gbc);
+            informationPanel.add(dobRowPanel(dobField), gbc);
             gbc.gridy = -7;
             informationPanel.add(TextModifyPanel(emailField, "email"), gbc);
             gbc.gridy = -8;
-            informationPanel.add(TextModifyPanel(addressField, "address"), gbc);
+            informationPanel.add(TextModifyPanel2(addressField, "address"), gbc);
             gbc.gridy = -9;
             informationPanel.add(TextModifyPanel(phoneNumberField, "phone_number"), gbc);
         } catch (SQLException e) {
@@ -143,13 +156,21 @@ public class InformationPanel extends JPanel {
         subRowPanel.add(cancelButton(textFieldName, colName));
         return subRowPanel;
     }
+    private JPanel TextModifyPanel2(JTextArea textFieldName, String colName){
+        JPanel subRowPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        subRowPanel.setBackground(Colors.cream);
+        subRowPanel.add(editButton(textFieldName));
+        subRowPanel.add(saveButton(textFieldName, colName));
+        subRowPanel.add(cancelButton(textFieldName, colName));
+        return subRowPanel;
+    }
     static JPanel leftRowPanel(String labelName, JTextField textFieldName){
         JPanel subRowPanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         subRowPanel1.setBackground(Colors.cream);
         JLabel label = new JLabel(labelName);
         textFieldName.setPreferredSize(new Dimension(200, 30));
         textFieldName.setBackground(Colors.cream);
-        textFieldName.setBorder(BorderFactory.createEmptyBorder());
+        textFieldName.setBorder(createEmptyBorder());
         textFieldName.setEditable(false);
         subRowPanel1.add(label);
         subRowPanel1.add(textFieldName);
@@ -178,7 +199,7 @@ public class InformationPanel extends JPanel {
         });
         return deleteAccountButton;
     }
-    private JButton editButton(JTextField textFieldName) {
+    private JButton editButton(JTextComponent textFieldName) {
         JButton editButton = iconButton("src/Defaults/IconImages/editing.png",15,15);
         editButton.setToolTipText("Edit information");
         editButton.addActionListener(new ActionListener() {
@@ -190,7 +211,7 @@ public class InformationPanel extends JPanel {
         });
         return editButton;
     }
-    private JButton saveButton(JTextField textFieldName, String colName) {
+    private JButton saveButton(JTextComponent textFieldName, String colName) {
         JButton saveButton = iconButton("src/Defaults/IconImages/save.png",13,13);
         saveButton.setToolTipText("Save and update new change");
         saveButton.addActionListener(new ActionListener() {
@@ -212,13 +233,13 @@ public class InformationPanel extends JPanel {
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
-                textFieldName.setBorder(BorderFactory.createEmptyBorder());
+                textFieldName.setBorder(createEmptyBorder());
                 textFieldName.setEditable(false);
             }
         });
         return saveButton;
     }
-    private JButton cancelButton (JTextField textFieldName, String colName){
+    private JButton cancelButton (JTextComponent textFieldName, String colName){
         JButton cancelButton = iconButton("src/Defaults/IconImages/cancel.png",15,15);
         cancelButton.setToolTipText("Cancel");
         cancelButton.addActionListener(new ActionListener() {
@@ -230,25 +251,24 @@ public class InformationPanel extends JPanel {
                     throw new RuntimeException(ex);
                 }
                 textFieldName.setEditable(false);
-                textFieldName.setBorder(BorderFactory.createEmptyBorder());
+                textFieldName.setBorder(createEmptyBorder());
             }
         });
         return cancelButton;
     }
     static JButton iconButton(String icon, int width, int height){
-//        ImageIcon image = new ImageIcon(Objects.requireNonNull(InformationPanel.class.getResource(icon)));
         ImageIcon image = new ImageIcon(icon);
         Image img = image.getImage();
         Image newImg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         JButton iconButton = new JButton(new ImageIcon(newImg));
         iconButton.setPreferredSize(new Dimension(30, 30));
-        iconButton.setBorder(BorderFactory.createEmptyBorder());
+        iconButton.setBorder(createEmptyBorder());
         iconButton.setBackground(Colors.cream);
         iconButton.setFocusable(false);
         return iconButton;
     }
 
-    private JPanel passwordPanel2 (JTextField textFieldName){
+    private JPanel passwordPanel(JTextField textFieldName){
         JPanel passwordPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         passwordPanel.setLayout(new BorderLayout());
         passwordPanel.setBackground(Colors.cream);
@@ -256,7 +276,7 @@ public class InformationPanel extends JPanel {
 
         JButton changePasswordButton = new JButton("Change password");
         changePasswordButton.setBackground(Colors.cream);
-        changePasswordButton.setBorder(BorderFactory.createEmptyBorder());
+        changePasswordButton.setBorder(createEmptyBorder());
         changePasswordButton.setPreferredSize(new Dimension(120,30));
         changePasswordButton.setFocusable(false);
         changePasswordButton.addActionListener(new ActionListener() {
@@ -296,12 +316,11 @@ public class InformationPanel extends JPanel {
         subRowPanel.setBackground(Colors.cream);
         subRowPanel.add(changePasswordButton);
 
-//        passwordPanel.add(leftRowPanel(labelName,textFieldName), BorderLayout.WEST);
         passwordPanel.add(subRowPanel, BorderLayout.EAST);
 
         return passwordPanel;
     }
-    private JPanel dobRowPanel2(JTextField textFieldName) {
+    private JPanel dobRowPanel(JTextField textFieldName) {
         JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         rowPanel.setLayout(new BorderLayout());
         rowPanel.setBackground(Colors.cream);

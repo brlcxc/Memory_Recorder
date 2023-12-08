@@ -147,7 +147,7 @@ public class GUI extends JFrame{
         mainContentPanel = new JPanel();
 
         dashBoardPanel = new DashBoardPanel(connection, resultset, this);
-        diaryPanel = new DiaryPanel();
+        diaryPanel = new DiaryPanel(connection);
         listToDoPanel = new ListToDoPanel();
         notesPanel = new NotesPanel();
 
