@@ -27,7 +27,7 @@ public class DiaryPanel extends JPanel {
     private JTextField searchField;
     //private final Map<String, String> diaryEntryMap;
     private final Map<Timestamp, DiaryObject> dataMap;
-    private DefaultListModel<String> entryListModel;
+//    private DefaultListModel<String> entryListModel;
     private DefaultListModel<DiaryObject> entryListModel2;
 
     private DefaultListModel<Integer> test3;
@@ -133,6 +133,8 @@ public class DiaryPanel extends JPanel {
         gbc.gridy = -3;
         gbc.fill = GridBagConstraints.NONE;
         add(buttonPanel, gbc);
+
+        LoadContent();
     }
     private void setSidePanel(){
         GridBagConstraints gbc = new GridBagConstraints();
@@ -255,6 +257,7 @@ public class DiaryPanel extends JPanel {
                 }
             }*/
             DiaryObject test = new DiaryObject(sqlTimestamp, sqlTimestamp, newEntry, "");
+            NewEntry(sqlTimestamp, sqlTimestamp, newEntry, "");
             //element added to list
 //            entryListModel.addElement(newEntry + " (2/24/23)");
             entryListModel2.addElement(test);
@@ -271,7 +274,8 @@ public class DiaryPanel extends JPanel {
             //text field and text area properly updated
             titleField.setText(currentEntry);
 //            textArea.setText(diaryEntryMap.get(currentEntry));
-            textArea.setText(GetText(sqlTimestamp));
+//            textArea.setText(test.GetText(sqlTimestamp));
+            textArea.setText("");
 
             titleField.setPreferredSize(new Dimension(340, 24));
 
@@ -307,8 +311,11 @@ public class DiaryPanel extends JPanel {
             int selectedIndex = entryList2.getSelectedIndex();
             if (selectedIndex != -1) {
                 //The entry is both removed from the map and the list
+//                DiaryObject object = entryList2.getModel().getElementAt(selectedIndex);
 //                diaryEntryMap.remove(entryList2.getModel().getElementAt(selectedIndex));
-                dataMap.remove(entryList2.getModel().getElementAt(selectedIndex).dateCreated);
+                DiaryObject object = entryList2.getModel().getElementAt(selectedIndex);
+                DeleteEntry(object.dateCreated);
+                dataMap.remove(object.dateCreated);
                 entryListModel2.remove(selectedIndex);
             }
             //statement called if selected index is not the first
@@ -337,9 +344,12 @@ public class DiaryPanel extends JPanel {
                 int[] g = {currentIndex};
                 entryList2.setSelectedIndices(g);
                 //global entry updated
-                String textInput = entryList2.getModel().getElementAt(0).textContent;
-                int dateCutOff = textInput.lastIndexOf("(") - 1;
-                currentEntry = textInput.substring(0, dateCutOff);
+
+                String textInput = entryList2.getModel().getElementAt(0).titleName;
+//                System.out.println(textInput + "hel");
+//                int dateCutOff = textInput.lastIndexOf("(") - 1;
+//                currentEntry = textInput.substring(0, dateCutOff);
+                currentEntry = textInput;
                 //text field and text area properly updated
                 titleField.setText(currentEntry);
 //                textArea.setText(diaryEntryMap.get(currentEntry));
@@ -370,10 +380,13 @@ public class DiaryPanel extends JPanel {
                 long now = System.currentTimeMillis();
                 Timestamp sqlTimestamp = new Timestamp(now);
                 currentEntry = titleField.getText().trim();
-                entryListModel2.getElementAt(currentIndex).UpdateObject(sqlTimestamp, currentEntry, textArea.getText());
+                DiaryObject object = entryListModel2.getElementAt(currentIndex);
+                object.UpdateObject(sqlTimestamp, currentEntry, textArea.getText());
+                UpdateEntry(object.dateCreated, sqlTimestamp, currentEntry, textArea.getText());
                 dateTextArea.setText("Last Edit: " + entryListModel2.getElementAt(currentIndex).GetFormattedLastEdit());
                 int[] g = {currentIndex};
                 entryList2.setSelectedIndices(g);
+
 //                if (!currentEntry.equals(newTitle)) {
 //                    //modified entry name changed at index
 ////                    String new
@@ -418,6 +431,7 @@ public class DiaryPanel extends JPanel {
                 DiaryObject test = entryListModel2.getElementAt(currentIndex);
                 currentEntry = titleField.getText().trim();
                 test.UpdateObject(test.lastEdit, currentEntry, test.textContent);
+                UpdateEntry(test.dateCreated, test.lastEdit, currentEntry, test.textContent);
                 int[] g = {currentIndex};
                 entryList2.setSelectedIndices(g);                //global current entry changed
                 currentEntry = titleField.getText();
@@ -544,40 +558,69 @@ System.out.println(currentEntry + "B");
         ResultSet resultSet = stmt.executeQuery(sql);
         while (resultSet.next()) {
             resultSet.getString("titleName");
-            entryListModel.addElement("");
+            DiaryObject object = new DiaryObject(resultSet.getTimestamp(1), resultSet.getTimestamp(2), resultSet.getString(3), resultSet.getString(4));
+            entryListModel2.addElement(object);
         }
+            if (entryListModel2.size() > 0) {
+                //first index of list is selected
+                currentIndex = 0;
+                int[] g = {currentIndex};
+                entryList2.setSelectedIndices(g);
+                //global entry updated
+
+                String textInput = entryList2.getModel().getElementAt(0).titleName;
+//                System.out.println(textInput + "hel");
+//                int dateCutOff = textInput.lastIndexOf("(") - 1;
+//                currentEntry = textInput.substring(0, dateCutOff);
+                currentEntry = textInput;
+                //text field and text area properly updated
+                titleField.setText(currentEntry);
+//                textArea.setText(diaryEntryMap.get(currentEntry));
+                textArea.setText(entryList2.getModel().getElementAt(currentIndex).textContent);
+                dateTextArea.setText("Last Edit: " + entryListModel2.getElementAt(currentIndex).GetFormattedLastEdit());
+
+            }
     }catch(SQLException e1) {
         System.out.println(e1.getMessage());
     }
     }
     private void NewEntry(Timestamp dateCreated, Timestamp lastEdit, String titleName, String textContent){
         String query = "INSERT INTO diary " +
-                "(dateCreated, lastEdit, titleName, textContent) "
+                "(\"dateCreated\", \"lastEdit\", \"titleName\", \"textContent\") "
                 + "VALUES ('" + dateCreated
                 + "', '" + lastEdit
                 + "', '" + titleName
                 + "', '" + textContent
                 + "')";
+        try{
+          Statement stmt = connection.createStatement();
+          stmt.executeUpdate(query);
+    }catch(SQLException e1) {
+        System.out.println(e1.getMessage());
+    }
     }
     private void DeleteEntry(Timestamp dateCreated){
-        String sql = "DELETE FROM diary WHERE dateCreated = '"+dateCreated+"'";
-    }
-    private String GetText(Timestamp dateCreated){
-        String sql = "SELECT textContent FROM diary WHERE = '"+dateCreated+"'";
-
-        return "";
-    }
-    private String GetLastEdit(Timestamp dateCreated){
-        String sql = "SELECT lastEdit FROM diary WHERE = '"+dateCreated+"'";
-
-        return "";
+        String sql = "DELETE FROM diary WHERE \"dateCreated\" = '"+dateCreated+"'";
+        try{
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(sql);
+        }catch(SQLException e1) {
+            System.out.println(e1.getMessage());
+        }
     }
     private void UpdateEntry(Timestamp dateCreated, Timestamp lastEdit, String titleName, String textContent){
+        try{
         String sql = "UPDATE diary SET " +
-                "lastEdit = '" + lastEdit + "', " +
-                "titleName = '" + titleName + "', " +
-                "textContent = '" + textContent + "' " +
-                "WHERE dateCreated = '" + dateCreated + "'";
+                "\"lastEdit\" = '" + lastEdit + "', " +
+                "\"titleName\" = '" + titleName + "', " +
+                "\"textContent\" = '" + textContent + "' " +
+                "WHERE \"dateCreated\" = '" + dateCreated + "'";
+        Statement stmt = connection.createStatement();
+        stmt.executeUpdate(sql);
+        }catch(SQLException e1) {
+            System.out.println(e1.getMessage());
+        }
+
     }
     public class DiaryObject{
         Timestamp dateCreated;
