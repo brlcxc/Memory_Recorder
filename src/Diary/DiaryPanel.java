@@ -22,6 +22,7 @@ public class DiaryPanel extends JPanel {
     private JPanel sidePanel;
     private final JTextArea textArea;
     private final JTextArea dateTextArea;
+    private  ResultSet resultSet;
 
     private final JTextField titleField;
     private JTextField searchField;
@@ -42,8 +43,16 @@ public class DiaryPanel extends JPanel {
     private JButton cancelIconButton;
     private int currentIndex;
     private Connection connection;
-    public DiaryPanel(Connection con){
+    private String username;
+    public DiaryPanel(Connection con, ResultSet resultSet){
         this.connection = con;
+        this.resultSet = resultSet;
+        try {
+            username = resultSet.getString("username");
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
         GridBagConstraints gbc = new GridBagConstraints();
         //diaryEntryMap = new Hashtable<>();
         dataMap = new Hashtable<>();
@@ -554,7 +563,7 @@ System.out.println(currentEntry + "B");
     private void LoadContent(){
         try{
         Statement stmt = connection.createStatement();
-        String sql = "SELECT * FROM diary";
+        String sql = "SELECT * FROM diary WHERE username = '"+username+"'";
         ResultSet resultSet = stmt.executeQuery(sql);
         while (resultSet.next()) {
             resultSet.getString("titleName");
@@ -586,11 +595,12 @@ System.out.println(currentEntry + "B");
     }
     private void NewEntry(Timestamp dateCreated, Timestamp lastEdit, String titleName, String textContent){
         String query = "INSERT INTO diary " +
-                "(\"dateCreated\", \"lastEdit\", \"titleName\", \"textContent\") "
+                "(\"dateCreated\", \"lastEdit\", \"titleName\", \"textContent\", username) "
                 + "VALUES ('" + dateCreated
                 + "', '" + lastEdit
                 + "', '" + titleName
                 + "', '" + textContent
+                + "', '" + username
                 + "')";
         try{
           Statement stmt = connection.createStatement();
@@ -613,7 +623,8 @@ System.out.println(currentEntry + "B");
         String sql = "UPDATE diary SET " +
                 "\"lastEdit\" = '" + lastEdit + "', " +
                 "\"titleName\" = '" + titleName + "', " +
-                "\"textContent\" = '" + textContent + "' " +
+                "\"textContent\" = '" + textContent + "', " +
+                "username = '" + username + "' " +
                 "WHERE \"dateCreated\" = '" + dateCreated + "'";
         Statement stmt = connection.createStatement();
         stmt.executeUpdate(sql);
