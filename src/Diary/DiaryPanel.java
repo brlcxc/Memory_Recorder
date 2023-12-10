@@ -193,6 +193,7 @@ public class DiaryPanel extends JPanel {
     }
     private class CreateNewButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
+
             String newEntry;
             long now = System.currentTimeMillis();
             Timestamp sqlTimestamp = new Timestamp(now);
@@ -238,6 +239,7 @@ public class DiaryPanel extends JPanel {
             textArea.setEditable(true);
             titleField.setEditable(false);
             titleField.setBorder(null);
+            sidePanel.setPreferredSize(new Dimension(267, 511));
         }
     }
     private class DeleteButtonListener implements ActionListener {

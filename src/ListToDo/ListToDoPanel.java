@@ -486,6 +486,8 @@ public class ListToDoPanel extends JPanel {
             addButton.setEnabled(true);
             titleField.setEditable(false);
             titleField.setBorder(null);
+            sidePanel.setPreferredSize(new Dimension(267, 511));
+
         }
     }
     public void ShowButtons(){

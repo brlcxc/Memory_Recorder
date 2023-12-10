@@ -238,6 +238,7 @@ public class NotesPanel extends JPanel {
             textArea.setEditable(true);
             titleField.setEditable(false);
             titleField.setBorder(null);
+            sidePanel.setPreferredSize(new Dimension(267, 511));
         }
     }
     private class DeleteButtonListener implements ActionListener {
