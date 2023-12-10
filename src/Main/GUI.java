@@ -14,7 +14,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 public class GUI extends JFrame{
-    final int WINDOW_WIDTH = 800;
+    final int WINDOW_WIDTH = 850;
     final int WINDOW_HEIGHT = 600;
     private JMenuBar menuBar;
     private JPanel mainContentPanel;
@@ -63,6 +63,7 @@ public class GUI extends JFrame{
         ImageIcon img = new ImageIcon("src/Defaults/IconImages/icon.png");
         this.setIconImage(img.getImage());
         setVisible(true);
+        dashboardButton.doClick();
     }
     public GUI( ResultSet result) {
         resultset = result;
@@ -148,8 +149,9 @@ public class GUI extends JFrame{
 
         dashBoardPanel = new DashBoardPanel(connection, resultset, this);
         diaryPanel = new DiaryPanel(connection, resultset);
-        listToDoPanel = new ListToDoPanel();
-        notesPanel = new NotesPanel();
+        listToDoPanel = new ListToDoPanel(connection, resultset);
+
+        notesPanel = new NotesPanel(connection, resultset);
 
         mainContentLayout = new CardLayout();
         mainContentPanel.setLayout(mainContentLayout);
@@ -177,32 +179,36 @@ public class GUI extends JFrame{
         public void actionPerformed(ActionEvent e) {
             sideContentLayout.show(sideContentPanel,"dashboard");
             mainContentLayout.show(mainContentPanel,"dashboard");
+            diaryButton.deactivateButton();
+            listToDoButton.deactivateButton();
+            notesButton.deactivateButton();
         }
     }
     private class DiaryButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
                 sideContentLayout.show(sideContentPanel,"diary");
             mainContentLayout.show(mainContentPanel,"diary");
+            dashboardButton.deactivateButton();
+            listToDoButton.deactivateButton();
+            notesButton.deactivateButton();
         }
     }
     private class ListToDoButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             sideContentLayout.show(sideContentPanel,"list to do");
             mainContentLayout.show(mainContentPanel,"list to do");
+            diaryButton.deactivateButton();
+            dashboardButton.deactivateButton();
+            notesButton.deactivateButton();
         }
     }
     private class NotesButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             sideContentLayout.show(sideContentPanel,"notes");
             mainContentLayout.show(mainContentPanel,"notes");
+            diaryButton.deactivateButton();
+            listToDoButton.deactivateButton();
+            dashboardButton.deactivateButton();
         }
     }
-//    public static void main(String[] args) {
-//        new Main.GUI();
-//    }
 }
-
-//use underline and color shift
-//select pallet
-//bring back button class but maybe have it within side option panel than outside
-//colors class
