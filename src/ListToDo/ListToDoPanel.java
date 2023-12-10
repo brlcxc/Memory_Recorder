@@ -64,7 +64,7 @@ public class ListToDoPanel extends JPanel {
         titleField.setBorder(null);
         titleField.setBackground(Colors.cream);
         titleField.setHorizontalAlignment(JTextField.CENTER);
-        titleField.setPreferredSize(new Dimension(340, 30));
+        titleField.setPreferredSize(new Dimension(358, 30));
 
         saveIconButton = iconButton("src/Defaults/IconImages/save.png");
         saveIconButton.addActionListener(new SaveTitleButtonListener());
@@ -340,7 +340,7 @@ public class ListToDoPanel extends JPanel {
                 //title editing disabled
                 titleField.setEditable(false);
                 titleField.setBorder(null);
-                titleField.setPreferredSize(new Dimension(340, 30));
+                titleField.setPreferredSize(new Dimension(358, 30));
             }
         }
     }
@@ -470,7 +470,7 @@ public class ListToDoPanel extends JPanel {
             listScroller1.getViewport().setView(itemList);
 //            repaint();
 //            listScroller1 = new JScrollPane(test);
-//            titleField.setPreferredSize(new Dimension(358, 30));
+            titleField.setPreferredSize(new Dimension(358, 30));
 
 
 
@@ -531,7 +531,7 @@ public class ListToDoPanel extends JPanel {
                 //text set to default state
                 currentIndex = -1;
                 titleField.setText("Press \"New\" to create new list");
-                titleField.setPreferredSize(new Dimension(340, 30));
+                titleField.setPreferredSize(new Dimension(358, 30));
                 itemListModel.removeAllElements();
                 HideButtons();
             }
@@ -555,27 +555,17 @@ public class ListToDoPanel extends JPanel {
                 toDoListModel.addElement(object);
 //                object.FormJList();
                 toDoMap.put(object.dateCreated, object);
-                String[] strSplit = object.textContent.split("\n");
+                object.FormJList();
+/*                String[] strSplit = object.textContent.split("\n");
                 List<String> list = Arrays.asList(strSplit);
-
-/*                DefaultListModel<String> listModel = new DefaultListModel<>();
-                JList<String> list = new JList<>(itemListModel);
-                String[] strSplit = object.textContent.split("\n");
-//            listModel = new DefaultListModel<String>();
-//            list = new JList<String>(listModel);
-                list.setFixedCellHeight(30);
-                list.setFont(new Font("SansSerif", Font.PLAIN, 18));
-                list.setListData(strSplit);*/
                 itemListModel = new DefaultListModel<>();
-                //element added to map
-//            JList test = itemList();
                 itemList = new JList<>(itemListModel);
                 itemList.setFixedCellHeight(30);
                 itemList.setFont(new Font("SansSerif", Font.PLAIN, 18));
                 for(int i = 0; i < list.size(); i++){
                     itemListModel.addElement(list.get(i));
                 }
-                object.UpdateObject(object.lastEdit, object.titleName, itemList);
+                object.UpdateObject(object.lastEdit, object.titleName, itemList);*/
             }
             if (toDoListModel.size() > 0) {
                 //first index of list is selected
@@ -662,21 +652,34 @@ public class ListToDoPanel extends JPanel {
 
 //            list = new JList<String>();
             listModel = new DefaultListModel<>();
-            list = new JList<>(itemListModel);
+            list = new JList<>(listModel);
         }
         public void FormJList(){
-
+            String[] strSplit = textContent.split("\n");
+            List<String> list2 = Arrays.asList(strSplit);
+//            itemListModel = new DefaultListModel<>();
+//            itemList = new JList<>(itemListModel);
+            list.setFixedCellHeight(30);
+            list.setFont(new Font("SansSerif", Font.PLAIN, 18));
+            if(!list2.get(0).equals("")) {
+                if (strSplit.length > 0) {
+                    for (int i = 0; i < list2.size(); i++) {
+                        listModel.addElement(list2.get(i));
+                    }
+                }
+            }
+//            object.UpdateObject(object.lastEdit, object.titleName, itemList);
 /*            itemListModel = new DefaultListModel<>();
             itemList = new JList<>(itemListModel);
             itemList.setFixedCellHeight(30);
             itemList.setFont(new Font("SansSerif", Font.PLAIN, 18));*/
 
-            String[] strSplit = textContent.split("\n");
-//            listModel = new DefaultListModel<String>();
-//            list = new JList<String>(listModel);
-            list.setFixedCellHeight(30);
-            list.setFont(new Font("SansSerif", Font.PLAIN, 18));
-            list.setListData(strSplit);
+//            String[] strSplit = textContent.split("\n");
+////            listModel = new DefaultListModel<String>();
+////            list = new JList<String>(listModel);
+//            list.setFixedCellHeight(30);
+//            list.setFont(new Font("SansSerif", Font.PLAIN, 18));
+//            list.setListData(strSplit);
 //            list = (JList<String>) list;
         }
         public void UpdateObject(Timestamp lastEdit, String titleName, JList<String> list){

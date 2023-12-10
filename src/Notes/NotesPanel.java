@@ -224,7 +224,7 @@ public class NotesPanel extends JPanel {
             titleField.setText(currentEntry);
             textArea.setText("");
 
-            titleField.setPreferredSize(new Dimension(340, 24));
+            titleField.setPreferredSize(new Dimension(358, 24));
 
             ShowButtons();
             dateTextArea.setVisible(true);
@@ -358,7 +358,7 @@ public class NotesPanel extends JPanel {
                 //title editing disabled
                 titleField.setEditable(false);
                 titleField.setBorder(null);
-                titleField.setPreferredSize(new Dimension(340, 24));
+                titleField.setPreferredSize(new Dimension(358, 24));
 
                 //The text area is now active
                 textArea.setEditable(true);
