@@ -99,16 +99,16 @@ public class EmergencyContact extends JPanel {
         displayContactPanel.setLayout(new GridLayout(4,1));
         displayContactPanel.setBackground(Colors.cream);
         displayContactPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Colors.textColor,1),relationship));
-        displayContactPanel.add(InformationPanel.leftRowPanel("Name:               ", nameTextField ));
-        displayContactPanel.add(InformationPanel.leftRowPanel("Email:                ", emailTextField));
-        displayContactPanel.add(InformationPanel.leftRowPanel("Phone number: ", phoneNumberTextField));
+        displayContactPanel.add(InformationPanel1.leftRowPanel("Name:               ", nameTextField ));
+        displayContactPanel.add(InformationPanel1.leftRowPanel("Email:                ", emailTextField));
+        displayContactPanel.add(InformationPanel1.leftRowPanel("Phone number: ", phoneNumberTextField));
         displayContactPanel.add(buttonPanel(emailTextField));
         return displayContactPanel;
     }
     private static JPanel buttonPanel(JTextField emailField){
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Colors.cream);
-        JButton deleteButton = InformationPanel.iconButton("src/Defaults/IconImages/delete.png",15,15);
+        JButton deleteButton = InformationPanel1.iconButton("src/Defaults/IconImages/delete.png",15,15);
         deleteButton.setToolTipText("delete this relationship");
         deleteButton.addActionListener(e -> {
             int option = JOptionPane.showConfirmDialog(null,"Are you sure you want delete this contact?", "Delete?",JOptionPane.YES_NO_OPTION);

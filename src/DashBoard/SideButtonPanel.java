@@ -43,7 +43,7 @@ public class SideButtonPanel extends JPanel {
     }
 
     private void setDashBoardPanel(){
-        InformationPanel informationPanel = new InformationPanel(connection, resultSet, mainFrame);
+        InformationPanel1 informationPanel = new InformationPanel1(connection, resultSet, mainFrame);
         dashBoardPanel.setBackground(Colors.cream);
         dashBoardPanel.add(informationPanel.getInformationPanel());
     }
@@ -74,7 +74,7 @@ public class SideButtonPanel extends JPanel {
         accountButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                InformationPanel informationPanel = new InformationPanel(connection, resultSet, mainFrame);
+                InformationPanel1 informationPanel = new InformationPanel1(connection, resultSet, mainFrame);
                 dashBoardPanel.setVisible(false);
                 dashBoardPanel.removeAll();
                 dashBoardPanel.add(informationPanel.getInformationPanel());

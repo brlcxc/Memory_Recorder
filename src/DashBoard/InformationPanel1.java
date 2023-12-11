@@ -16,14 +16,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
-import java.util.Objects;
 
-public class InformationPanel extends JPanel {
+public class InformationPanel1 extends JPanel {
     private final Connection connection;
     private  ResultSet resultSet;
     private final JFrame mainFrame;
     private final JPanel informationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    public InformationPanel(Connection con, ResultSet result, JFrame frame) {
+    public InformationPanel1(Connection con, ResultSet result, JFrame frame) {
         connection = con;
         resultSet = result;
         mainFrame = frame;
