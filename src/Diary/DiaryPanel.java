@@ -307,6 +307,9 @@ public class DiaryPanel extends JPanel {
                 dateTextArea.setText("Last Edit: " + entryListModel.getElementAt(currentIndex).GetFormattedLastEdit());
                 int[] g = {currentIndex};
                 entryList.setSelectedIndices(g);
+                titleField.setEditable(false);
+                titleField.setBorder(null);
+                titleField.setText(currentEntry);
             }
         }
     }
@@ -385,7 +388,7 @@ public class DiaryPanel extends JPanel {
             String filter = searchField.getText();
             //this statement prevents the list from being filtered when focus is lost
             if(!searchField.getText().equals("Search")){
-                filterModel((DefaultListModel<DiaryObject>) entryList.getModel(), filter);
+                filterModel((DefaultListModel<DiaryObject>) entryList.getModel(), filter.toLowerCase());
 
             }
         }
@@ -393,7 +396,7 @@ public class DiaryPanel extends JPanel {
     private void filterModel(DefaultListModel<DiaryObject> model, String filter) {
         //elements are being removed from or added to the list, but they map keys remains unaffected
         for (Timestamp dictionaryKey : diaryEntryMap.keySet()) {
-            String text = diaryEntryMap.get(dictionaryKey).toString();
+            String text = diaryEntryMap.get(dictionaryKey).toString().toLowerCase();
             //elements not containing the filter text are removed from the list
             if (!text.contains(filter)) {
                 if (model.contains(diaryEntryMap.get(dictionaryKey))) {
@@ -455,6 +458,7 @@ public class DiaryPanel extends JPanel {
             resultSet.getString("titleName");
             DiaryObject object = new DiaryObject(resultSet.getTimestamp(1), resultSet.getTimestamp(2), resultSet.getString(3), resultSet.getString(4));
             entryListModel.addElement(object);
+            diaryEntryMap.put(object.dateCreated, object);
         }
             if (entryListModel.size() > 0) {
                 //first index of list is selected

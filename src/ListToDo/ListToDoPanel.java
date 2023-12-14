@@ -361,14 +361,14 @@ public class ListToDoPanel extends JPanel {
             String filter = searchField.getText();
             //this statement prevents the list from being filtered when focus is lost
             if(!searchField.getText().equals("Search")){
-                filterModel((DefaultListModel<DiaryObject>) toDoList.getModel(), filter);
+                filterModel((DefaultListModel<DiaryObject>) toDoList.getModel(), filter.toLowerCase());
             }
         }
     }
     private void filterModel(DefaultListModel<DiaryObject> model, String filter) {
         //elements are being removed from or added to the list, but they map keys remains unaffected
         for (Timestamp dictionaryKey : toDoMap.keySet()) {
-            String text = toDoMap.get(dictionaryKey).toString();
+            String text = toDoMap.get(dictionaryKey).toString().toLowerCase();
             //elements not containing the filter text are removed from the list
             if (!text.contains(filter)) {
                 if (model.contains(toDoMap.get(dictionaryKey))) {
