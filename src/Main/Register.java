@@ -34,6 +34,8 @@ public class Register extends JFrame {
         this.add(registerPanel());
         this.setVisible(true);
         this.setLocationRelativeTo(null);
+        ImageIcon img = new ImageIcon("src/Defaults/IconImages/icon.png");
+        this.setIconImage(img.getImage());
     }
 
     private JPanel registerPanel(){

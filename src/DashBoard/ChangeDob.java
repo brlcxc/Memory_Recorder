@@ -31,6 +31,8 @@ public class ChangeDob extends JFrame {
         this.add(changeDobPanel());
         this.setVisible(true);
         this.setLocationRelativeTo(null);
+        ImageIcon img = new ImageIcon("src/Defaults/IconImages/icon.png");
+        this.setIconImage(img.getImage());
     }
 
     private JPanel changeDobPanel(){

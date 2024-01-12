@@ -31,6 +31,8 @@ public class ChangePassword extends JFrame {
         this.add(changePasswordPanel());
         this.setVisible(true);
         this.setLocationRelativeTo(null);
+        ImageIcon img = new ImageIcon("src/Defaults/IconImages/icon.png");
+        this.setIconImage(img.getImage());
 
     }
 

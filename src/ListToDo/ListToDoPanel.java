@@ -189,9 +189,9 @@ public class ListToDoPanel extends JPanel {
         JPanel test = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
 
         //create new entry button
-        JButton createNewButton = new StandardButton("New", Colors.pastelGreen, Colors.mintGreen);
+        JButton createNewButton = new StandardButton("Create", Colors.pastelGreen, Colors.mintGreen);
         createNewButton.addActionListener(new CreateNewButtonListener());
-        JButton deleteButton = new StandardButton("Remove", Colors.barbiePink, Colors.lessBarbiePink);
+        JButton deleteButton = new StandardButton("Delete", Colors.barbiePink, Colors.lessBarbiePink);
         deleteButton.addActionListener(new DeleteButtonListener());
         test.add(createNewButton);
         test.add(Box.createHorizontalStrut(5));

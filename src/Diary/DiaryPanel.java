@@ -1,5 +1,7 @@
 package Diary;
 import Defaults.*;
+import ListToDo.ListToDoPanel;
+
 import java.sql.Timestamp;
 
 
@@ -95,15 +97,15 @@ public class DiaryPanel extends JPanel {
         saveButton.addActionListener(new SaveButtonListener());
 
         //delete button
-        JButton deleteButton = new StandardButton("Delete Entry", Colors.barbiePink, Colors.lessBarbiePink);
-        deleteButton.addActionListener(new DeleteButtonListener());
+//        JButton deleteButton = new StandardButton("Delete Entry", Colors.barbiePink, Colors.lessBarbiePink);
+//        deleteButton.addActionListener(new DeleteButtonListener());
 
         //button panel
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Colors.cream);
         buttonPanel.add(saveButton);
-        buttonPanel.add(Box.createHorizontalStrut(20));
-        buttonPanel.add(deleteButton);
+//        buttonPanel.add(Box.createHorizontalStrut(20));
+//        buttonPanel.add(deleteButton);
 
         gbc.insets = new Insets(8,8,0,8);
         gbc.gridx = 0;
@@ -160,8 +162,17 @@ public class DiaryPanel extends JPanel {
         JScrollPane listScroller = new JScrollPane(entryList);
 
         //create new entry button
-        JButton createNewButton = new StandardButton("Create New Entry", Colors.pastelGreen, Colors.mintGreen);
+        JButton createNewButton = new StandardButton("Create", Colors.pastelGreen, Colors.mintGreen);
         createNewButton.addActionListener(new CreateNewButtonListener());
+
+        JButton deleteButton = new StandardButton("Delete", Colors.barbiePink, Colors.lessBarbiePink);
+        deleteButton.addActionListener(new DeleteButtonListener());
+
+        JPanel test = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        test.add(createNewButton);
+        test.add(Box.createHorizontalStrut(5));
+        test.add(deleteButton);
+        test.setBackground(Colors.cream);
 
         gbc.insets = new Insets(10,8,0,8);
         gbc.gridx = 0;
@@ -186,7 +197,7 @@ public class DiaryPanel extends JPanel {
         gbc.weightx = 0;
         gbc.weighty = 0;
         gbc.fill = GridBagConstraints.NONE;
-        sidePanel.add(createNewButton, gbc);
+        sidePanel.add(test, gbc);
     }
     public JPanel getSidePanel(){
         return sidePanel;
