@@ -11,6 +11,12 @@ Here users have the option to login with existing credentials, register a new ac
 
 <img src="https://github.com/brlcxc/Memory_Recorder/assets/90850429/5235a06f-d78f-4713-9f94-2dce57c8532f" width="450">
 
+### Registration
+
+The user is brought to this screen upon pressing the "Register" button. The user is prompted to enter in all relevant information.
+
+<img src="https://github.com/brlcxc/Memory_Recorder/assets/90850429/21d7b928-e8c7-48f9-9dbd-673733705c77" width="450">
+
 ### Dashboard
 
 Upon logging in the user is  brought to the “Account” section of the “Dashboard” page. This page displays all user information with options to edit that information. 
