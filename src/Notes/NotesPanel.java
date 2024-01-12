@@ -458,6 +458,8 @@ public class NotesPanel extends JPanel {
     }
     private void LoadContent(){
         try{
+            sidePanel.setPreferredSize(new Dimension(267, 511));
+
             Statement stmt = connection.createStatement();
             String sql = "SELECT * FROM notebook WHERE username = '"+username+"'";
             ResultSet resultSet = stmt.executeQuery(sql);

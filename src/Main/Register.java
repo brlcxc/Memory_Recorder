@@ -37,25 +37,83 @@ public class Register extends JFrame {
     }
 
     private JPanel registerPanel(){
+        GridBagConstraints gbc = new GridBagConstraints();
         JPanel registerPanel = new JPanel();
         registerPanel.setBackground(Colors.mintGreen);
-        registerPanel.setLayout(new GridLayout(11,1));
+        registerPanel.setLayout(new GridBagLayout());
         registerPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 10));
 
         JLabel titleLabel = new JLabel("Your Information:");
         titleLabel.setFont(new Font(Font.DIALOG, Font.BOLD, 25));
 
-        registerPanel.add(titleLabel);
-        registerPanel.add(addSubPanel("Username:         ",userName));
-        registerPanel.add(addSubPanel("Password:         ",passWord));
-        registerPanel.add(addSubPanel("First Name:        ",firstName));
-        registerPanel.add(addSubPanel("Middle Name:     ",middleName));
-        registerPanel.add(addSubPanel("Last Name:         ",lastName));
-        registerPanel.add(datePanel("Date of birth:      "));
-        registerPanel.add(addSubPanel("Email address:    ",email));
-        registerPanel.add(addSubPanel("Address:             ",address));
-        registerPanel.add(addSubPanel("Phone Number:   ",phoneNumber));
-        registerPanel.add(submitPanel());
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridwidth = 2;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.anchor = GridBagConstraints.PAGE_START;
+
+        registerPanel.add(titleLabel, gbc);
+
+        gbc.gridy = -1;
+        gbc.gridwidth = 1;
+        gbc.weightx = 0.4;
+        gbc.weighty = 0.8;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.LINE_START;
+
+        registerPanel.add(new RegisterLabel("Username:"), gbc);
+        gbc.gridy = -2;
+        registerPanel.add(new RegisterLabel("Password:"), gbc);
+        gbc.gridy = -3;
+        registerPanel.add(new RegisterLabel("First Name:"), gbc);
+        gbc.gridy = -4;
+        registerPanel.add(new RegisterLabel("Middle Name:"), gbc);
+        gbc.gridy = -5;
+        registerPanel.add(new RegisterLabel("Last Name:"), gbc);
+        gbc.gridy = -6;
+        registerPanel.add(new RegisterLabel("Date of birth:"), gbc);
+        gbc.gridy = -7;
+        registerPanel.add(new RegisterLabel("Email address:"), gbc);
+        gbc.gridy = -8;
+        registerPanel.add(new RegisterLabel("Address:"), gbc);
+        gbc.gridy = -9;
+        registerPanel.add(new RegisterLabel("Phone Number:"), gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = -1;
+        gbc.weightx = 1;
+        gbc.insets = new Insets(4,4,4,4);
+        gbc.fill = GridBagConstraints.BOTH;
+
+
+        registerPanel.add(userName, gbc);
+        gbc.gridy = -2;
+        registerPanel.add(passWord, gbc);
+        gbc.gridy = -3;
+        registerPanel.add(firstName, gbc);
+        gbc.gridy = -4;
+        registerPanel.add(middleName, gbc);
+        gbc.gridy = -5;
+        registerPanel.add(lastName, gbc);
+        gbc.gridy = -6;
+        registerPanel.add(datePanel(), gbc);
+        gbc.gridy = -7;
+        registerPanel.add(email, gbc);
+        gbc.gridy = -8;
+        registerPanel.add(address, gbc);
+        gbc.gridy = -9;
+        registerPanel.add(phoneNumber, gbc);
+
+
+        gbc.weighty = 1;
+        gbc.gridx = 0;
+        gbc.gridy = -5;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.PAGE_END;
+        registerPanel.add(submitPanel(), gbc);
 
         return registerPanel;
     }
@@ -72,7 +130,40 @@ public class Register extends JFrame {
         subPanel.add(textFieldName);
         return subPanel;
     }
-    private JPanel datePanel(String labelName){
+    private JPanel datePanel(){
+        JPanel subPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+        subPanel.setBackground(Colors.mintGreen);
+        subPanel.setAlignmentX(0);
+        JLabel monthLabel = new JLabel("Month");
+        String[] monthList = {"","Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
+        monthBox = new JComboBox(monthList);
+
+        JLabel dateLabel = new JLabel("Date");
+        Integer[] dateList = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
+        dateBox = new JComboBox(dateList);
+
+        JLabel yearLabel = new JLabel("Year");
+        Integer[] yearList = new Integer[94];
+        yearList[0]=1900;
+        for (int i =1; i<93; i++ ){
+            yearList[i]=1930+i;
+        }
+        yearBox = new JComboBox(yearList);
+
+        monthBox.setBackground(Colors.mintGreen);
+        dateBox.setBackground(Colors.mintGreen);
+        yearBox.setBackground(Colors.mintGreen);
+
+        subPanel.add(monthLabel);
+        subPanel.add(monthBox);
+        subPanel.add(dateLabel);
+        subPanel.add(dateBox);
+        subPanel.add(yearLabel);
+        subPanel.add(yearBox);
+        return subPanel;
+    }
+/*    private JPanel datePanel(String labelName){
         JPanel subPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         subPanel.setBackground(Colors.mintGreen);
@@ -107,7 +198,7 @@ public class Register extends JFrame {
         subPanel.add(yearLabel);
         subPanel.add(yearBox);
         return subPanel;
-    }
+    }*/
 
     private JPanel submitPanel (){
         JPanel submitPanel = new JPanel();

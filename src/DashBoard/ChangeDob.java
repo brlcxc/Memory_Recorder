@@ -23,7 +23,8 @@ public class ChangeDob extends JFrame {
         resultSet = result;
         connection = con;
         dobTextField = textField;
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         this.setTitle("Change date of birth");
         this.setBackground(Colors.textColor);

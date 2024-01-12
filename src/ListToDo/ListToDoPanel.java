@@ -2,7 +2,6 @@ package ListToDo;
 
 
 import Defaults.*;
-import Diary.DiaryPanel;
 
 
 import javax.swing.*;
@@ -168,7 +167,7 @@ public class ListToDoPanel extends JPanel {
         sidePanel.setBackground(Colors.cream);
 
         //entries label
-        JLabel entriesLabel = new SidePanelTitleLabel("Diary Entries", 18);
+        JLabel entriesLabel = new SidePanelTitleLabel("Available Lists", 18);
 
         //search field
         searchField = new SearchTextField();
@@ -548,6 +547,7 @@ public class ListToDoPanel extends JPanel {
     }
     private void LoadContent(){
         try{
+            sidePanel.setPreferredSize(new Dimension(267, 511));
             Statement stmt = connection.createStatement();
             String sql = "SELECT * FROM to_do_list WHERE username = '"+username+"'";
             ResultSet resultSet = stmt.executeQuery(sql);
